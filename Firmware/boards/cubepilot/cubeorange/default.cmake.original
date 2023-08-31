@@ -1,3 +1,4 @@
+
 px4_add_board(
 	PLATFORM nuttx
 	VENDOR cubepilot
@@ -20,8 +21,8 @@ px4_add_board(
 	DRIVERS
 		adc/ads1115
 		adc/board_adc
-		#barometer # all available barometer drivers
-		barometer/ms5611
+		barometer # all available barometer drivers
+		#barometer/ms5611
 		batt_smbus
 		#camera_capture
 		#camera_trigger
@@ -39,8 +40,8 @@ px4_add_board(
 		#irlock
 		#lights # all available light drivers
 		lights/rgbled
-		#magnetometer # all available magnetometer drivers
-		magnetometer/akm/ak09916
+		magnetometer # all available magnetometer drivers
+		#magnetometer/akm/ak09916
 		#optical_flow # all available optical flow drivers
 		#osd
 		#pca9685
