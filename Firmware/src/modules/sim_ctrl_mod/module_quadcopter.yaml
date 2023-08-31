@@ -1,0 +1,374 @@
+module_name: SIM_CTRL_MOD
+parameters:
+    - group: SIM_QUAD_CTRL
+      definitions:
+        SM_MASS:
+            description:
+                short: SIMULINK mass parameter
+                long: |
+                    SIMULINK mass parameter
+
+            type: float
+            unit: kg
+            decimal: 4
+            default: 1.6011
+            min: 0.0
+
+        SM_MASS_ROTOR:
+            description:
+                short: SIMULINK rotor mass parameter
+                long: |
+                    SIMULINK rotor mass parameter
+
+            type: float
+            unit: kg
+            decimal: 12
+            default: 0.0182
+            min: 0.0
+
+        SM_I_ROTOR:
+            description:
+                short: SIMULINK moment of inertia of the rotor
+                long: |
+                    SIMULINK moment of inertia of the rotor
+
+            type: float
+            decimal: 12
+            default: 0.000043821
+            min: 0.0
+
+        SM_MX2T:
+            description:
+                short: SIMULINK roll moment to thrust conversion
+                long: |
+                    SIMULINK roll moment to thrust conversion.
+
+            type: float
+            decimal: 4
+            default: 6.25
+            min: 0.0
+
+        SM_MY2T:
+            description:
+                short: SIMULINK pitch moment to thrust conversion
+                long: |
+                    SIMULINK pitch moment to thrust conversion.
+
+            type: float
+            decimal: 4
+            default: 6.25
+            min: 0.0
+
+        SM_MZ2T:
+            description:
+                short: SIMULINK yaw moment to thrust conversion
+                long: |
+                    SIMULINK yaw moment to thrust conversion.
+
+            type: float
+            decimal: 4
+            default: 56.4009
+            min: 0.0
+
+        SM_MAX_THRUST:
+            description:
+                short: SIMULINK max thrust
+                long: |
+                    SIMULINK max thrust
+
+            type: float
+            unit: N
+            decimal: 12
+            default: 9.94577371
+            min: 0.0
+
+        SM_MAX_MROLL:
+            description:
+                short: SIMULINK max roll moment
+                long: |
+                    SIMULINK max roll moment
+
+            type: float
+            unit: Nm
+            decimal: 4
+            default: 62.16108
+            min: 0.0
+
+        SM_MAX_MPITCH:
+            description:
+                short: SIMULINK max pitch moment
+                long: |
+                    SIMULINK max pitch moment
+
+            type: float
+            unit: Nm
+            decimal: 4
+            default: 62.16108
+            min: 0.0
+
+        SM_MAX_MYAW:
+            description:
+                short: SIMULINK max yaw moment
+                long: |
+                    SIMULINK max yaw moment
+
+            type: float
+            unit: Nm
+            decimal: 4
+            default: 0.176340679093612
+            min: 0.0
+
+        SM_TSQRT2CMD:
+            description:
+                short: SIMULINK thrust to command conversion
+                long: |
+                    SIMULINK thrust to command conversion using:
+                    SM_TSQRT2CMD * sqrt(T) = CMD, where CMD is
+                    normalized motor command in [0 1] range
+
+            type: float
+            decimal: 12
+            default: 0.317088661660156
+            min: 0.0
+
+        SM_D1${i}:
+            description:
+                short: SIMULINK D1${i} entry of drag matrix D
+                long: |
+                    SIMULINK D1${i} entry of drag matrix D
+
+            type: float
+            decimal: 6
+            num_instances: 3
+            instance_start: 1
+            min: 0.0
+            default: [0.0, 0.0, 0.0]
+
+        SM_D2${i}:
+            description:
+                short: SIMULINK D2${i} entry of drag matrix D
+                long: |
+                    SIMULINK D2${i} entry of drag matrix D
+
+            type: float
+            decimal: 4
+            num_instances: 3
+            instance_start: 1
+            min: 0.0
+            default: [0.0, 0.0, 0.0]
+
+        SM_D3${i}:
+            description:
+                short: SIMULINK D3${i} entry of drag matrix D
+                long: |
+                    SIMULINK D3${i} entry of drag matrix D
+
+            type: float
+            decimal: 4
+            num_instances: 3
+            instance_start: 1
+            min: 0.0
+            default: [0.0, 0.0, 0.0]
+
+        SM_I1${i}:
+            description:
+                short: SIMULINK I1${i} entry of moment of inertia matrix I
+                long: |
+                    SIMULINK I1${i} entry of moment of inertia matrix I
+
+            type: float
+            decimal: 12
+            num_instances: 3
+            instance_start: 1
+            min: 0.0
+            default: [0.01501037322, 0.0000061122, 0.00000131042]
+
+        SM_I2${i}:
+            description:
+                short: SIMULINK I2${i} entry of moment of inertia matrix I
+                long: |
+                    SIMULINK I2${i} entry of moment of inertia matrix I
+
+            type: float
+            decimal: 12
+            num_instances: 3
+            instance_start: 1
+            min: 0.0
+            default: [0.0000061122, 0.02442605477, 0.0000048923]
+
+        SM_I3${i}:
+            description:
+                short: SIMULINK I3${i} entry of moment of inertia matrix I
+                long: |
+                    SIMULINK I3${i} entry of moment of inertia matrix I
+
+            type: float
+            decimal: 12
+            num_instances: 3
+            instance_start: 1
+            min: 0.0
+            default: [0.00000131042, 0.0000048923, 0.01454923117]
+
+        SM_POS_P${i}:
+            description:
+                short: SIMULINK proportional gain for position feedback
+                long: |
+                    SIMULINK proportional gain for position feedback
+                    (multiplies ${i}-th element in error vector)
+
+            type: float
+            decimal: 4
+            num_instances: 3
+            instance_start: 1
+            min: 0.0
+            default: [13.0, 13.0, 35.0]
+
+        SM_POS_I${i}:
+            description:
+                short: SIMULINK integral gain for position feedback
+                long: |
+                    SIMULINK integral gain for position feedback
+                    (multiplies ${i}-th element in error vector)
+
+            type: float
+            decimal: 4
+            num_instances: 3
+            instance_start: 1
+            min: 0.0
+            default: [0.25, 0.25, 0.2]
+
+        SM_VEL_P${i}:
+            description:
+                short: SIMULINK proportional gain for velocity feedback
+                long: |
+                    SIMULINK proportional gain for velocity feedback
+                    (multiplies ${i}-th element in error vector)
+
+            type: float
+            decimal: 4
+            num_instances: 3
+            instance_start: 1
+            min: 0.0
+            default: [3.6, 3.6, 33.0]
+
+        SM_ACC_P${i}:
+            description:
+                short: SIMULINK proportional gain for acceleration feedback
+                long: |
+                    SIMULINK proportional gain for acceleration feedback
+                    (multiplies ${i}-th element in error vector)
+
+            type: float
+            decimal: 4
+            num_instances: 3
+            instance_start: 1
+            min: 0.0
+            default: [0.0, 0.0, 0.0]
+
+        SM_ATT_P${i}:
+            description:
+                short: SIMULINK proportional gain for attitude feedback
+                long: |
+                    SIMULINK proportional gain for attitude feedback
+                    (multiplies ${i}-th element in error vector)
+
+            type: float
+            decimal: 4
+            num_instances: 3
+            instance_start: 1
+            min: 0.0
+            default: [15.0, 15.0, 5.0]
+
+        SM_RATE_P${i}:
+            description:
+                short: SIMULINK proportional gain for angular rate feedback
+                long: |
+                    SIMULINK proportional gain for angular rate feedback
+                    (multiplies ${i}-th element in error vector)
+
+            type: float
+            decimal: 4
+            num_instances: 3
+            instance_start: 1
+            min: 0.0
+            default: [5.0, 5.0, 2.0]
+
+        SM_ROLL_SGAIN:
+            description:
+                short: SIMULINK manual control roll stick gain
+                long: |
+                    SIMULINK manual control roll stick gain
+
+            type: float
+            decimal: 6
+            default: 0.785398
+            min: 0.0
+
+        SM_PITCH_SGAIN:
+            description:
+                short: SIMULINK manual control pitch stick gain
+                long: |
+                    SIMULINK manual control pitch stick gain
+
+            type: float
+            decimal: 6
+            default: 0.785398
+            min: 0.0
+
+        SM_YAWR_SGAIN:
+            description:
+                short: SIMULINK manual control yaw rate stick gain
+                long: |
+                    SIMULINK manual control yaw rate stick gain
+
+            type: float
+            decimal: 6
+            default: 1.570796
+            min: 0.0
+
+        SM_THRUST_SGAIN:
+            description:
+                short: SIMULINK manual control thrust stick gain
+                long: |
+                    SIMULINK manual control thrust stick gain
+
+            type: float
+            decimal: 4
+            default: 3.0
+            min: 0.0
+
+        SM_VXY_SGAIN:
+            description:
+                short: SIMULINK manual control velocity XY stick gain
+                long: |
+                    SIMULINK manual control velocity XY stick gain
+
+            type: float
+            decimal: 4
+            default: 0.8
+            min: 0.0
+
+        SM_VZ_SGAIN:
+            description:
+                short: SIMULINK manual control velocity Z stick gain
+                long: |
+                    SIMULINK manual control velocity Z stick gain
+
+            type: float
+            decimal: 4
+            default: 1.0
+            min: 0.0
+
+        SM_AUTO_DELAY_S:
+            description:
+                short: SIMULINK time-delay for swithing into autonomus flight mode
+                long: |
+                    SIMULINK this gain controls how long position hold will be active
+                    before allowing swithing to autnomous
+
+            type: float
+            unit: s
+            decimal: 4
+            default: 3.5
+            min: 0.0
+

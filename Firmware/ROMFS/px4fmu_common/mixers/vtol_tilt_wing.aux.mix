@@ -1,0 +1,36 @@
+# Tilt Wing Tricopter
+
+Servo mixer 1 - Left Wing Eileron
+---------------------------
+M: 1
+S: 3 0   10000  10000 0 -10000  10000
+
+Servo mixer 2 - Right Wing Eileron
+---------------------------
+M: 1
+S: 3 1   10000  10000 0 -10000  10000
+
+Servo mixer 3 - Left Elevator
+---------------------------
+M: 1
+S: 3 2   10000  10000 0 -10000  10000
+
+Servo mixer 4 - Right Elevator
+---------------------------
+M: 1
+S: 3 3   10000  10000 0 -10000  10000
+
+Servo mixer 5 - Left Rudder
+---------------------------
+M: 1
+S: 3 4   10000  10000 0 -10000  10000
+
+Servo mixer 6 - Right Rudder
+---------------------------
+M: 1
+S: 3 5   10000  10000 0 -10000  10000
+
+Servo mixer 7 - Wing-Tilt Mechanism
+---------------------------
+M: 1
+S: 3 6   10000  10000 0 -10000  10000

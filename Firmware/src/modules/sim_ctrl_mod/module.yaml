@@ -1,0 +1,251 @@
+module_name: SIM_CTRL_MOD
+parameters:
+    - group: SIM_CTRL_MOD
+      definitions:
+        SM_EN_CAL:
+            description:
+                short: SIMULINK calibration mode
+                long: |
+                    SIMULINK parameter for enabling
+                    calibration mode.
+
+            type: enum
+            values:
+                0: DISABLE
+                1: ENABLE
+            default: 0
+
+        SM_OVERWRITE:
+            description:
+                short: SIMULINK safety overwrite for arm switch
+                long: |
+                    SIMULINK parameter for overwriting safety logic.
+                    By default, actuator armed state source
+                    is controled by SM_CMD_OPT parameter.
+
+            type: enum
+            values:
+                0: SM_CMD_OPT
+                1: ALWAYS_ARMED
+                2: ALWAYS_DISARMED
+            default: 0
+
+
+        SM_MAV_CONF:
+            description:
+                short: SIMULINK configuration option for mavlink streaming
+                long: |
+                    SIMULINK this is related to mavlink startup, please see
+                    options.
+
+            type: enum
+            values:
+                0: DEFAULT
+                1: SM_TRAFIC_ONLY
+            reboot_required: true
+            default: 0
+
+        SM_WING_SRC:
+            description:
+                short: SIMULINK source for wing angle command
+                long: |
+                    SIMULINK parameter for manual or automated
+                    wing angle control.
+
+            type: enum
+            values:
+                0: ALWAYS_0
+                1: ALWAYS_1
+                2: MANUAL:SM_CMD_OPT:USE_AUX6
+                3: AUTO
+            default: 0
+
+        SM_GC_OPT:
+            description:
+                short: SIMULINK ground contact source option
+                long: |
+                    SIMULINK parameter for selecting the ground
+                    contact source. Options:
+                    0 - default to false
+                    1 - always in ground contact
+                    1 - use LIDAR (set SENS_EN_SF1XX = 7)
+                    2 - uses ADC for reading analog sensor input
+
+            type: enum
+            values:
+                0: ALWAYS_FALSE
+                1: ALWAYS_TRUE
+                2: LIDAR
+                3: ADC
+            default: 0
+
+        SM_EN_HIL:
+            description:
+                short: SIMULINK enable HIL/SITL mode
+                long: |
+                    SIMULINK parameter for controling if
+                    the incoming data should be taken from
+                    the on-board sensors or externaly supplied.
+
+            type: enum
+            values:
+                0: INTERNAL
+                1: EXTERNAL
+            default: 0
+
+        SM_MAV_STREAM:
+            description:
+                short: SIMULINK enable inbound/outbound mavlink stream
+                long: |
+                    SIMULINK parameter for enabling/disabling
+                    mavlink stream of inbound/outbound simulink states.
+
+            type: enum
+            values:
+                0: DISABLE_ALL
+                1: OUTBOUND_ONLY
+                2: INBOUND_ONLY
+                3: BOTH
+            reboot_required: true
+            default: 0
+
+        SM_MAV_OUT_RATE:
+            description:
+                short: SIMULINK Outbound mavlink stream rate
+                long: |
+                    SIMULINK parameter for setting the streaming rate
+                    of outbound simulink stream (if enabled).
+                    Note that the real streaming rate is limited
+                    by the update rate of the simulink model
+                    and will be throttled down based on the
+                    lowest of the two.
+
+            type: float
+            decimal: 1
+            unit: Hz
+            min: 0
+            max: 100
+            reboot_required: true
+            default: 1
+
+        SM_MAV_IN_RATE:
+            description:
+                short: SIMULINK Inbound mavlink stream rate
+                long: |
+                    SIMULINK parameter for setting the mavlink
+                    streaming rate of inbound simulink stream (if enabled).
+
+            type: float
+            decimal: 1
+            unit: Hz
+            min: 0
+            max: 100
+            reboot_required: true
+            default: 1
+
+        SM_CMD_OPT:
+            description:
+                short: SIMULINK pilot input source selector
+                long: |
+                    SIMULINK parameter for switching between
+                    different sources of control input to simulink
+                    model. Options:
+                    0 - (default) use manual control setpoint
+                    1 - use rc input message
+                    2 - use simulink inbound message
+
+            type: enum
+            values:
+                0: MANUAL_CONTROL_SETPOINT
+                1: RC_IN
+                2: INBOUND_MSG
+            default: 0
+
+        SM_EN_DIRECT:
+            description:
+                short: SIMULINK OUTBOUND message overwrite
+                long: |
+                    This flag controls if outbound message is overwritten internally,
+                    directly from control inputs. If enabled, simulink output is ignored
+                    and all outputs are assigned according to SM_OUT_MAP
+            type: enum
+            values:
+                0: DISABLE
+                1: ENABLE
+            default: 0
+
+        SM_IN_MAP_${i}:
+            description:
+                short: SIMULINK INBOUND message order for entry ${i}
+                long: |
+                    This flag controls the order of elements in a
+                    control part of the inbound message. This parameter
+                    sets how the ${i}-th entry is interpreted.
+            type: enum
+            values:
+                0: ROLL
+                1: PITCH
+                2: YAW
+                3: THROTTLE
+                4: ARMED
+                5: MODE
+                6: AUX1
+                7: AUX2
+                8: AUX3
+                9: AUX4
+                10: AUX5
+                11: AUX6
+                12: EXTR1
+                13: EXTR2
+                14: EXTR3
+                15: EXTR4
+                16: EXTR5
+                17: EXTR6
+            num_instances: 18
+            instance_start: 1
+            min: 0
+            max: 17
+            default: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
+
+        SM_OUT_MAP_${i}:
+            description:
+                short: SIMULINK INBOUND to OUTBOUND message bridge for entry ${i}
+                long: |
+                    This flag controls if outbound message is overwritten internally,
+                    directly from control inputs as given by SM_IN_MAP_${i}.
+                    This will only work if SM_EN_DIRECT is enabled.
+            type: enum
+            values:
+                0: ROLL
+                1: PITCH
+                2: YAW
+                3: THROTTLE
+                6: AUX1
+                7: AUX2
+                8: AUX3
+                9: AUX4
+                10: AUX5
+                11: AUX6
+                12: EXTR1
+                13: EXTR2
+                14: EXTR3
+                15: EXTR4
+                16: EXTR5
+                17: EXTR6
+            num_instances: 16
+            instance_start: 1
+            min: 0
+            max: 17
+            default: 3
+
+        SM_EXTR${i}:
+            description:
+                short: SIMULINK EXRT${i} parameter
+                long: |
+                    This is an extra control input that can be used
+                    for anything.
+            type: float
+            decimal: 4
+            num_instances: 6
+            instance_start: 1
+            default: 0.0

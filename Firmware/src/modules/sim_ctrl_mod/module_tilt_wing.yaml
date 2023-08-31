@@ -1,0 +1,1262 @@
+module_name: SIM_CTRL_MOD
+parameters:
+    - group: SIM_TILT_WING_CTRL
+      definitions:
+        SM_AUX_MIX_${i}:
+            description:
+                short: SIMULINK aux ${i} gain for mixing control outputs
+                long: |
+                    SIMULINK aux gain for mixing control outputs
+
+            type: float
+            decimal: 4
+            num_instances: 16
+            instance_start: 1
+            default: [-0.5, 0.5, 0.5, -0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5]
+
+        SM_TECS_KT2RPM:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_FF_THR:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_IDLE_TH:
+            description:
+                short: SIMULINK minimum (IDLE) throttle value
+                long: |
+                    SIMULINK minimum (idle) throttle value.
+
+            type: float
+            decimal: 4
+            default: 0.15
+
+        SM_NAV_VCMD:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_NAV_HCMD:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_LIDAR_H1:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_LIDAR_H2:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_LIDAR_VVMODE:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_LIDAR_HMODE:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_GAIN_INDEX:
+            description:
+                short: SIMULINK gain index
+                long: |
+                    SIMULINK gain index
+
+            type: int32
+            default: -1
+
+        SM_TECS_VM${i}:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            num_instances: 2
+            instance_start: 1
+            default: 0.0
+
+        SM_TECS_VH${i}:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            num_instances: 2
+            instance_start: 1
+            default: 0.0
+
+        SM_TECS_THMAX:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_TECS_THMIN:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_TECS_THDECK:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_TECS_KTI0:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_LATMPTYP:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_TAU_LAT:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_LAT_DEADZ:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_VLAT_MAX:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_PHMAX_VFM:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_PHMAX_FFM:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_PHDOT_MAX:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_DIH_LOW:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_DIH_HIGH:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_KP_VLAT:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_KI_VLAT:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_ZLAT_LOW:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_ZLAT_HIGH:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_LONMAPTYP:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_TAU_LON:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_LON_DEADZ:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+
+        SM_VVCMD_MAX:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_FPA_LIM:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_FPADOTMAX:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+
+            default: 0.0
+
+        SM_N_MIN:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+
+            default: 0.0
+
+        SM_N_MAX:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+
+            default: 0.0
+
+        SM_ZLON_LOW:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+
+            default: 0.0
+
+        SM_ZLON_HIGH:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+
+            default: 0.0
+
+        SM_TAU_DIR:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+
+            default: 0.0
+
+        SM_DIR_DEADZ:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+
+            default: 0.0
+
+        SM_RCMD_MAX:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+
+            default: 0.0
+
+        SM_BCMD_MAX:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+
+            default: 0.0
+
+        SM_KBETA:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+
+            default: 0.0
+
+        SM_KNY:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+
+            default: 0.0
+
+
+        SM_TAU_ACC:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+
+            default: 0.0
+
+        SM_ACC_DEADZ:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+
+            default: 0.0
+
+        SM_ACC_CM_MX:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+
+            default: 0.0
+
+        SM_ZACC_LOW:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+
+            default: 0.0
+
+        SM_ZACC_HIGH:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+
+            default: 0.0
+
+        SM_KV:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+
+            default: 0.0
+
+        SM_ALTHLD_ON:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+
+            default: 0.0
+
+        SM_KH_P:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+
+            default: 0.0
+
+        SM_KH_I:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+
+            default: 0.0
+
+        SM_DTAU_ALT:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+
+            default: 0.0
+
+        SM_VVTHRSHEN:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+
+            default: 0.0
+
+        SM_VVTHRSHSC:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+
+            default: 0.0
+
+        SM_HDGHLD_ON:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+
+            default: 0.0
+
+        SM_RTHRESH:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+
+            default: 0.0
+
+        SM_DTAU_HDG:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+
+            default: 0.0
+
+        SM_KPSI_P:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+
+            default: 0.0
+
+        SM_KPSI_I:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+
+            default: 0.0
+
+        SM_HDG_VMAX:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+
+            default: 0.0
+
+        SM_TRKHLD_ON:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+
+            default: 0.0
+
+        SM_PHITHRESH:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+
+            default: 0.0
+
+        SM_KTRK_P:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+
+            default: 0.0
+
+        SM_KTRK_I:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+
+            default: 0.0
+
+        SM_TRK_VMIN:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+
+            default: 0.0
+
+        SM_POSHLD_ON:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+
+            default: 0.0
+
+        SM_KP_LAT_PH:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+
+            default: 0.0
+
+        SM_KI_LAT_PH:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+
+            default: 0.0
+
+        SM_KD_LAT_PH:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+
+            default: 0.0
+
+        SM_KP_LON_PH:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+
+            default: 0.0
+
+        SM_KI_LON_PH:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+
+            default: 0.0
+
+        SM_KD_LON_PH:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+
+            default: 0.0
+
+        SM_PH_VTHRSH:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+
+            default: 0.0
+
+        SM_DTAU_PH:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+
+            default: 0.0
+
+        SM_AP_VMAX:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+
+            default: 0.0
+
+        SM_AP_VVMAX:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+
+            default: 0.0
+
+        SM_AP_TO_FPM:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+
+            default: 0.0
+
+        SM_AP_TO_AGL:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+
+            default: 0.0
+
+        SM_AP_TO_K:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_WING_R_LIM:
+            description:
+                short: SIMULINK parameter for rate limiter on the wing tilt command
+                long: |
+                    SIMULINK parameter for controling rate
+                    for rate transitioning rate limiter for
+                    the wing tilt command. It is applied symmetrically
+                    (in -+SM_WING_R_LIM)
+
+            type: float
+            decimal: 4
+
+            min: 0.0
+            default: 0.1
+
+        SM_TECS_KEI:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_TECS_KEP:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_TECS_KTI:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_TECS_KTP:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_TECS_KFFP:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_TECS_KTRIM:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_TECS_KFFA:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_EMF_LAT_WNCM:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_EMF_LAT_ZCM:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_EMF_LAT_LP:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_EMF_LAT_LULAT:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_EMF_LAT_KYR:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_EMF_LAT_KP:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_EMF_LAT_KPH:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_EMF_LAT_KIPH:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_EMF_LON_WNCM:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_EMF_LON_ZCM:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_EMF_LON_MQ:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_EMF_LON_MULG:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_EMF_LON_ZSP:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_EMF_LON_WNSP:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_EMF_LON_TTH2:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_EMF_LON_KAPP:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_EMF_LON_KQ:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_EMF_LON_KTH:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_EMF_LON_KITH:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_EMF_DIR_TAUCM:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_EMF_DIR_NR:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_EMF_DIR_NUDIR:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_EMF_DIR_ZDR:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_EMF_DIR_WNSP:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_EMF_DIR_TTH2:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_EMF_DIR_KAPP:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_EMF_DIR_KRY:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_EMF_DIR_KR:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_EMF_DIR_KIR:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
