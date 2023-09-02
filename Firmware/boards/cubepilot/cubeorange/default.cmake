@@ -32,11 +32,11 @@ px4_add_board(
 		dshot
 		gps
 		#heater
-		imu # all available imu drivers
-		#imu/analog_devices/adis16448
-		#imu/invensense/icm20602
-		#imu/invensense/icm20649
-		#imu/invensense/icm20948
+		#imu # all available imu drivers
+		imu/analog_devices/adis16448
+		imu/invensense/icm20602
+		imu/invensense/icm20649
+		imu/invensense/icm20948
 		#irlock
 		#lights # all available light drivers
 		lights/rgbled

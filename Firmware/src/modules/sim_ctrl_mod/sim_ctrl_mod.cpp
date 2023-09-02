@@ -782,36 +782,36 @@ SIM_CTRL_MOD::publish_inbound_sim_data(void)
 	{
 		simulink_inboud_data.fill_buffer(control_vec, CONTROL_VEC_SIZE);
 
-		simulink_inboud_data.fill_buffer(local_pos.vx);
-		simulink_inboud_data.fill_buffer(local_pos.vy);
-		simulink_inboud_data.fill_buffer(local_pos.vz);
+		simulink_inboud_data.fill_buffer(local_pos.vx); //1
+		simulink_inboud_data.fill_buffer(local_pos.vy); //2
+		simulink_inboud_data.fill_buffer(local_pos.vz); //3
 
-		simulink_inboud_data.fill_buffer(odom.rollspeed);
-		simulink_inboud_data.fill_buffer(odom.pitchspeed);
-		simulink_inboud_data.fill_buffer(odom.yawspeed);
+		simulink_inboud_data.fill_buffer(odom.rollspeed); //4
+		simulink_inboud_data.fill_buffer(odom.pitchspeed); //5
+		simulink_inboud_data.fill_buffer(odom.yawspeed); //6
 
-		simulink_inboud_data.fill_buffer(odom.q, 4);
+		simulink_inboud_data.fill_buffer(odom.q, 4); //7 8 9 10
 
-		simulink_inboud_data.fill_buffer(global_pos.lat);
-		simulink_inboud_data.fill_buffer(global_pos.lon);
-		simulink_inboud_data.fill_buffer(global_pos.alt);
-		simulink_inboud_data.fill_buffer(global_pos.terrain_alt);
+		simulink_inboud_data.fill_buffer(global_pos.lat); // 11
+		simulink_inboud_data.fill_buffer(global_pos.lon); // 12
+		simulink_inboud_data.fill_buffer(global_pos.alt); // 13
+		simulink_inboud_data.fill_buffer(global_pos.terrain_alt); //14
 
-		simulink_inboud_data.fill_buffer(local_pos.ax);
-		simulink_inboud_data.fill_buffer(local_pos.ay);
-		simulink_inboud_data.fill_buffer(local_pos.az);
+		simulink_inboud_data.fill_buffer(local_pos.ax); //15
+		simulink_inboud_data.fill_buffer(local_pos.ay); //16
+		simulink_inboud_data.fill_buffer(local_pos.az); //17
 
-		simulink_inboud_data.fill_buffer(local_pos.x);
-		simulink_inboud_data.fill_buffer(local_pos.y);
-		simulink_inboud_data.fill_buffer(local_pos.z);
+		simulink_inboud_data.fill_buffer(local_pos.x); //18
+		simulink_inboud_data.fill_buffer(local_pos.y); //19
+		simulink_inboud_data.fill_buffer(local_pos.z); //20
 
-		simulink_inboud_data.fill_buffer(local_pos.z_deriv);
+		simulink_inboud_data.fill_buffer(local_pos.z_deriv); //21
 
-		simulink_inboud_data.fill_buffer(static_cast<float> (check_ground_contact()));
+		simulink_inboud_data.fill_buffer(static_cast<float> (check_ground_contact())); //22
 
-		simulink_inboud_data.fill_buffer(airspeed.true_airspeed_m_s);
-		simulink_inboud_data.fill_buffer(airspeed.indicated_airspeed_m_s);
-		simulink_inboud_data.fill_buffer(dist.current_distance);
+		simulink_inboud_data.fill_buffer(airspeed.true_airspeed_m_s); //23
+		simulink_inboud_data.fill_buffer(airspeed.indicated_airspeed_m_s); //24
+		simulink_inboud_data.fill_buffer(dist.current_distance); //25
 
 		//publish new data:
 		debug_topic.timestamp = hrt_absolute_time();
