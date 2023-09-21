@@ -1260,3 +1260,34 @@ parameters:
             type: float
             decimal: 4
             default: 0.0
+
+        SM_WING_VTXN:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 40.0
+
+        SM_WING_KW:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 25.0
+
+        SM_WING_LIM:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
