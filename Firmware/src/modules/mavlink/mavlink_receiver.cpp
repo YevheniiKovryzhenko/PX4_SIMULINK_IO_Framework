@@ -2725,6 +2725,10 @@ MavlinkReceiver::handle_message_debug_float_array(mavlink_message_t *msg)
 		_simulink_outbound_pub.publish(debug_topic);
 		return;
 
+	case debug_array_s::SIMULINK_INBOUND_CTRL_ID:
+		_simulink_inbound_ctrl_pub.publish(debug_topic);
+		return;
+
 	default:
 		_debug_array_pub.publish(debug_topic);
 		return;

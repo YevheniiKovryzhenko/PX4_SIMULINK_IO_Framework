@@ -122,6 +122,7 @@ private:
 	void parameters_update(bool force = false);
 
 	debug_array_s sm_inbound{};
+	debug_array_s sm_inbound_ctrl{};
 	debug_array_s sm_outbound{}; //new actuator data comes from simulink and is published here
 	actuator_outputs_s act_output{}; //this is where actuator data has to be published
 
@@ -160,6 +161,7 @@ private:
 	uORB::Subscription		_manual_control_switches_sub{ORB_ID(manual_control_switches)};
 	uORB::Subscription		_simulink_outbound_sub{ORB_ID(simulink_outbound)};
 	uORB::Subscription		_simulink_inbound_sub{ORB_ID(simulink_inbound)};
+	uORB::Subscription		_simulink_inbound_ctrl_sub{ORB_ID(simulink_inbound_ctrl)};
 	uORB::Subscription 		_actuator_outputs_sv_sub{ORB_ID(actuator_outputs_sv)};
 
 	vehicle_local_position_s local_pos{};

@@ -22,12 +22,23 @@ parameters:
                     SIMULINK parameter for overwriting safety logic.
                     By default, actuator armed state source
                     is controled by SM_CMD_OPT parameter.
+                    0 - (default) Same source as set by SM_CMD_OPT
+                    1 - always armed (1)
+                    2 - always disarmed (0)
+                    3 - use rc input message
+                    4 - use simulink inbound message
+                    5 - use simulink inbound control message
+                    6 - use default px4 logic
 
             type: enum
             values:
                 0: SM_CMD_OPT
                 1: ALWAYS_ARMED
                 2: ALWAYS_DISARMED
+                3: RC_IN
+                4: INBOUND_MSG
+                5: INBOUND_CTRL_MSG
+                6: PX4
             default: 0
 
 
@@ -150,15 +161,23 @@ parameters:
                     SIMULINK parameter for switching between
                     different sources of control input to simulink
                     model. Options:
-                    0 - (default) use manual control setpoint
+                    0 - use default px4 logic
                     1 - use rc input message
                     2 - use simulink inbound message
+                    3 - use simulink inbound control message
+                    4 - use AUX5 stick to chose between manual control setpoint (AUX5 <= 0.0) and inbound control (AUX5 > 0.0) messages
+                    5 - use AUX5 stick to chose between rc input (AUX5 <= 0.0) and inbound control (AUX5 > 0.0) messages
+                    6 - use AUX5 stick to chose between simulink inbound (AUX5 <= 0.0) and inbound control (AUX5 > 0.0) messages
 
             type: enum
             values:
                 0: MANUAL_CONTROL_SETPOINT
                 1: RC_IN
                 2: INBOUND_MSG
+                3: INBOUND_CTRL_MSG
+                4: AUX5 (MANUAL_CONTROL_SETPOINT/SIMULINK_CTRL)
+                5: AUX5 (RC_IN/SIMULINK_CTRL)
+                6: AUX5 (INBOUND_MSG/SIMULINK_CTRL)
             default: 0
 
         SM_EN_DIRECT:

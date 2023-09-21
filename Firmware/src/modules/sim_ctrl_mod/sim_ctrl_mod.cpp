@@ -299,30 +299,85 @@ bool SIM_CTRL_MOD::update_sticks(int input_source_opt, sticks_ind stick, float& 
 		{
 		case 1: // RC_IN
 		{
+			CASE_RC_IN:
 			_rc_channels_sub.update(&rc_ch);
 
 			//check every stick so we are sure rc is valid, otherwise quit
 			if (sticks_ind2rc_channels(stick, rc_ch, stick_val) == 0)
 			{
-				return true;
+				switch (stick)
+				{
+				case THROTTLE: //special case
+					stick_val = stick_val * 2.f - 1.f; // [0 1] -> [-1 1]
+					return true;
+
+				default:
+					return true;
+				}
 			}
 			else return false;
 		}
 
 		case 2: //INBOUND_MSG
 		{
+			CASE_INBOUND_MSG:
 			_simulink_inbound_sub.update(&sm_inbound);
 			stick_val = sm_inbound.data[get_input_ind(stick)];
 			return true;//assume everything was already sent correctly
 		}
 
+		case 3: //INBOUND_CONTROL_MSG
+		{
+			CASE_INBOUND_CONTROL_MSG:
+			_simulink_inbound_ctrl_sub.update(&sm_inbound_ctrl);
+			stick_val = sm_inbound_ctrl.data[get_input_ind(stick)];
+			return true;//assume everything was already sent correctly
+		}
+
+		case 4: //use AUX5 to decide (MANUAL_CONTROL_SETPOINT / INBOUND_CONTROL_MSG)
+		{
+			_rc_channels_sub.update(&rc_ch);
+
+			//check every stick so we are sure rc is valid, otherwise quit
+			static float aux5 = -1.f;
+			sticks_ind2rc_channels(sticks_ind::AUX5, rc_ch, aux5);
+			if (aux5 > 0.0f) goto CASE_INBOUND_CONTROL_MSG;
+			else goto CASE_MANUAL_CONTROL_SETPOINT;
+		}
+
+		case 5: //use AUX5 to decide (RC_IN / INBOUND_CONTROL_MSG)
+		{
+			_rc_channels_sub.update(&rc_ch);
+
+			//check every stick so we are sure rc is valid, otherwise quit
+			static float aux5 = -1.f;
+			sticks_ind2rc_channels(sticks_ind::AUX5, rc_ch, aux5);
+			if (aux5 > 0.0f) goto CASE_INBOUND_CONTROL_MSG;
+			else goto CASE_RC_IN;
+		}
+
+		case 6: //use AUX5 to decide (INBOUND_MSG / INBOUND_CONTROL_MSG)
+		{
+			_rc_channels_sub.update(&rc_ch);
+
+			//check every stick so we are sure rc is valid, otherwise quit
+			static float aux5 = -1.f;
+			sticks_ind2rc_channels(sticks_ind::AUX5, rc_ch, aux5);
+			if (aux5 > 0.0f) goto CASE_INBOUND_CONTROL_MSG;
+			else goto CASE_INBOUND_MSG;
+		}
+
 		default: //MANUAL_CONTROL_SETPOINT
 		{
+			CASE_MANUAL_CONTROL_SETPOINT:
 			_manual_control_setpoint_sub.update(&man_setpoint);
 			_manual_control_switches_sub.update(&man_switches);
 
 			switch (stick)
 			{
+			case THROTTLE: //special case
+				stick_val = stick_val * 2.f - 1.f; // [0 1] -> [-1 1]
+				return true;
 			case MODE:
 				stick_val = man_switches.mode_slot; //special case
 				return true;
@@ -481,58 +536,73 @@ bool SIM_CTRL_MOD::check_armed(bool &armed, int input_src_opt)
 	{
 		switch (arm_src_opt)
 		{
-		case 1:
+		case 1: //always armed
 			armed = true;
 			break;
 
-		case 2:
+		case 2: //always disarmed
 			armed = false;
 			break;
 
-		default:
+		case 3: //use rc input message
+		{
+			float tmp_armed = static_cast<float>(armed);
+			update_sticks(1, sticks_ind::ARMED, tmp_armed);
+			armed = tmp_armed > 0.1f;
+			break;
+		}
+
+		case 4: //use simulink inbound message
+		{
+			float tmp_armed = static_cast<float>(armed);
+			update_sticks(2, sticks_ind::ARMED, tmp_armed);
+			armed = tmp_armed > 0.1f;
+			break;
+		}
+
+                case 5: //use simulink inbound control message
+		{
+			float tmp_armed = static_cast<float>(armed);
+			update_sticks(3, sticks_ind::ARMED, tmp_armed);
+			armed = tmp_armed > 0.1f;
+			break;
+		}
+
+		case 6: //use default px4 logic
+			PX4_INTERNAL_ARM:
+			if (commander_updated_armed_state)
+			{
+				act_armed.timestamp = act_armed_px4.timestamp;
+				act_armed.armed = act_armed_px4.armed;
+				act_armed.force_failsafe = act_armed_px4.force_failsafe;
+				act_armed.in_esc_calibration_mode = act_armed_px4.in_esc_calibration_mode;
+				act_armed.lockdown = act_armed_px4.lockdown;
+				act_armed.manual_lockdown = act_armed_px4.manual_lockdown;
+				act_armed.prearmed = act_armed_px4.prearmed;
+				act_armed.ready_to_arm = act_armed_px4.ready_to_arm;
+				act_armed.soft_stop = act_armed_px4.soft_stop;
+				armed = act_armed_px4.armed;
+				return true;
+			}
+			else
+			{
+				armed = act_armed.armed;
+				return false;
+			}
+		default: //use INPUT_SRC_OPT
 			switch (input_src_opt)
 			{
-			case 1: //RC_IN
+			case 0:
+				goto PX4_INTERNAL_ARM;
+			default:
 			{
-				_rc_channels_sub.update(&rc_ch);
 				float tmp_armed = static_cast<float>(armed);
-				//rc_map_stick(tmp_armed, rc_ch, rc_channels_s::FUNCTION_ARMSWITCH);
-				sticks_ind2rc_channels(sticks_ind::ARMED, rc_ch, tmp_armed);
+				update_sticks(input_src_opt, sticks_ind::ARMED, tmp_armed);
 				armed = tmp_armed > 0.1f;
 				break;
 			}
-
-			case 2: //INBOUND_MSG
-			{
-				if (_simulink_inbound_sub.update(&sm_inbound))
-				{
-					armed = sm_inbound.data[get_input_ind(sticks_ind::ARMED)] > 0.1f;
-				}
-				break;
 			}
 
-			default:
-				if (commander_updated_armed_state)
-				{
-					act_armed.timestamp = act_armed_px4.timestamp;
-					act_armed.armed = act_armed_px4.armed;
-					act_armed.force_failsafe = act_armed_px4.force_failsafe;
-					act_armed.in_esc_calibration_mode = act_armed_px4.in_esc_calibration_mode;
-					act_armed.lockdown = act_armed_px4.lockdown;
-					act_armed.manual_lockdown = act_armed_px4.manual_lockdown;
-					act_armed.prearmed = act_armed_px4.prearmed;
-					act_armed.ready_to_arm = act_armed_px4.ready_to_arm;
-					act_armed.soft_stop = act_armed_px4.soft_stop;
-					armed = act_armed_px4.armed;
-					return true;
-				}
-				else
-				{
-					armed = act_armed.armed;
-					return false;
-				}
-
-			}
 			break;
 
 
@@ -638,10 +708,6 @@ bool SIM_CTRL_MOD::update_control_inputs(float in_vec[CONTROL_VEC_SIZE])
 	if (update_sticks(input_source_opt, sticks_ind::PITCH, pitch)) need_update = true;
 	if (update_sticks(input_source_opt, sticks_ind::YAW, yaw)) need_update = true;
 	if (update_sticks(input_source_opt, sticks_ind::THROTTLE, throttle)) need_update = true;
-	{
-		if (input_source_opt != 2) throttle = throttle * 2.f - 1.f; // [0 1] -> [-1 1]
-		need_update = true;
-	}
 	if (update_sticks(input_source_opt, sticks_ind::AUX1, aux1)) need_update = true;
 	if (update_sticks(input_source_opt, sticks_ind::AUX2, aux2)) need_update = true;
 	if (update_sticks(input_source_opt, sticks_ind::AUX3, aux3)) need_update = true;
