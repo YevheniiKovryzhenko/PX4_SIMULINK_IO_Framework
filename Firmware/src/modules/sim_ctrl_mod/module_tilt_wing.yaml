@@ -1291,3 +1291,59 @@ parameters:
             decimal: 4
             default: 0.0
 
+        SM_LQI_LIM:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_LQI_LAT_${i}:
+            description:
+                short: SIMULINK LQI lateral controller gain ${i}
+                long: |
+                    SIMULINK LQI lateral controller gain ${i}
+
+            type: float
+            decimal: 4
+            num_instances: 5
+            instance_start: 1
+            default: 0
+
+        SM_LQI_LON_${i}:
+            description:
+                short: SIMULINK LQI longitudinal controller gain ${i}
+                long: |
+                    SIMULINK LQI longitudinal controller gain ${i}
+
+            type: float
+            decimal: 4
+            num_instances: 3
+            instance_start: 1
+            default: 0
+
+        SM_LQI_DIR_${i}:
+            description:
+                short: SIMULINK LQI directional controller gain ${i}
+                long: |
+                    SIMULINK LQI directional controller gain ${i}
+
+            type: float
+            decimal: 4
+            num_instances: 5
+            instance_start: 1
+            default: 0
+
+        SM_IL_CTRL_TYPE:
+            description:
+                short: SIMULINK some usefull discription
+                long: |
+                    SIMULINK some usefull discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
