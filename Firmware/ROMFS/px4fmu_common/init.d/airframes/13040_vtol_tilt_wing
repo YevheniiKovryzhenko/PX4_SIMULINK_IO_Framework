@@ -7,21 +7,6 @@
 #
 # @maintainer Jack Kovryzhenko <yzk0058@auburn.edu.
 #
-# @output MAIN1 motor 1
-# @output MAIN2 motor 2
-# @output MAIN3 motor 3
-# @output MAIN4 motor 4
-# @output AUX1 servo 1
-# @output AUX2 servo 2
-# @output AUX3 servo 3
-# @output AUX4 servo 4
-# @output AUX5 servo 5
-# @output AUX6 servo 6
-# @output AUX7 servo 7
-#
-# @board px4_fmu-v2 exclude
-# @board bitcraze_crazyflie exclude
-#
 
 . ${R}etc/init.d/rc.vtol_defaults
 
@@ -42,8 +27,3 @@ set MIXER_AUX vtol_tilt_wing
 
 set PWM_OUT 1234
 #set PWM_AUX_OUT 1234567 #this will make aux channels be treated as ESCs
-
-#
-# Start simulink modudes
-#
-sim_ctrl_mod start -f -p 42
