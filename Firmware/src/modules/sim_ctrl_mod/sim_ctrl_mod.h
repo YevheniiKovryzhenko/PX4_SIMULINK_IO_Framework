@@ -54,6 +54,7 @@
 #include <uORB/topics/rc_parameter_map.h>
 #include <uORB/topics/manual_control_setpoint.h>
 #include <uORB/topics/manual_control_switches.h>
+#include <uORB/topics/vehicle_angular_velocity.h>
 
 #include <uORB/topics/debug_array.h>
 #include <uORB/topics/actuator_outputs.h>
@@ -163,6 +164,8 @@ private:
 	uORB::Subscription		_simulink_inbound_sub{ORB_ID(simulink_inbound)};
 	uORB::Subscription		_simulink_inbound_ctrl_sub{ORB_ID(simulink_inbound_ctrl)};
 	uORB::Subscription 		_actuator_outputs_sv_sub{ORB_ID(actuator_outputs_sv)};
+	//uORB::Subscription 		_vehicle_angular_acceleration_sub{ORB_ID(vehicle_angular_acceleration)};
+	uORB::Subscription     		_vehicle_angular_velocity_sub{ORB_ID(vehicle_angular_velocity)};
 
 	vehicle_local_position_s local_pos{};
 	vehicle_global_position_s global_pos{};
@@ -173,6 +176,7 @@ private:
 	actuator_armed_s act_armed{};
 	vehicle_odometry_s odom{};
 	adc_report_s adc{};
+	vehicle_angular_velocity_s v_angular_velocity{};
 
 	hrt_abstime	_boot_timestamp{0};
 
@@ -231,7 +235,9 @@ private:
 		(ParamInt<px4::params::SM_EN_HIL>) _param_en_hil,
 		(ParamInt<px4::params::SM_MAV_STREAM>) _param_mav_stream,
 		(ParamInt<px4::params::SM_CMD_OPT>) _param_cmd_opt,
-		(ParamInt<px4::params::SM_WING_SRC>) _param_sm_wing_src
+		(ParamInt<px4::params::SM_WING_SRC>) _param_sm_wing_src,
+		(ParamInt<px4::params::SM_ANG_VEL_SRC>) _param_sm_ang_vel_src,
+		(ParamInt<px4::params::SM_ATT_SRC>) _param_sm_att_src
 	)//MAKE SURE EVERY PARAMETER IS FOLLOWED BY "," AND LAST ONE DOES NOT HAVE ANYTHING
 };
 

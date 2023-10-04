@@ -840,8 +840,7 @@ SIM_CTRL_MOD::publish_inbound_sim_data(void)
 	if (update_control_inputs(control_vec)) need_2_pub = true;
 	if (update_distance_sensor()) need_2_pub = true;
 	if (update_airspeed()) need_2_pub = true;
-
-
+	if (_vehicle_angular_velocity_sub.update(&v_angular_velocity)) need_2_pub = true;
 
 	//publish new data if needed:
 	if (need_2_pub)
@@ -852,11 +851,31 @@ SIM_CTRL_MOD::publish_inbound_sim_data(void)
 		simulink_inboud_data.fill_buffer(local_pos.vy); //2
 		simulink_inboud_data.fill_buffer(local_pos.vz); //3
 
-		simulink_inboud_data.fill_buffer(odom.rollspeed); //4
-		simulink_inboud_data.fill_buffer(odom.pitchspeed); //5
-		simulink_inboud_data.fill_buffer(odom.yawspeed); //6
+		switch (_param_sm_ang_vel_src.get())
+		{
+		case 1: //vehicle_angular_velocity
+			simulink_inboud_data.fill_buffer(v_angular_velocity.xyz, 3); //4, 5, 6
+			break;
 
-		simulink_inboud_data.fill_buffer(odom.q, 4); //7 8 9 10
+		default: //vehicle_odometry
+			simulink_inboud_data.fill_buffer(odom.rollspeed); //4
+			simulink_inboud_data.fill_buffer(odom.pitchspeed); //5
+			simulink_inboud_data.fill_buffer(odom.yawspeed); //6
+			break;
+		}
+
+		switch (_param_sm_att_src.get())
+		{
+		case 1: //vehicle_attitude
+			simulink_inboud_data.fill_buffer(att.q, 4); //7 8 9 10
+			break;
+
+		default: //vehicle_odometry
+			simulink_inboud_data.fill_buffer(odom.q, 4); //7 8 9 10
+			break;
+		}
+
+
 
 		simulink_inboud_data.fill_buffer(global_pos.lat); // 11
 		simulink_inboud_data.fill_buffer(global_pos.lon); // 12

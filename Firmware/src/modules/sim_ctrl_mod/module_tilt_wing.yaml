@@ -1311,7 +1311,7 @@ parameters:
             decimal: 4
             num_instances: 5
             instance_start: 1
-            default: 0
+            default: [0.15, 0.0, 0.3, -0.3, 0.0]
 
         SM_LQI_LON_${i}:
             description:
@@ -1323,7 +1323,7 @@ parameters:
             decimal: 4
             num_instances: 3
             instance_start: 1
-            default: 0
+            default: [0.6, 1.5, -1.5]
 
         SM_LQI_DIR_${i}:
             description:
@@ -1335,15 +1335,19 @@ parameters:
             decimal: 4
             num_instances: 5
             instance_start: 1
-            default: 0
+            default: [0.0, 2.0, 0.0, 0.0, -2.0]
 
-        SM_IL_CTRL_TYPE:
+        SM_LQI_EN:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK LQI enabler flag
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK enabler flag.
+                    0 - EMF (default)
+                    1 - LQI
 
-            type: float
-            decimal: 4
-            default: 0.0
+            type: enum
+            values:
+                0: EMF
+                1: LQI
+            default: 0
 
