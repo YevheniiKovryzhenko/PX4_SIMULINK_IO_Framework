@@ -136,6 +136,9 @@ set(msg_files
 	sensor_preflight_mag.msg
 	sensor_selection.msg
 	sensors_status_imu.msg
+	sim_guidance_request.msg
+	sim_guidance_status.msg
+	sim_guidance_trajectory.msg
 	system_power.msg
 	takeoff_status.msg
 	task_stack_info.msg

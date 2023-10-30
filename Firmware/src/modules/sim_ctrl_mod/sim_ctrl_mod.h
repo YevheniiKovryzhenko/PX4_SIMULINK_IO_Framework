@@ -60,6 +60,12 @@
 #include <uORB/topics/actuator_outputs.h>
 #include <uORB/topics/input_rc.h>
 
+#include <uORB/topics/sim_guidance_request.h>
+#include <uORB/topics/sim_guidance_status.h>
+#include <uORB/topics/sim_guidance_trajectory.h>
+
+#include <math.h>
+
 #include "sticks.hpp"
 
 extern "C" __EXPORT int sim_ctrl_mod_main(int argc, char *argv[]);
@@ -83,6 +89,16 @@ private:
 
 	uint ind;
 	float data[MAX_SIZE];
+};
+
+enum control_level
+{
+	CALIBRATION = 1,
+	MODE1 = 2,
+	MODE2 = 3,
+	MODE3 = 4,
+	POS_HOLD = 5,
+	AUTONOMOUS = 6
 };
 
 
@@ -141,7 +157,7 @@ private:
 	uORB::Publication<manual_control_setpoint_s>	_manual_control_setpoint_pub{ORB_ID(manual_control_setpoint)};
 	uORB::Publication<manual_control_switches_s>	_manual_control_switches_pub{ORB_ID(manual_control_switches)};
 	uORB::Publication<input_rc_s>			_input_rc_pub{ORB_ID(input_rc)};
-
+	uORB::Publication<sim_guidance_request_s>	_sim_guidance_request_pub{ORB_ID(sim_guidance_request)};
 
 
 	// Subscriptions
@@ -166,6 +182,8 @@ private:
 	uORB::Subscription 		_actuator_outputs_sv_sub{ORB_ID(actuator_outputs_sv)};
 	//uORB::Subscription 		_vehicle_angular_acceleration_sub{ORB_ID(vehicle_angular_acceleration)};
 	uORB::Subscription     		_vehicle_angular_velocity_sub{ORB_ID(vehicle_angular_velocity)};
+	uORB::Subscription		_sim_guidance_status_sub{ORB_ID(sim_guidance_status)};
+	uORB::Subscription		_sim_guidance_trajectory_sub{ORB_ID(sim_guidance_trajectory)};
 
 	vehicle_local_position_s local_pos{};
 	vehicle_global_position_s global_pos{};
@@ -186,6 +204,9 @@ private:
 	rc_parameter_map_s rc_map{};
 	manual_control_setpoint_s man_setpoint{};
 	manual_control_switches_s man_switches{};
+
+	sim_guidance_status_s smg_status{};
+	sim_guidance_trajectory_s smg_traj{};
 
 
 	void publish_inbound_sim_data(void);
@@ -214,6 +235,8 @@ private:
 	void debug_loop(void);
 
 	void test_fake_atuator_data(void);
+
+	void update_mode_autonomous(control_level &current_mode, bool armed);
 
 	/**
 	 * THIS IS WHERE YOU DEFINE NEW PARAMETRS

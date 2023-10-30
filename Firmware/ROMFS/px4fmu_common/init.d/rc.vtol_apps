@@ -37,3 +37,4 @@ land_detector start vtol
 # Start simulink modudes
 #
 sim_ctrl_mod start -f -p 42
+sim_guidance start

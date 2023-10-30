@@ -125,7 +125,7 @@ int SIM_CTRL_MOD::task_spawn(int argc, char *argv[])
 	_task_id = px4_task_spawn_cmd("sim_ctrl_mod",
 				      SCHED_DEFAULT,
 				      SCHED_PRIORITY_DEFAULT,
-				      1024,
+				      1124,
 				      (px4_main_t)&run_trampoline,
 				      (char *const *)argv);
 
@@ -624,14 +624,6 @@ bool SIM_CTRL_MOD::check_armed(bool &armed, int input_src_opt)
 	return false;
 }
 
-enum control_level
-{
-	CALIBRATION = 1,
-	MODE1 = 2,
-	MODE2 = 3,
-	MODE3 = 4
-};
-
 void SIM_CTRL_MOD::printf_debug_array(debug_array_s &array)
 {
 	static uint64_t old_time = array.timestamp;
@@ -673,6 +665,69 @@ void SIM_CTRL_MOD::test_fake_atuator_data(void)
 	_actuator_outputs_sv_pub.publish(sv_out);
 }
 
+void SIM_CTRL_MOD::update_mode_autonomous(control_level &current_mode, bool armed)
+{
+	int32_t SMG_EN_ = 0;
+	param_get(param_find("SMG_EN"), &SMG_EN_);
+	if (SMG_EN_ == 1) //don't bother otherwise
+	{
+		//talk with guidance if we need to use autonomous flight mode
+		static bool requested_guidance = false;
+		static bool entered_guidance = false;
+		_sim_guidance_status_sub.update(&smg_status);
+
+		if (armed && current_mode == MODE3) //make this a parameter later
+		{
+
+			current_mode = POS_HOLD; //always, unless AUTONOMOUS
+
+			if (!requested_guidance)//entering this once only
+			{
+				sim_guidance_request_s smg_request{};
+				smg_request.reset = true;
+				smg_request.start = true;
+				smg_request.timestamp = hrt_absolute_time();
+				_sim_guidance_request_pub.publish(smg_request);
+				requested_guidance = true;
+				PX4_INFO("Requested to engage guidance...");
+			}
+			else if (!entered_guidance) //entering this once only
+			{
+				//we want to wait for confirmation and check for any status updates
+				if (smg_status.started && smg_status.loaded)
+				{
+					entered_guidance = true; //let the controller know we are ready
+					sim_guidance_request_s smg_request{};
+					smg_request.start_execution = true; //start trajectory exaluation
+					smg_request.timestamp = hrt_absolute_time();
+					_sim_guidance_request_pub.publish(smg_request);
+					requested_guidance = true;
+					PX4_INFO("Requested guidance execution...");
+				}
+			}
+
+			if (entered_guidance)
+			{
+				current_mode = AUTONOMOUS; //keep this true unless we know something failed
+			}
+		}
+		else
+		{
+			if (smg_status.started || smg_status.executing) //disengage guidance if disabled
+			{
+				sim_guidance_request_s smg_request{};
+				smg_request.reset = true;
+				smg_request.timestamp = hrt_absolute_time();
+				_sim_guidance_request_pub.publish(smg_request);
+			}
+			entered_guidance = false;
+			requested_guidance = false;
+
+		}
+	}
+
+	return;
+}
 
 
 bool SIM_CTRL_MOD::update_control_inputs(float in_vec[CONTROL_VEC_SIZE])
@@ -735,6 +790,7 @@ bool SIM_CTRL_MOD::update_control_inputs(float in_vec[CONTROL_VEC_SIZE])
 		else if(mode_stick < -0.7f) mode_ch = MODE1;
 		else mode_ch = MODE2; //must always assign some default
 	}
+	if (armed_switch) update_mode_autonomous(mode_ch, armed_switch); //extra checks for flightmode
 
 	in_vec[get_input_ind(sticks_ind::ROLL)] = roll;
 	in_vec[get_input_ind(sticks_ind::PITCH)] = pitch;

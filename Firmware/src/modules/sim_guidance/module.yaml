@@ -1,0 +1,15 @@
+module_name: SIM_GUIDANCE
+parameters:
+    - group: SIM_GUIDANCE
+      definitions:
+        SMG_EN:
+            description:
+                short: Enable SIM guidance
+                long: |
+                    Enable/Disable SIM guidance update routine.
+
+            type: enum
+            values:
+                0: DISABLE
+                1: ENABLE
+            default: 0
