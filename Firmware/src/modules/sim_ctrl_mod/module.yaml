@@ -195,7 +195,7 @@ parameters:
             values:
                 0: vehicle_odometry
                 1: vehicle_angular_velocity
-            default: 0
+            default: 1
 
         SM_ATT_SRC:
             description:
@@ -212,7 +212,7 @@ parameters:
             values:
                 0: vehicle_odometry
                 1: vehicle_attitude
-            default: 0
+            default: 1
 
         SM_EN_DIRECT:
             description:

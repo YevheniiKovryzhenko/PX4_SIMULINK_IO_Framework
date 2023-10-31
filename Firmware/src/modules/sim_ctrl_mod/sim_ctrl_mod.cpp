@@ -667,19 +667,23 @@ void SIM_CTRL_MOD::test_fake_atuator_data(void)
 
 void SIM_CTRL_MOD::update_mode_autonomous(control_level &current_mode, bool armed)
 {
-	int32_t SMG_EN_ = 0;
+	static int32_t SMG_EN_ = 0;
 	param_get(param_find("SMG_EN"), &SMG_EN_);
 	if (SMG_EN_ == 1) //don't bother otherwise
 	{
 		//talk with guidance if we need to use autonomous flight mode
 		static bool requested_guidance = false;
 		static bool entered_guidance = false;
+		//static control_level prev_mode = current_mode;
 		_sim_guidance_status_sub.update(&smg_status);
 
-		if (armed && current_mode == MODE3) //make this a parameter later
+		if (armed && current_mode == MODE3) //going to AUTONOMOUS (make this a parameter later)
 		{
 
 			current_mode = POS_HOLD; //always, unless AUTONOMOUS
+			static float SM_AUTO_DELAY_S_ = 0.0f;
+			param_get(param_find("SM_AUTO_DELAY_S"), &SM_AUTO_DELAY_S_);
+			static hrt_abstime _pos_hold_timestamp{0};
 
 			if (!requested_guidance)//entering this once only
 			{
@@ -689,12 +693,13 @@ void SIM_CTRL_MOD::update_mode_autonomous(control_level &current_mode, bool arme
 				smg_request.timestamp = hrt_absolute_time();
 				_sim_guidance_request_pub.publish(smg_request);
 				requested_guidance = true;
+				_pos_hold_timestamp = hrt_absolute_time();
 				PX4_INFO("Requested to engage guidance...");
 			}
 			else if (!entered_guidance) //entering this once only
 			{
 				//we want to wait for confirmation and check for any status updates
-				if (smg_status.started && smg_status.loaded)
+				if (smg_status.started && smg_status.loaded && hrt_elapsed_time(&_pos_hold_timestamp) > static_cast<uint64_t>(SM_AUTO_DELAY_S_*1.0E6f))
 				{
 					entered_guidance = true; //let the controller know we are ready
 					sim_guidance_request_s smg_request{};
@@ -724,6 +729,8 @@ void SIM_CTRL_MOD::update_mode_autonomous(control_level &current_mode, bool arme
 			requested_guidance = false;
 
 		}
+
+		//prev_mode = current_mode;
 	}
 
 	return;

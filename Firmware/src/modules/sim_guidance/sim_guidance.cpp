@@ -96,7 +96,7 @@ int SIM_GUIDANCE::custom_command(int argc, char *argv[])
 			if (argc < i+1)
 			{
 				PX4_WARN("Please specify a directory");
-				print_usage();
+				print_usage("wrong command");
 				return 0;
 			}
 			const char *file_string = nullptr;
@@ -266,7 +266,7 @@ Section describing the high-level implementation of this SIM_GUIDANCE module.
 
 ### Examples
 CLI usage example:
-$ SIM_GUIDANCE start -f -p 42
+$ sim_guidance start
 
 )DESCR_STR");
 

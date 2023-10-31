@@ -77,6 +77,8 @@ private:
 	void reset(void);
 	int load(void);
 	int execute(void);
+	int set_home(void);
+	int reset_ref2state(void);
 	int read_from_file(const char* _file);
 
 

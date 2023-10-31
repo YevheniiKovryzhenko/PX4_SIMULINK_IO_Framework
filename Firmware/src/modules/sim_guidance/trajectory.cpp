@@ -3,8 +3,10 @@
 
 #define DATATYPE_TRAJ float //shortcut for testing double vs float
 static const int XYZ_OFFSET_START_IND = 18 + 17; //control vector size + number of states before xyz
+static const int XYZ_VEL_OFFSET_START_IND = 18 + 0; //control vector size + number of states before xyz velocity
 static const int QUAT_OFFSET_START_IND = 18 + 6; //control vector size + number of states before quat
-
+static const int XYZ_ACC_OFFSET_START_IND = 18 + 14; //control vector size + number of states before accel
+static const int PQR_OFFSET_START_IND = 18 + 3; //control vector size + number of states before pqr
 
 double get_dt_s_hrt(hrt_abstime &time_stamp)
 {
@@ -182,6 +184,120 @@ point<Type>::~point()
 {
 }
 
+int trajectory::set_home(void)
+{
+	//need to feed-in intial point:
+	//_sim_inbound_sub.update(&sm_inbound); //assume this is already done
+
+	initial_point.reset();
+	initial_point.pos(0) = sm_inbound.data[XYZ_OFFSET_START_IND]; 	//x
+	initial_point.pos(1) = sm_inbound.data[XYZ_OFFSET_START_IND+1]; //y
+	initial_point.pos(2) = sm_inbound.data[XYZ_OFFSET_START_IND+2]; //z
+
+
+
+	matrix::Quaternion<float> vehicle_attitude_quat(\
+	sm_inbound.data[QUAT_OFFSET_START_IND],\
+	sm_inbound.data[QUAT_OFFSET_START_IND+1],\
+	sm_inbound.data[QUAT_OFFSET_START_IND+2],\
+	sm_inbound.data[QUAT_OFFSET_START_IND+3]);
+
+	matrix::Euler<float> vehicle_attitude_eul(vehicle_attitude_quat);
+	initial_point.pos(3) = vehicle_attitude_eul.psi();		//yaw
+	return 0;
+}
+
+int trajectory::reset_ref2state(void)
+{
+
+	//need to feed-in current point:
+	_sim_inbound_sub.update(&sm_inbound);
+
+	matrix::Vector<DATATYPE_TRAJ,n_dofs_max> pos;
+	matrix::Vector<DATATYPE_TRAJ,n_dofs_max> vel;
+	matrix::Vector<DATATYPE_TRAJ,n_dofs_max> acc;
+
+	pos.setZero();
+	vel.setZero();
+	acc.setZero();
+
+	pos(0) = sm_inbound.data[XYZ_OFFSET_START_IND];   //x
+	pos(1) = sm_inbound.data[XYZ_OFFSET_START_IND+1]; //y
+	pos(2) = sm_inbound.data[XYZ_OFFSET_START_IND+2]; //z
+
+	vel(0) = sm_inbound.data[XYZ_VEL_OFFSET_START_IND];   	//Vx
+	vel(1) = sm_inbound.data[XYZ_VEL_OFFSET_START_IND+1]; 	//Vy
+	vel(2) = sm_inbound.data[XYZ_VEL_OFFSET_START_IND+2]; 	//Vz
+	vel(3) = sm_inbound.data[PQR_OFFSET_START_IND+2]; 	//yaw_rate
+	acc(0) = sm_inbound.data[XYZ_ACC_OFFSET_START_IND];   	//ACCx
+	acc(1) = sm_inbound.data[XYZ_ACC_OFFSET_START_IND+1]; 	//ACCy
+	acc(2) = sm_inbound.data[XYZ_ACC_OFFSET_START_IND+2]; 	//ACCz
+
+
+	matrix::Quaternion<float> vehicle_attitude_quat(\
+	sm_inbound.data[QUAT_OFFSET_START_IND],\
+	sm_inbound.data[QUAT_OFFSET_START_IND+1],\
+	sm_inbound.data[QUAT_OFFSET_START_IND+2],\
+	sm_inbound.data[QUAT_OFFSET_START_IND+3]);
+
+	matrix::Euler<float> vehicle_attitude_eul(vehicle_attitude_quat);
+	pos(3) = vehicle_attitude_eul.psi();			//yaw
+
+
+	//publish new data:
+	sim_guidance_trajectory_s smg_traj{};
+	smg_traj.time_s = 0.0f;
+	smg_traj.n_dofs = 0.0f;
+	for (size_t i = 0; i < 3; i++)
+	{
+		smg_traj.position[i] = static_cast<float>(pos(i));
+		smg_traj.velocity[i] = static_cast<float>(vel(i));
+		smg_traj.acceleration[i] = static_cast<float>(acc(i));
+		smg_traj.jerk[i] = 0.0f;
+		smg_traj.snap[i] = 0.0f;
+	}
+
+	smg_traj.timestamp = hrt_absolute_time();
+	_sim_guidance_trajecotry_pub.publish(smg_traj);
+
+	//also publish it in array format:
+	debug_array_s smg{};
+	smg.timestamp = hrt_absolute_time();
+	size_t tmp_ind = 0;
+	smg.id = debug_array_s::SIMULINK_GUIDANCE_ID;
+	char message_name[10] = "guidance";
+	memcpy(smg.name, message_name, sizeof(message_name));
+	smg.name[sizeof(smg.name) - 1] = '\0'; // enforce null termination
+
+	for (size_t i = 0; i < n_dofs_max; i++)
+	{
+		smg.data[tmp_ind] = static_cast<float>(pos(i));
+		tmp_ind++;
+	}
+	for (size_t i = 0; i < n_dofs_max; i++)
+	{
+		smg.data[tmp_ind] = static_cast<float>(vel(i));
+		tmp_ind++;
+	}
+	for (size_t i = 0; i < n_dofs_max; i++)
+	{
+		smg.data[tmp_ind] = static_cast<float>(acc(i));
+		tmp_ind++;
+	}
+	for (size_t i = 0; i < n_dofs_max; i++)
+	{
+		smg.data[tmp_ind] = 0.0f;
+		tmp_ind++;
+	}
+	for (size_t i = 0; i < n_dofs_max; i++)
+	{
+		smg.data[tmp_ind] = 0.0f;
+		tmp_ind++;
+	}
+	_sim_guidance_pub.publish(smg);
+	return 0;
+}
+
 void trajectory::update(void)
 {
 	//fist, check the requests:
@@ -191,35 +307,20 @@ void trajectory::update(void)
 		if (smg_request.reset || smg_request.start || smg_request.stop || smg_request.start_execution) //ignore if all is false (no real requests)
 		{
 			if (smg_request.reset) reset(); //check reset flag first
-			if (smg_request.start) start(); //start if not started yet
+			if (smg_request.start) //this is when we have received the first request (assume pos_hold is not yet enabled, but will be as we send back ack)
+			{
+				start(); //start if not started yet
+				reset_ref2state(); //make sure we have the most recent state first
+				set_home(); //set home to current state
+				//assume pos_hold will latch on this point, so we won't update the ref untill trajectory is executed or reset
+			}
 			if (smg_request.stop) status.finished = true; //this this as early termination
 			if (!smg_request.start && !smg_request.reset && !smg_request.stop && smg_request.start_execution \
 				&& status.loaded)
 			{
-				status.executing = true;
+				status.executing = true; //trajecotry is fully loaded and ready, so start evaluation
 				PX4_INFO("Started trajectory execution");
-				//need to feed-in intial point:
-				_sim_inbound_sub.update(&sm_inbound);
-				//for (int i=0; i < sm_inbound.ARRAY_SIZE; i++) printf("sm_inbound[%i]=%f\n",i,(double)sm_inbound.data[i]);
-				//printf("\n");
-				//printf("sm_inbound.data[XYZ_OFFSET_START_IND] = %f\n",(double)sm_inbound.data[XYZ_OFFSET_START_IND]);
-				initial_point.pos(0) = sm_inbound.data[XYZ_OFFSET_START_IND]; 	//x
-				initial_point.pos(1) = sm_inbound.data[XYZ_OFFSET_START_IND+1]; //y
-				initial_point.pos(2) = sm_inbound.data[XYZ_OFFSET_START_IND+2]; //z
-				//printf("initial_point.pos(0) = %f\n",(double)initial_point.pos(0));
-
-
-
-				matrix::Quaternion<float> vehicle_attitude_quat(\
-				sm_inbound.data[QUAT_OFFSET_START_IND],\
-				sm_inbound.data[QUAT_OFFSET_START_IND+1],\
-				sm_inbound.data[QUAT_OFFSET_START_IND+2],\
-				sm_inbound.data[QUAT_OFFSET_START_IND+3]);
-
-				matrix::Euler<float> vehicle_attitude_eul(vehicle_attitude_quat);
-				initial_point.pos(3) = vehicle_attitude_eul.psi();		//yaw
-
-				initial_point.start(); //starts the timer
+				initial_point.start(); //starts the timer for trajectory execuition
 			}
 
 			sim_guidance_request_s smg_request_ack{};
@@ -262,7 +363,9 @@ void trajectory::update(void)
 	{
 		status.executing = false;
 		status.trajectory_valid = false;
+		//don't update the reference since it has home + ref untill guidance if properly reset
 	}
+	if (!status.started) reset_ref2state(); //keep updating such that ref=state, but only when guidance was not engaged
 
 
 	//publish guidance status:
@@ -394,14 +497,14 @@ int trajectory::load(void)
 			//perform additional checks:
 			if (static_cast<size_t>(traj_data.i_dof) != i_dof)
 			{
-				PX4_ERR("Error in the trajectory loading: i_dof for i_int=%u, i_dof=%u does not match the file.",i_int, i_dof);
+				PX4_ERR("Error in the trajectory loading: i_dof for i_int=%u, i_dof=%u does not match the file.",static_cast<uint16_t>(i_int), static_cast<uint16_t>(i_dof));
 				status.loaded = false;
 				file_loader.close_file();
 				return -1;
 			}
 			if (static_cast<size_t>(traj_data.i_int) != i_int)
 			{
-				PX4_ERR("Error in the trajectory loading: i_int for i_int=%u, i_dof=%u does not match the file.",i_int, i_dof);
+				PX4_ERR("Error in the trajectory loading: i_int for i_int=%u, i_dof=%u does not match the file.", static_cast<uint16_t>(i_int), static_cast<uint16_t>(i_dof));
 				status.loaded = false;
 				file_loader.close_file();
 				return -1;
@@ -416,7 +519,7 @@ int trajectory::load(void)
 			{
 				if (fabsf(static_cast<float>(tof_int_i(i_dof) - tof_int_i(i_dof+1))) > 1.0E-5f)
 				{
-					PX4_ERR("Error in the trajectory loading: i_int=%u, t_int does not match accross all dofs.", i_int);
+					PX4_ERR("Error in the trajectory loading: i_int=%u, t_int does not match accross all dofs.", static_cast<uint16_t>(i_int));
 					status.loaded = false;
 					file_loader.close_file();
 					return -1;
@@ -557,9 +660,9 @@ void trajectory::reset(void)
 	status.trajectory_valid = false;
 
 
-	n_coeffs = 10;
+	n_coeffs = 0;
 	n_int = 0;
-	n_dofs = 4;
+	n_dofs = 0;
 	return;
 }
 
@@ -587,27 +690,27 @@ int trajectory::set_src(const char* _dir, const char* _file)
 void trajectory::print_status(void)
 {
 	PX4_INFO("Guidance Internal Status Report:");
-	if (status.started) 	PX4_INFO("Started: \t\t true");
-	else 			PX4_INFO("Started: \t\t false");
+	if (status.started) 	PX4_INFO("%-20s%10s", "Started:", "true");
+	else 			PX4_INFO("%-20s%10s", "Started:", "false");
 
-	if (status.loaded) 	PX4_INFO("Loaded: \t\t true");
-	else 			PX4_INFO("Loaded: \t\t false");
+	if (status.loaded) 	PX4_INFO("%-20s%10s", "Loaded:", "true");
+	else 			PX4_INFO("%-20s%10s", "Loaded:", "false");
 
-	if (status.executing) 	PX4_INFO("Executing: \t true");
-	else 			PX4_INFO("Executing: \t false");
+	if (status.executing) 	PX4_INFO("%-20s%10s", "Executing:", "true");
+	else 			PX4_INFO("%-20s%10s", "Executing:", "false");
 
 	if (status.trajectory_valid) \
-				PX4_INFO("Trajectory valid:\t true");
-	else 			PX4_INFO("Trajectory valid:\t false");
+				PX4_INFO("%-20s%10s", "Trajectory valid:", "true");
+	else 			PX4_INFO("%-20s%10s", "Trajectory valid:", "false");
 
-	if (status.finished) 	PX4_INFO("Finished:\t\t true");
-	else 			PX4_INFO("Finished:\t\t false");
+	if (status.finished) 	PX4_INFO("%-20s%10s", "Finished:", "true");
+	else 			PX4_INFO("%-20s%10s", "Finished:", "false");
 
 
 	PX4_INFO("Latest Trajectory Parameters:");
-	PX4_INFO("Number of coefficients for each segment:\t %u / %u",n_coeffs,n_coeffs_max);
-	PX4_INFO("Number of segments:\t\t\t %u / %u",n_int,n_int_max);
-	PX4_INFO("Number of active degrees of freedom:\t %u / %u",n_dofs,n_dofs_max);
+	PX4_INFO("%-45s %u / %u", "Number of coefficients for each segment:", static_cast<uint16_t>(n_coeffs), static_cast<uint16_t>(n_coeffs_max));
+	PX4_INFO("%-45s %u / %u", "Number of segments:", static_cast<uint16_t>(n_int), static_cast<uint16_t>(n_int_max));
+	PX4_INFO("%-45s %u / %u", "Number of active degrees of freedom:", static_cast<uint16_t>(n_dofs), static_cast<uint16_t>(n_dofs_max));
 	return;
 }
 
