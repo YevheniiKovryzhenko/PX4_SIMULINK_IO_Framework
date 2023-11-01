@@ -291,6 +291,26 @@ parameters:
             max: 17
             default: 3
 
+        SM_MODE${i}_MAP:
+            description:
+                short: SIMULINK mode_${i} stick map
+                long: |
+                    This flag controls what generic mode_${i} mean. Mode index stands for:
+                    1 for mode switch low (-1),
+                    2 for mode switch mid (0),
+                    3 for mode switch high (1).
+            type: enum
+            values:
+                5: ATT_CONTROL
+                6: POS_HOLD
+                7: POS_CONTROL
+                8: AUTONOMOUS
+            num_instances: 3
+            instance_start: 1
+            min: 5
+            max: 8
+            default: [5, 7, 8]
+
         SM_EXTR${i}:
             description:
                 short: SIMULINK EXRT${i} parameter

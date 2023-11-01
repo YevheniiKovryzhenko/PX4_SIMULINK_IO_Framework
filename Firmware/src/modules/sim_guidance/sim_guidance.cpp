@@ -68,7 +68,7 @@ int SIM_GUIDANCE::custom_command(int argc, char *argv[])
 				return 0;
 			}
 			const char *file_string = nullptr;
-			if (argc > i+1)
+			if (argc > i+2)
 			{
 				const char *dir_string = nullptr;
 				dir_string = argv[i+1];
@@ -95,23 +95,37 @@ int SIM_GUIDANCE::custom_command(int argc, char *argv[])
 		{
 			if (argc < i+1)
 			{
-				PX4_WARN("Please specify a directory");
-				print_usage("wrong command");
+				const char* directory_ = get_instance()->traj.file_loader.get_dir();
+				//PX4_WARN("Please specify a directory");
+				if (get_instance()->traj.file_loader.list_dirs(directory_) < 0)
+				{
+					PX4_WARN("Failed to list directories");
+					return 0;
+				}
+				if (get_instance()->traj.file_loader.list_files(directory_) < 0)
+				{
+					PX4_WARN("Failed to list files");
+					return 0;
+				}
 				return 0;
 			}
-			const char *file_string = nullptr;
-			file_string = argv[i+1];
-			if (get_instance()->traj.file_loader.list_dirs(file_string) < 0)
+			else
 			{
-				PX4_WARN("Failed to list directories");
+				const char *directory_ = nullptr;
+				directory_ = argv[i+1];
+				if (get_instance()->traj.file_loader.list_dirs(directory_) < 0)
+				{
+					PX4_WARN("Failed to list directories");
+					return 0;
+				}
+				if (get_instance()->traj.file_loader.list_files(directory_) < 0)
+				{
+					PX4_WARN("Failed to list files");
+					return 0;
+				}
 				return 0;
 			}
-			if (get_instance()->traj.file_loader.list_files(file_string) < 0)
-			{
-				PX4_WARN("Failed to list files");
-				return 0;
-			}
-			return 0;
+
 		}
 		else continue;
 	}

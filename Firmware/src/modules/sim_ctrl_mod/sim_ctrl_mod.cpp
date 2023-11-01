@@ -669,68 +669,165 @@ void SIM_CTRL_MOD::update_mode_autonomous(control_level &current_mode, bool arme
 {
 	static int32_t SMG_EN_ = 0;
 	param_get(param_find("SMG_EN"), &SMG_EN_);
+
+
 	if (SMG_EN_ == 1) //don't bother otherwise
 	{
-		//talk with guidance if we need to use autonomous flight mode
-		static bool requested_guidance = false;
-		static bool entered_guidance = false;
-		//static control_level prev_mode = current_mode;
-		_sim_guidance_status_sub.update(&smg_status);
+		//first, we need to overwrite some of the generic modes:
+		static int32_t SM_MODE1_MAP = 5;
+		static int32_t SM_MODE2_MAP = 7;
+		static int32_t SM_MODE3_MAP = 8;
 
-		if (armed && current_mode == MODE3) //going to AUTONOMOUS (make this a parameter later)
+		param_get(param_find("SM_MODE1_MAP"), &SM_MODE1_MAP);
+		param_get(param_find("SM_MODE2_MAP"), &SM_MODE2_MAP);
+		param_get(param_find("SM_MODE3_MAP"), &SM_MODE3_MAP);
+
+		switch (current_mode)
 		{
+		case MODE1: // -1 sw stick low
+		{
+			current_mode = static_cast<control_level>(SM_MODE1_MAP);
+			break;
+		}
 
-			current_mode = POS_HOLD; //always, unless AUTONOMOUS
-			static float SM_AUTO_DELAY_S_ = 0.0f;
-			param_get(param_find("SM_AUTO_DELAY_S"), &SM_AUTO_DELAY_S_);
-			static hrt_abstime _pos_hold_timestamp{0};
+		case MODE2: // 0 sw stick mid
+		{
+			current_mode = static_cast<control_level>(SM_MODE2_MAP);
+			break;
+		}
 
-			if (!requested_guidance)//entering this once only
+		case MODE3: // 1 sw stick high
+		{
+			current_mode = static_cast<control_level>(SM_MODE3_MAP);
+			break;
+		}
+		default:
+			break;
+		}
+
+
+		static float SM_AUTO_DELAY_S_ = 0.0f;
+		param_get(param_find("SM_AUTO_DELAY_S"), &SM_AUTO_DELAY_S_);
+
+		static control_level prev_mode = current_mode;
+		static hrt_abstime _pos_hold_timestamp{0}; //transitioning into AUTONOMOUS
+
+		_sim_guidance_status_sub.update(&smg_status);
+		//if (armed)
+		//{
+			switch (current_mode) //want to go into this mode
 			{
-				sim_guidance_request_s smg_request{};
-				smg_request.reset = true;
-				smg_request.start = true;
-				smg_request.timestamp = hrt_absolute_time();
-				_sim_guidance_request_pub.publish(smg_request);
-				requested_guidance = true;
-				_pos_hold_timestamp = hrt_absolute_time();
-				PX4_INFO("Requested to engage guidance...");
-			}
-			else if (!entered_guidance) //entering this once only
-			{
-				//we want to wait for confirmation and check for any status updates
-				if (smg_status.started && smg_status.loaded && hrt_elapsed_time(&_pos_hold_timestamp) > static_cast<uint64_t>(SM_AUTO_DELAY_S_*1.0E6f))
+			case POS_CONTROL:
+				switch (prev_mode) //from this mode
 				{
-					entered_guidance = true; //let the controller know we are ready
+				case POS_CONTROL:
+					current_mode = POS_CONTROL;
+					break;
+				case POS_HOLD: //already set home where we want
+					current_mode = POS_CONTROL;
+					break;
+
+				default:
+					{ //if just requested position_hold, always reset and set new home
+						sim_guidance_request_s smg_request{};
+						smg_request.reset = true;
+						smg_request.set_home = true;
+						smg_request.timestamp = hrt_absolute_time();
+						_sim_guidance_request_pub.publish(smg_request);
+					}
+					break;
+				}
+				break;
+			case POS_HOLD:
+				switch (prev_mode) //from this mode
+				{
+				case POS_HOLD: //remaining in this mode
+					current_mode = POS_HOLD;
+					break;
+
+				default:
+					{ //if just requested position_hold, always reset and set new home
+						sim_guidance_request_s smg_request{};
+						smg_request.reset = true;
+						smg_request.set_home = true;
+						smg_request.timestamp = hrt_absolute_time();
+						_sim_guidance_request_pub.publish(smg_request);
+					}
+					break;
+				}
+				break;
+			case AUTONOMOUS:
+				switch (prev_mode) //from this mode
+				{
+				case AUTONOMOUS: //remaining in AUTONOMOUS
+					/* code */
+					current_mode = AUTONOMOUS;
+					break;
+
+				case POS_HOLD: //waiting to be cleared to transition into AUTONOMOUS
+					//we want to wait for confirmation and check for any status updates
+					if (smg_status.started && smg_status.loaded && hrt_elapsed_time(&_pos_hold_timestamp) > static_cast<uint64_t>(SM_AUTO_DELAY_S_*1.0E6f))
+					{
+						sim_guidance_request_s smg_request{};
+						smg_request.start_execution = true; //start trajectory exaluation
+						smg_request.timestamp = hrt_absolute_time();
+						_sim_guidance_request_pub.publish(smg_request);
+						PX4_INFO("Requested guidance execution...");
+
+						current_mode = AUTONOMOUS;
+					}
+					else current_mode = POS_HOLD;
+					break;
+				default: //go though position hold first
+					{
+						sim_guidance_request_s smg_request{};
+						smg_request.reset = true;
+						smg_request.start = true;
+						smg_request.timestamp = hrt_absolute_time();
+						_sim_guidance_request_pub.publish(smg_request);
+						_pos_hold_timestamp = hrt_absolute_time();
+						PX4_INFO("Requested to engage guidance...");
+						current_mode = POS_HOLD;
+						break;
+					}
+				}
+
+				break;
+
+			default:
+
+				if (current_mode != AUTONOMOUS && prev_mode == AUTONOMOUS) //double check this
+				{
 					sim_guidance_request_s smg_request{};
-					smg_request.start_execution = true; //start trajectory exaluation
+					smg_request.reset = true;
+					smg_request.set_home = true;
 					smg_request.timestamp = hrt_absolute_time();
 					_sim_guidance_request_pub.publish(smg_request);
-					requested_guidance = true;
-					PX4_INFO("Requested guidance execution...");
 				}
+				break;
 			}
 
-			if (entered_guidance)
-			{
-				current_mode = AUTONOMOUS; //keep this true unless we know something failed
-			}
-		}
+			prev_mode = current_mode;
+		//}
+		/*
 		else
 		{
-			if (smg_status.started || smg_status.executing) //disengage guidance if disabled
+			if (smg_status.started || smg_status.executing || prev_mode == AUTONOMOUS) //disengage guidance if disabled
 			{
 				sim_guidance_request_s smg_request{};
 				smg_request.reset = true;
+				smg_request.set_home = true;
 				smg_request.timestamp = hrt_absolute_time();
 				_sim_guidance_request_pub.publish(smg_request);
+
+				current_mode = POS_HOLD;
+				prev_mode = POS_HOLD;
 			}
-			entered_guidance = false;
-			requested_guidance = false;
-
+			else current_mode = prev_mode; //don't switch modes on the ground
 		}
+		*/
 
-		//prev_mode = current_mode;
+
 	}
 
 	return;
@@ -797,7 +894,7 @@ bool SIM_CTRL_MOD::update_control_inputs(float in_vec[CONTROL_VEC_SIZE])
 		else if(mode_stick < -0.7f) mode_ch = MODE1;
 		else mode_ch = MODE2; //must always assign some default
 	}
-	if (armed_switch) update_mode_autonomous(mode_ch, armed_switch); //extra checks for flightmode
+	update_mode_autonomous(mode_ch, armed_switch); //extra checks for flightmode
 
 	in_vec[get_input_ind(sticks_ind::ROLL)] = roll;
 	in_vec[get_input_ind(sticks_ind::PITCH)] = pitch;

@@ -113,42 +113,6 @@ int eval_traj(matrix::Vector<Type, n_dofs> &eval_vec, Type time_trajectory_s, ma
 	return res;
 }
 
-int trajectory::read_from_file(const char* path)
-{
-
-	PX4_INFO("file path: %s",path);
-	return 0;
-
-	static int _fd = -1;
-
-	if (_fd < 0)
-	{
-		_fd = px4_open("/fs/microsd/1.txt", O_RDONLY);
-		if (_fd < 0)
-		{
-			PX4_ERR("Can't open file, %d", errno);
-			return -1;
-		}
-	}
-
-	PX4_INFO("Opened file!");
-
-        char buf[100];
-        int st = px4_read(_fd, buf, 100);
-        if (st < 0)
-	{
-            PX4_ERR("can't read from %d, because %d", _fd, errno);
-            return -1;
-        }
-	else
-	{
-            PX4_INFO("read %d bytes", st);
-        }
-	if (_fd > -1) px4_close(_fd);
-	PX4_INFO("Done!");
-        return 0;
-}
-
 
 
 
@@ -269,6 +233,8 @@ int trajectory::reset_ref2state(void)
 	memcpy(smg.name, message_name, sizeof(message_name));
 	smg.name[sizeof(smg.name) - 1] = '\0'; // enforce null termination
 
+	smg.data[tmp_ind] = static_cast<float>(status.finished);
+	tmp_ind++;
 	for (size_t i = 0; i < n_dofs_max; i++)
 	{
 		smg.data[tmp_ind] = static_cast<float>(pos(i));
@@ -307,6 +273,13 @@ void trajectory::update(void)
 		if (smg_request.reset || smg_request.start || smg_request.stop || smg_request.start_execution) //ignore if all is false (no real requests)
 		{
 			if (smg_request.reset) reset(); //check reset flag first
+			if (smg_request.set_home) //process manually-requested set_home (even if disabled)
+			{
+				reset_ref2state(); //make sure we have the most recent state first
+				set_home(); //set home to current state
+				//this will only publish once, if trajectory execution is not enabled
+				//won't do much, but is usefull if trying to capture current state
+			}
 			if (smg_request.start) //this is when we have received the first request (assume pos_hold is not yet enabled, but will be as we send back ack)
 			{
 				start(); //start if not started yet
@@ -315,8 +288,9 @@ void trajectory::update(void)
 				//assume pos_hold will latch on this point, so we won't update the ref untill trajectory is executed or reset
 			}
 			if (smg_request.stop) status.finished = true; //this this as early termination
+
 			if (!smg_request.start && !smg_request.reset && !smg_request.stop && smg_request.start_execution \
-				&& status.loaded)
+				&& status.loaded && status.started && !status.finished)
 			{
 				status.executing = true; //trajecotry is fully loaded and ready, so start evaluation
 				PX4_INFO("Started trajectory execution");
@@ -328,6 +302,7 @@ void trajectory::update(void)
 			smg_request_ack.start = false;
 			smg_request_ack.stop = false;
 			smg_request_ack.start_execution = false;
+			smg_request_ack.set_home = false;
 			smg_request_ack.timestamp = hrt_absolute_time();
 
 			_sim_guidance_request_pub.publish(smg_request_ack);
@@ -365,7 +340,7 @@ void trajectory::update(void)
 		status.trajectory_valid = false;
 		//don't update the reference since it has home + ref untill guidance if properly reset
 	}
-	if (!status.started) reset_ref2state(); //keep updating such that ref=state, but only when guidance was not engaged
+	//if (!status.started) reset_ref2state(); //keep updating such that ref=state, but only when guidance was not engaged
 
 
 	//publish guidance status:
@@ -608,6 +583,8 @@ int trajectory::execute(void)
 	memcpy(smg.name, message_name, sizeof(message_name));
 	smg.name[sizeof(smg.name) - 1] = '\0'; // enforce null termination
 
+	smg.data[tmp_ind] = static_cast<float>(status.finished);
+	tmp_ind++;
 	for (size_t i = 0; i < n_dofs_max; i++)
 	{
 		smg.data[tmp_ind] = static_cast<float>(pos(i)) + static_cast<float>(initial_point.pos(i));
@@ -668,7 +645,7 @@ void trajectory::reset(void)
 
 int trajectory::set_src(const char* _file)
 {
-	return file_loader.set_src(file_loader.get_dir(), _file);
+	return set_src(file_loader.get_dir(), _file);
 }
 
 int trajectory::set_src(const char* _dir, const char* _file)
@@ -689,6 +666,8 @@ int trajectory::set_src(const char* _dir, const char* _file)
 
 void trajectory::print_status(void)
 {
+	PX4_INFO("Latched on to %s trajectory file in %s", file_loader.get_file(), file_loader.get_dir());
+
 	PX4_INFO("Guidance Internal Status Report:");
 	if (status.started) 	PX4_INFO("%-20s%10s", "Started:", "true");
 	else 			PX4_INFO("%-20s%10s", "Started:", "false");

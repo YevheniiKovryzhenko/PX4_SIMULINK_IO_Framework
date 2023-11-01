@@ -24,7 +24,7 @@ class file_loader_backend
 {
 private:
 	char file_name[256] {};
-	char directory[256] {};
+	char directory[256] = "/fs/microsd/trajectories/";
 	int _fd = -1;
 	int open_file(void);
 

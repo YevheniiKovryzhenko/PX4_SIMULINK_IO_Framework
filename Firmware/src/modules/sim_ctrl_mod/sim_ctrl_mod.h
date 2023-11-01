@@ -97,8 +97,10 @@ enum control_level
 	MODE1 = 2,
 	MODE2 = 3,
 	MODE3 = 4,
-	POS_HOLD = 5,
-	AUTONOMOUS = 6
+	ATT_CONTROL = 5,
+	POS_HOLD = 6,
+	POS_CONTROL = 7,
+	AUTONOMOUS = 8
 };
 
 
