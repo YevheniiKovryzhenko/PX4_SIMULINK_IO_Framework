@@ -63,9 +63,9 @@ private:
 	static const size_t n_dofs_max = 4;
 	static const size_t n_int_max = 50;
 
-	size_t n_coeffs = 10;
+	size_t n_coeffs = 0;
 	size_t n_int = 0;
-	size_t n_dofs = 4;
+	size_t n_dofs = 0;
 
 	matrix::Vector<matrix::Vector<matrix::Vector<float, n_coeffs_max>, n_dofs_max>, n_int_max> coefs;
 	matrix::Vector<float, n_int_max> tof_int;
@@ -76,6 +76,7 @@ private:
 	void start(void);
 	void reset(void);
 	int load(void);
+	int load_dummy_data(void);
 	int execute(void);
 	int set_home(void);
 	int reset_ref2state(void);

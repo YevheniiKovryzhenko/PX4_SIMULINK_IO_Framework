@@ -13,3 +13,36 @@ parameters:
                 0: DISABLE
                 1: ENABLE
             default: 0
+
+        SGM_MAV_STREAM:
+            description:
+                short: Enable SIMULINK guidance mavlink stream
+                long: |
+                    SIMULINK parameter for enabling/disabling
+                    mavlink stream of guidance message.
+
+            type: enum
+            values:
+                0: DISABLE
+                1: ENABLE
+            reboot_required: true
+            default: 0
+
+        SMG_MAV_RATE:
+            description:
+                short: SIMULINK guidance mavlink stream rate
+                long: |
+                    SIMULINK parameter for setting the streaming rate
+                    of simulink guidance stream (if enabled).
+                    Note that the real streaming rate is limited
+                    by the update rate of the simulink model
+                    and will be throttled down based on the
+                    lowest of the two.
+
+            type: float
+            decimal: 1
+            unit: Hz
+            min: 0
+            max: 100
+            reboot_required: true
+            default: 1

@@ -30,10 +30,16 @@ private:
 
 public:
 	int set_src(const char* _file, const char* _dir);
+
 	int read_header(traj_file_header_t& traj_header);
-	int write_header(traj_file_header_t& traj_header);
 	int read_data(traj_file_data_t& traj_data);
+
+	int read_dummy_header(traj_file_header_t& traj_header);
+	int read_dummy_data(traj_file_data_t& traj_data, int i_int, int i_dof);
+
+	int write_header(traj_file_header_t& traj_header);
 	int write_data(traj_file_data_t& traj_data);
+
 	int close_file(void);
 
 	int list_dirs(const char* location);

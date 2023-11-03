@@ -318,6 +318,7 @@ void trajectory::update(void)
 		{
 			status.trajectory_valid = false;
 			if (load() < 0)
+			//if (load_dummy_data() < 0)
 			{
 				PX4_INFO("Failed to load trajectory, disengaging guidance...");
 				status.finished = true;
@@ -358,7 +359,7 @@ void trajectory::update(void)
 }
 
 /*
-int file_loader_backend::create_test_file(const char* location)
+int trajectory::load_dummy_data(void)
 {
 	PX4_INFO("Begin trajectory loading sequence...");
 	//read first row to get the settings of the trajectory:
@@ -369,22 +370,26 @@ int file_loader_backend::create_test_file(const char* location)
 	//check if all good:
 	if (n_coeffs > n_coeffs_max)
 	{
-		PX4_INFO("Too many coefficients");
+		PX4_WARN("Too many coefficients");
+		status.loaded = false;
 		return -1;
 	}
 	if (n_int > n_int_max)
 	{
-		PX4_INFO("Too many segments");
+		PX4_WARN("Too many segments");
+		status.loaded = false;
 		return -1;
 	}
 	if (n_dofs > n_dofs_max)
 	{
-		PX4_INFO("Too many dofs");
+		PX4_WARN("Too many dofs");
+		status.loaded = false;
 		return -1;
 	}
 	if (n_coeffs == 0 || n_int == 0 || n_dofs == 0)
 	{
-		PX4_INFO("Ivalid trajectory (zeros in the settings)");
+		PX4_WARN("Invalid trajectory (zeros in the settings)");
+		status.loaded = false;
 		return -1;
 	}
 
@@ -416,6 +421,102 @@ int file_loader_backend::create_test_file(const char* location)
 }
 */
 
+int trajectory::load_dummy_data(void)
+{
+	file_loader.close_file(); //do this no matter what
+	PX4_INFO("Begin trajectory loading sequence...");
+	//read first row to get the settings of the trajectory:
+	traj_file_header_t traj_header{};
+	if (file_loader.read_dummy_header(traj_header) < 0) return -1;
+	n_coeffs = static_cast<size_t>(traj_header.n_coeffs);
+	n_int = static_cast<size_t>(traj_header.n_int);
+	n_dofs = static_cast<size_t>(traj_header.n_dofs);
+
+	//check if all good:
+	if (n_coeffs > n_coeffs_max)
+	{
+		PX4_WARN("Too many coefficients");
+		status.loaded = false;
+		file_loader.close_file();
+		return -1;
+	}
+	if (n_int > n_int_max)
+	{
+		PX4_WARN("Too many segments");
+		status.loaded = false;
+		file_loader.close_file();
+		return -1;
+	}
+	if (n_dofs > n_dofs_max)
+	{
+		PX4_WARN("Too many dofs");
+		status.loaded = false;
+		file_loader.close_file();
+		return -1;
+	}
+	if (n_coeffs == 0 || n_int == 0 || n_dofs == 0)
+	{
+		PX4_WARN("Invalid trajectory (zeros in the settings)");
+		status.loaded = false;
+		file_loader.close_file();
+		return -1;
+	}
+
+	//load the trajectory data (we need coefficients and time allocated for each interval)
+	tof_int.setZero();
+	coefs.setZero();
+	matrix::Vector<DATATYPE_TRAJ, n_dofs_max> tof_int_i;
+	for (size_t i_int = 0; i_int < n_int; i_int++)
+	{
+		tof_int_i.setZero();
+		for (size_t i_dof = 0; i_dof < n_dofs; i_dof++)
+		{
+			traj_file_data_t traj_data{};
+			if (file_loader.read_dummy_data(traj_data, i_int, i_dof) < 0) return -1;
+
+			//perform additional checks:
+			if (static_cast<size_t>(traj_data.i_dof) != i_dof)
+			{
+				PX4_ERR("Error in the trajectory loading: i_dof for i_int=%u, i_dof=%u does not match the file.",static_cast<uint16_t>(i_int), static_cast<uint16_t>(i_dof));
+				status.loaded = false;
+				file_loader.close_file();
+				return -1;
+			}
+			if (static_cast<size_t>(traj_data.i_int) != i_int)
+			{
+				PX4_ERR("Error in the trajectory loading: i_int for i_int=%u, i_dof=%u does not match the file.", static_cast<uint16_t>(i_int), static_cast<uint16_t>(i_dof));
+				status.loaded = false;
+				file_loader.close_file();
+				return -1;
+			}
+			//that's all we can do for the data (as of right now)
+			assign_coefs2matrix<DATATYPE_TRAJ, n_coeffs_max, n_dofs_max, n_int_max>(coefs, traj_data, n_coeffs);
+			tof_int_i(i_dof) = traj_data.t_int;
+		}
+		if (n_dofs > 1)
+		{
+			for (size_t i_dof = 0; i_dof < n_dofs-1; i_dof++)
+			{
+				if (fabsf(static_cast<float>(tof_int_i(i_dof) - tof_int_i(i_dof+1))) > 1.0E-5f)
+				{
+					PX4_ERR("Error in the trajectory loading: i_int=%u, t_int does not match accross all dofs.", static_cast<uint16_t>(i_int));
+					status.loaded = false;
+					file_loader.close_file();
+					return -1;
+				}
+			}
+		}
+		tof_int(i_int) = tof_int_i(0);
+
+
+	}
+
+	status.loaded = true;
+	file_loader.close_file();
+	PX4_INFO("Trajectory successfully loaded!");
+	return 0;
+}
+
 int trajectory::load(void)
 {
 	file_loader.close_file(); //do this no matter what
@@ -430,28 +531,28 @@ int trajectory::load(void)
 	//check if all good:
 	if (n_coeffs > n_coeffs_max)
 	{
-		PX4_INFO("Too many coefficients");
+		PX4_WARN("Too many coefficients");
 		status.loaded = false;
 		file_loader.close_file();
 		return -1;
 	}
 	if (n_int > n_int_max)
 	{
-		PX4_INFO("Too many segments");
+		PX4_WARN("Too many segments");
 		status.loaded = false;
 		file_loader.close_file();
 		return -1;
 	}
 	if (n_dofs > n_dofs_max)
 	{
-		PX4_INFO("Too many dofs");
+		PX4_WARN("Too many dofs");
 		status.loaded = false;
 		file_loader.close_file();
 		return -1;
 	}
 	if (n_coeffs == 0 || n_int == 0 || n_dofs == 0)
 	{
-		PX4_INFO("Ivalid trajectory (zeros in the settings)");
+		PX4_WARN("Invalid trajectory (zeros in the settings)");
 		status.loaded = false;
 		file_loader.close_file();
 		return -1;
@@ -544,12 +645,18 @@ int trajectory::execute(void)
 	}
 
 	#ifdef DEBUG
-	printf("X=%9.6ff, X_vel=%9.6ff, X_acc=%9.6ff, X_jerk=%9.6ff, X_snap = %9.6ff\n", (double)pos(0), (double)vel(0), (double)acc(0), (double)jerk(0), (double)snap(0));
+	printf("t=%9.6f, X=%9.6ff, X_vel=%9.6ff, X_acc=%9.6ff, X_jerk=%9.6ff, X_snap = %9.6ff\n",\
+	time_trajecotry_s,\
+	(double)pos(0),\
+	(double)vel(0),\
+	(double)acc(0),\
+	(double)jerk(0),\
+	(double)snap(0));
 	#endif
 
 	//publish new data:
 	sim_guidance_trajectory_s smg_traj{};
-	smg_traj.time_s = time_trajecotry_s;
+	smg_traj.time_s = static_cast<float>(time_trajecotry_s);
 	smg_traj.n_dofs = static_cast<uint8_t>(n_dofs);
 	for (size_t i = 0; i < n_dofs; i++)
 	{
@@ -563,7 +670,8 @@ int trajectory::execute(void)
 	//printf("initial_point.pos(0) = %f\n",(double)initial_point.pos(0));
 
 	#ifdef DEBUG
-	printf("X=%9.6ff, X_vel=%9.6ff, X_acc=%9.6ff, X_jerk=%9.6ff, X_snap = %9.6ff\n\n",\
+	printf("t=%9.6f, X=%9.6ff, X_vel=%9.6ff, X_acc=%9.6ff, X_jerk=%9.6ff, X_snap = %9.6ff\n\n",\
+	 (double)smg_traj.time_s,\
 	 (double)(smg_traj.position[0]),\
 	 (double)smg_traj.velocity[0],\
 	 (double)smg_traj.acceleration[0],\
@@ -635,11 +743,6 @@ void trajectory::reset(void)
 	status.executing = false;
 	status.finished = false;
 	status.trajectory_valid = false;
-
-
-	n_coeffs = 0;
-	n_int = 0;
-	n_dofs = 0;
 	return;
 }
 

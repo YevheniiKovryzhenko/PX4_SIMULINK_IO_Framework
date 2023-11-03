@@ -291,6 +291,22 @@ parameters:
             max: 17
             default: 3
 
+        SM_3MODE_SW_SRC:
+            description:
+                short: SIMULINK stick manual overwrite
+                long: |
+                    This flag controls if mode stick is being manually overwritten.
+                    This should only be used for testing (when rc is not available).
+            type: enum
+            values:
+                0: SM_CMD_OPT
+                1: Mode_1 / Switch Low (-1)
+                2: Mode_2 / Switch Mid (0)
+                3: Mode_3 / Switch High (1)
+            min: 0
+            max: 3
+            default: 0
+
         SM_MODE${i}_MAP:
             description:
                 short: SIMULINK mode_${i} stick map

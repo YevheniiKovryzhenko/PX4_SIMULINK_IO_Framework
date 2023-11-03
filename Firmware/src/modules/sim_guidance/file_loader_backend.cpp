@@ -136,6 +136,78 @@ int file_loader_backend::set_src(const char* _file, const char* _dir)
 
 //#define DEBUG
 
+int file_loader_backend::read_dummy_header(traj_file_header_t& header)
+{
+	header.n_coeffs = 10;
+	header.n_int = 2;
+	header.n_dofs = 4;
+
+	return 0;
+}
+
+int file_loader_backend::read_dummy_data(traj_file_data_t& data, int i_int, int i_dof)
+{
+
+        static const float tof_int_raw[] = {2.107510627081439, 2.892489372918561};
+	static const float x0_coefs_raw[] = {0.0, 1.223059991942257e-15,-4.932113332000828e-14,1.161170181981698e-14,-2.593478958556478e-15,10.901912753415060,-24.562419897244904,24.024854141204592,-11.641988801638679,2.277641804263970};
+	static const float y0_coefs_raw[] = {0.0, 1.223059991942257e-15,-4.932113332000828e-14,1.161170181981698e-14,-2.593478958556478e-15,10.901912753415060,-24.562419897244904,24.024854141204592,-11.641988801638679,2.277641804263970};
+	static const float z0_coefs_raw[] = {0.0, 1.223059991942257e-15,-4.932113332000828e-14,1.161170181981698e-14,-2.593478958556478e-15,10.901912753415060,-24.562419897244904,24.024854141204592,-11.641988801638679,2.277641804263970};
+	static const float yaw0_coefs_raw[] = {0.0, 1.223059991942257e-15,-4.932113332000828e-14,1.161170181981698e-14,-2.593478958556478e-15,10.901912753415060,-24.562419897244904,24.024854141204592,-11.641988801638679,2.277641804263970};
+
+	static const float x1_coefs_raw[] = {1,3.667080492742769,2.117588692858374,-5.141681182811569,-3.594994733263419,16.288952666450880,-37.844351520577504,53.726887291011200,-36.411234714857710,9.191753008446979};
+	static const float y1_coefs_raw[] = {1,3.667080492742769,2.117588692858374,-5.141681182811569,-3.594994733263419,16.288952666450880,-37.844351520577504,53.726887291011200,-36.411234714857710,9.191753008446979};
+	static const float z1_coefs_raw[] = {1,3.667080492742769,2.117588692858374,-5.141681182811569,-3.594994733263419,16.288952666450880,-37.844351520577504,53.726887291011200,-36.411234714857710,9.191753008446979};
+	static const float yaw1_coefs_raw[] = {1,3.667080492742769,2.117588692858374,-5.141681182811569,-3.594994733263419,16.288952666450880,-37.844351520577504,53.726887291011200,-36.411234714857710,9.191753008446979};
+
+	data.i_dof = i_dof;
+	data.i_int = i_int;
+	data.t_int = tof_int_raw[i_int];
+	switch (i_int)
+	{
+	case 0:
+		switch (i_dof)
+		{
+		case 0:
+			for (int i = 0; i < 10; i++) data.coefs[i] = x0_coefs_raw[i];
+			break;
+		case 1:
+			for (int i = 0; i < 10; i++) data.coefs[i] = y0_coefs_raw[i];
+			break;
+		case 2:
+			for (int i = 0; i < 10; i++) data.coefs[i] = z0_coefs_raw[i];
+			break;
+
+		default:
+			for (int i = 0; i < 10; i++) data.coefs[i] = yaw0_coefs_raw[i];
+			break;
+		}
+		break;
+
+	default:
+		switch (i_dof)
+		{
+		case 0:
+			for (int i = 0; i < 10; i++) data.coefs[i] = x1_coefs_raw[i];
+			break;
+		case 1:
+			for (int i = 0; i < 10; i++) data.coefs[i] = y1_coefs_raw[i];
+			break;
+		case 2:
+			for (int i = 0; i < 10; i++) data.coefs[i] = z1_coefs_raw[i];
+			break;
+
+		default:
+			for (int i = 0; i < 10; i++) data.coefs[i] = yaw1_coefs_raw[i];
+			break;
+		}
+		break;
+	}
+
+
+
+	return 0;
+}
+
 int file_loader_backend::read_header(traj_file_header_t& header)
 {
 	if (open_file() < 0)

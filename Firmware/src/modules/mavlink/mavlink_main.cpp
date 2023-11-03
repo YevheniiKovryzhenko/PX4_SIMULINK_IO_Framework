@@ -1539,6 +1539,20 @@ Mavlink::configure_streams_to_default(const char *configure_single_stream)
 		break;
 	}
 
+	int smg_mav_stream = 0;
+	param_get(param_find("SGM_MAV_STREAM"),&smg_mav_stream);
+	float smg_mav_rate = 0.f;
+	param_get(param_find("SMG_MAV_RATE"),&smg_mav_rate);
+	switch (smg_mav_stream)
+	{
+	case 1:
+		configure_stream_local("SIMULINK_GUIDANCE", smg_mav_rate);
+		break;
+
+	default:
+		break;
+	}
+
 	int uavcan_sv_mav = 0;
 	param_get(param_find("UAVCAN_SV_MAV"),&uavcan_sv_mav);
 
