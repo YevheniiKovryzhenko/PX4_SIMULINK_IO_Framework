@@ -14,21 +14,21 @@ parameters:
             instance_start: 1
             default: [-0.5, 0.5, 0.5, -0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5]
 
-        SM_TECS_KT2RPM:
+        SM_FF_THR:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
             default: 0.0
 
-        SM_FF_THR:
+        SM_TCS_KT2RPM:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -36,9 +36,9 @@ parameters:
 
         SM_IDLE_TH:
             description:
-                short: SIMULINK minimum (IDLE) throttle value
+                short: SIMULINK (idle) throttle value offset
                 long: |
-                    SIMULINK minimum (idle) throttle value.
+                    SIMULINK (idle) throttle value offset.
 
             type: float
             decimal: 4
@@ -46,9 +46,9 @@ parameters:
 
         SM_NAV_VCMD:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -56,9 +56,9 @@ parameters:
 
         SM_NAV_HCMD:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -66,9 +66,9 @@ parameters:
 
         SM_LIDAR_H1:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -76,9 +76,9 @@ parameters:
 
         SM_LIDAR_H2:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -86,9 +86,9 @@ parameters:
 
         SM_LIDAR_VVMODE:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -96,9 +96,9 @@ parameters:
 
         SM_LIDAR_HMODE:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -113,75 +113,11 @@ parameters:
             type: int32
             default: -1
 
-        SM_TECS_VM${i}:
-            description:
-                short: SIMULINK some usefull discription
-                long: |
-                    SIMULINK some usefull discription
-
-            type: float
-            decimal: 4
-            num_instances: 2
-            instance_start: 1
-            default: 0.0
-
-        SM_TECS_VH${i}:
-            description:
-                short: SIMULINK some usefull discription
-                long: |
-                    SIMULINK some usefull discription
-
-            type: float
-            decimal: 4
-            num_instances: 2
-            instance_start: 1
-            default: 0.0
-
-        SM_TECS_THMAX:
-            description:
-                short: SIMULINK some usefull discription
-                long: |
-                    SIMULINK some usefull discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_TECS_THMIN:
-            description:
-                short: SIMULINK some usefull discription
-                long: |
-                    SIMULINK some usefull discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_TECS_THDECK:
-            description:
-                short: SIMULINK some usefull discription
-                long: |
-                    SIMULINK some usefull discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_TECS_KTI0:
-            description:
-                short: SIMULINK some usefull discription
-                long: |
-                    SIMULINK some usefull discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
         SM_LATMPTYP:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -189,9 +125,9 @@ parameters:
 
         SM_TAU_LAT:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -199,9 +135,9 @@ parameters:
 
         SM_LAT_DEADZ:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -209,9 +145,9 @@ parameters:
 
         SM_VLAT_MAX:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -219,9 +155,9 @@ parameters:
 
         SM_PHMAX_VFM:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -229,9 +165,9 @@ parameters:
 
         SM_PHMAX_FFM:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -239,9 +175,9 @@ parameters:
 
         SM_PHDOT_MAX:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -249,9 +185,9 @@ parameters:
 
         SM_DIH_LOW:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -259,9 +195,9 @@ parameters:
 
         SM_DIH_HIGH:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -269,9 +205,9 @@ parameters:
 
         SM_KP_VLAT:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -279,9 +215,9 @@ parameters:
 
         SM_KI_VLAT:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -289,9 +225,9 @@ parameters:
 
         SM_ZLAT_LOW:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -299,9 +235,9 @@ parameters:
 
         SM_ZLAT_HIGH:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -309,9 +245,9 @@ parameters:
 
         SM_LONMAPTYP:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -319,9 +255,9 @@ parameters:
 
         SM_TAU_LON:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -329,9 +265,9 @@ parameters:
 
         SM_LON_DEADZ:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -340,9 +276,9 @@ parameters:
 
         SM_VVCMD_MAX:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -350,9 +286,9 @@ parameters:
 
         SM_FPA_LIM:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -360,9 +296,9 @@ parameters:
 
         SM_FPADOTMAX:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -371,9 +307,9 @@ parameters:
 
         SM_N_MIN:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -382,9 +318,9 @@ parameters:
 
         SM_N_MAX:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -393,9 +329,9 @@ parameters:
 
         SM_ZLON_LOW:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -404,9 +340,9 @@ parameters:
 
         SM_ZLON_HIGH:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -415,9 +351,9 @@ parameters:
 
         SM_TAU_DIR:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -426,9 +362,9 @@ parameters:
 
         SM_DIR_DEADZ:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -437,9 +373,9 @@ parameters:
 
         SM_RCMD_MAX:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -448,9 +384,9 @@ parameters:
 
         SM_BCMD_MAX:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -459,9 +395,9 @@ parameters:
 
         SM_KBETA:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -470,9 +406,9 @@ parameters:
 
         SM_KNY:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -482,9 +418,9 @@ parameters:
 
         SM_TAU_ACC:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -493,9 +429,9 @@ parameters:
 
         SM_ACC_DEADZ:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -504,9 +440,9 @@ parameters:
 
         SM_ACC_CM_MX:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -515,9 +451,9 @@ parameters:
 
         SM_ZACC_LOW:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -526,9 +462,9 @@ parameters:
 
         SM_ZACC_HIGH:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -537,9 +473,9 @@ parameters:
 
         SM_KV:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -548,9 +484,9 @@ parameters:
 
         SM_ALTHLD_ON:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -559,9 +495,9 @@ parameters:
 
         SM_KH_P:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -570,9 +506,9 @@ parameters:
 
         SM_KH_I:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -581,9 +517,9 @@ parameters:
 
         SM_DTAU_ALT:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -592,9 +528,9 @@ parameters:
 
         SM_VVTHRSHEN:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -603,9 +539,9 @@ parameters:
 
         SM_VVTHRSHSC:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -614,9 +550,9 @@ parameters:
 
         SM_HDGHLD_ON:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -625,9 +561,9 @@ parameters:
 
         SM_RTHRESH:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -636,9 +572,9 @@ parameters:
 
         SM_DTAU_HDG:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -647,9 +583,9 @@ parameters:
 
         SM_KPSI_P:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -658,9 +594,9 @@ parameters:
 
         SM_KPSI_I:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -669,9 +605,9 @@ parameters:
 
         SM_HDG_VMAX:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -680,9 +616,9 @@ parameters:
 
         SM_TRKHLD_ON:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -691,9 +627,9 @@ parameters:
 
         SM_PHITHRESH:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -702,9 +638,9 @@ parameters:
 
         SM_KTRK_P:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -713,9 +649,9 @@ parameters:
 
         SM_KTRK_I:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -724,9 +660,9 @@ parameters:
 
         SM_TRK_VMIN:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -735,9 +671,9 @@ parameters:
 
         SM_POSHLD_ON:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -746,9 +682,9 @@ parameters:
 
         SM_KP_LAT_PH:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -757,9 +693,9 @@ parameters:
 
         SM_KI_LAT_PH:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -768,9 +704,9 @@ parameters:
 
         SM_KD_LAT_PH:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -779,9 +715,9 @@ parameters:
 
         SM_KP_LON_PH:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -790,9 +726,9 @@ parameters:
 
         SM_KI_LON_PH:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -801,9 +737,9 @@ parameters:
 
         SM_KD_LON_PH:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -812,9 +748,9 @@ parameters:
 
         SM_PH_VTHRSH:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -823,9 +759,9 @@ parameters:
 
         SM_DTAU_PH:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -834,9 +770,9 @@ parameters:
 
         SM_AP_VMAX:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -845,9 +781,9 @@ parameters:
 
         SM_AP_VVMAX:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -856,9 +792,9 @@ parameters:
 
         SM_AP_TO_FPM:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -867,9 +803,9 @@ parameters:
 
         SM_AP_TO_AGL:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -878,9 +814,9 @@ parameters:
 
         SM_AP_TO_K:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -901,81 +837,11 @@ parameters:
             min: 0.0
             default: 0.1
 
-        SM_TECS_KEI:
-            description:
-                short: SIMULINK some usefull discription
-                long: |
-                    SIMULINK some usefull discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_TECS_KEP:
-            description:
-                short: SIMULINK some usefull discription
-                long: |
-                    SIMULINK some usefull discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_TECS_KTI:
-            description:
-                short: SIMULINK some usefull discription
-                long: |
-                    SIMULINK some usefull discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_TECS_KTP:
-            description:
-                short: SIMULINK some usefull discription
-                long: |
-                    SIMULINK some usefull discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_TECS_KFFP:
-            description:
-                short: SIMULINK some usefull discription
-                long: |
-                    SIMULINK some usefull discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_TECS_KTRIM:
-            description:
-                short: SIMULINK some usefull discription
-                long: |
-                    SIMULINK some usefull discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_TECS_KFFA:
-            description:
-                short: SIMULINK some usefull discription
-                long: |
-                    SIMULINK some usefull discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
         SM_EMF_LAT_WNCM:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -983,9 +849,9 @@ parameters:
 
         SM_EMF_LAT_ZCM:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -993,9 +859,9 @@ parameters:
 
         SM_EMF_LAT_LP:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -1003,9 +869,9 @@ parameters:
 
         SM_EMF_LAT_LULAT:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -1013,9 +879,9 @@ parameters:
 
         SM_EMF_LAT_KYR:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -1023,9 +889,9 @@ parameters:
 
         SM_EMF_LAT_KP:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -1033,9 +899,9 @@ parameters:
 
         SM_EMF_LAT_KPH:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -1043,9 +909,9 @@ parameters:
 
         SM_EMF_LAT_KIPH:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -1053,9 +919,9 @@ parameters:
 
         SM_EMF_LON_WNCM:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -1063,9 +929,9 @@ parameters:
 
         SM_EMF_LON_ZCM:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -1073,9 +939,9 @@ parameters:
 
         SM_EMF_LON_MQ:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -1083,9 +949,9 @@ parameters:
 
         SM_EMF_LON_MULG:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -1093,9 +959,9 @@ parameters:
 
         SM_EMF_LON_ZSP:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -1103,9 +969,9 @@ parameters:
 
         SM_EMF_LON_WNSP:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -1113,9 +979,9 @@ parameters:
 
         SM_EMF_LON_TTH2:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -1123,9 +989,9 @@ parameters:
 
         SM_EMF_LON_KAPP:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -1133,9 +999,9 @@ parameters:
 
         SM_EMF_LON_KQ:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -1143,9 +1009,9 @@ parameters:
 
         SM_EMF_LON_KTH:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -1153,9 +1019,9 @@ parameters:
 
         SM_EMF_LON_KITH:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -1163,9 +1029,9 @@ parameters:
 
         SM_EMF_DIR_TAUCM:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -1173,9 +1039,9 @@ parameters:
 
         SM_EMF_DIR_NR:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -1183,9 +1049,9 @@ parameters:
 
         SM_EMF_DIR_NUDIR:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -1193,9 +1059,9 @@ parameters:
 
         SM_EMF_DIR_ZDR:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -1203,9 +1069,9 @@ parameters:
 
         SM_EMF_DIR_WNSP:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -1213,9 +1079,9 @@ parameters:
 
         SM_EMF_DIR_TTH2:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -1223,9 +1089,9 @@ parameters:
 
         SM_EMF_DIR_KAPP:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -1233,9 +1099,9 @@ parameters:
 
         SM_EMF_DIR_KRY:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -1243,9 +1109,9 @@ parameters:
 
         SM_EMF_DIR_KR:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
@@ -1253,101 +1119,298 @@ parameters:
 
         SM_EMF_DIR_KIR:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
             default: 0.0
 
-        SM_WING_VTXN:
+        SM_TCS_KTIH:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
-
-            type: float
-            decimal: 4
-            default: 40.0
-
-        SM_WING_KW:
-            description:
-                short: SIMULINK some usefull discription
-                long: |
-                    SIMULINK some usefull discription
-
-            type: float
-            decimal: 4
-            default: 25.0
-
-        SM_WING_LIM:
-            description:
-                short: SIMULINK some usefull discription
-                long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
             default: 0.0
 
-        SM_LQI_LIM:
+        SM_TCS_KTPH:
             description:
-                short: SIMULINK some usefull discription
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK some usefull discription
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
             default: 0.0
 
-        SM_LQI_LAT_${i}:
+        SM_TCS_KTIV:
             description:
-                short: SIMULINK LQI lateral controller gain ${i}
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK LQI lateral controller gain ${i}
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
-            num_instances: 5
-            instance_start: 1
-            default: [0.15, 0.0, 0.3, -0.3, 0.0]
+            default: 0.0
 
-        SM_LQI_LON_${i}:
+        SM_TCS_KTPV:
             description:
-                short: SIMULINK LQI longitudinal controller gain ${i}
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK LQI longitudinal controller gain ${i}
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
-            num_instances: 3
-            instance_start: 1
-            default: [0.6, 1.5, -1.5]
+            default: 0.0
 
-        SM_LQI_DIR_${i}:
+        SM_TCS_KTXN:
             description:
-                short: SIMULINK LQI directional controller gain ${i}
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK LQI directional controller gain ${i}
+                    SIMULINK very useful discription
 
             type: float
             decimal: 4
-            num_instances: 5
-            instance_start: 1
-            default: [0.0, 2.0, 0.0, 0.0, -2.0]
+            default: 0.0
 
-        SM_LQI_EN:
+        SM_TCS_KTRIM:
             description:
-                short: SIMULINK LQI enabler flag
+                short: SIMULINK very useful discription
                 long: |
-                    SIMULINK enabler flag.
-                    0 - EMF (default)
-                    1 - LQI
+                    SIMULINK very useful discription
 
-            type: enum
-            values:
-                0: EMF
-                1: LQI
-            default: 0
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_TCS_KPITCH:
+            description:
+                short: SIMULINK very useful discription
+                long: |
+                    SIMULINK very useful discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_TCS_KH:
+            description:
+                short: SIMULINK very useful discription
+                long: |
+                    SIMULINK very useful discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_TCS_KV:
+            description:
+                short: SIMULINK very useful discription
+                long: |
+                    SIMULINK very useful discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+
+        SM_TCS_VM${i}:
+            description:
+                short: SIMULINK SM_TCS_VM${i} very useful discription
+                long: |
+                    SIMULINK SM_TCS_VM${i} very useful discription
+
+            type: float
+            decimal: 4
+            num_instances: 2
+            instance_start: 1
+            default: 0.0
+
+        SM_TCS_VH${i}:
+            description:
+                short: SIMULINK SM_TCS_VH${i} very useful discription
+                long: |
+                    SIMULINK SM_TCS_VH${i} very useful discription
+
+            type: float
+            decimal: 4
+            num_instances: 2
+            instance_start: 1
+            default: 0.0
+
+        SM_TCS_DL_M12:
+            description:
+                short: SIMULINK very useful discription
+                long: |
+                    SIMULINK very useful discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_TCS_DL_M23:
+            description:
+                short: SIMULINK very useful discription
+                long: |
+                    SIMULINK very useful discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_TCS_W_M34:
+            description:
+                short: SIMULINK very useful discription
+                long: |
+                    SIMULINK very useful discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_TCS_QMAX_M34:
+            description:
+                short: SIMULINK very useful discription
+                long: |
+                    SIMULINK very useful discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_TCS_DL_M43:
+            description:
+                short: SIMULINK very useful discription
+                long: |
+                    SIMULINK very useful discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_TCS_W_M32:
+            description:
+                short: SIMULINK very useful discription
+                long: |
+                    SIMULINK very useful discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_TCS_DL_M21:
+            description:
+                short: SIMULINK very useful discription
+                long: |
+                    SIMULINK very useful discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_TCS_TAU_W:
+            description:
+                short: SIMULINK very useful discription
+                long: |
+                    SIMULINK very useful discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_TCS_TW_IDLE:
+            description:
+                short: SIMULINK very useful discription
+                long: |
+                    SIMULINK very useful discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_TCS_TAU_VV:
+            description:
+                short: SIMULINK very useful discription
+                long: |
+                    SIMULINK very useful discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_TCS_TAU_TH:
+            description:
+                short: SIMULINK very useful discription
+                long: |
+                    SIMULINK very useful discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_TCS_RAPID_INT:
+            description:
+                short: SIMULINK very useful discription
+                long: |
+                    SIMULINK very useful discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_TCS_ACC_BAND:
+            description:
+                short: SIMULINK very useful discription
+                long: |
+                    SIMULINK very useful discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_TCS_WR_LIM:
+            description:
+                short: SIMULINK very useful discription
+                long: |
+                    SIMULINK very useful discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_TCS_KT2RPM:
+            description:
+                short: SIMULINK very useful discription
+                long: |
+                    SIMULINK very useful discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_BLEND_MODE:
+            description:
+                short: SIMULINK very useful discription
+                long: |
+                    SIMULINK very useful discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_BLEND_VX${i}:
+            description:
+                short: SIMULINK SM_BLEND_VX${i} very useful discription
+                long: |
+                    SIMULINK SM_BLEND_VX${i} very useful discription
+
+            type: float
+            decimal: 4
+            num_instances: 2
+            instance_start: 1
+            default: 0.0
 
