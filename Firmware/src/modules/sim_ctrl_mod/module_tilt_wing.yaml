@@ -14,6 +14,66 @@ parameters:
             instance_start: 1
             default: [-0.5, 0.5, 0.5, -0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5]
 
+        SM_WING_MAX:
+            description:
+                short: SIMULINK very useful discription
+                long: |
+                    SIMULINK very useful discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_WING_MIN:
+            description:
+                short: SIMULINK very useful discription
+                long: |
+                    SIMULINK very useful discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_WING_RPOS:
+            description:
+                short: SIMULINK very useful discription
+                long: |
+                    SIMULINK very useful discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_WING_RNEG:
+            description:
+                short: SIMULINK very useful discription
+                long: |
+                    SIMULINK very useful discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_WING_POS_TOL:
+            description:
+                short: SIMULINK very useful discription
+                long: |
+                    SIMULINK very useful discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_WING_RDEADZ:
+            description:
+                short: SIMULINK very useful discription
+                long: |
+                    SIMULINK very useful discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
         SM_FF_THR:
             description:
                 short: SIMULINK very useful discription
@@ -822,21 +882,6 @@ parameters:
             decimal: 4
             default: 0.0
 
-        SM_WING_R_LIM:
-            description:
-                short: SIMULINK parameter for rate limiter on the wing tilt command
-                long: |
-                    SIMULINK parameter for controling rate
-                    for rate transitioning rate limiter for
-                    the wing tilt command. It is applied symmetrically
-                    (in -+SM_WING_R_LIM)
-
-            type: float
-            decimal: 4
-
-            min: 0.0
-            default: 0.1
-
         SM_EMF_LAT_WNCM:
             description:
                 short: SIMULINK very useful discription
@@ -1312,6 +1357,16 @@ parameters:
             decimal: 4
             default: 0.0
 
+        SM_TCS_TH_HFM:
+            description:
+                short: SIMULINK very useful discription
+                long: |
+                    SIMULINK very useful discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
         SM_TCS_TAU_W:
             description:
                 short: SIMULINK very useful discription
@@ -1323,6 +1378,16 @@ parameters:
             default: 0.0
 
         SM_TCS_TW_IDLE:
+            description:
+                short: SIMULINK very useful discription
+                long: |
+                    SIMULINK very useful discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_TCS_TW_TKO:
             description:
                 short: SIMULINK very useful discription
                 long: |
@@ -1382,7 +1447,7 @@ parameters:
             decimal: 4
             default: 0.0
 
-        SM_TCS_KT2RPM:
+        SM_TCS_KFFA_SC:
             description:
                 short: SIMULINK very useful discription
                 long: |
@@ -1390,7 +1455,7 @@ parameters:
 
             type: float
             decimal: 4
-            default: 0.0
+            default: 1.0
 
         SM_BLEND_MODE:
             description:
