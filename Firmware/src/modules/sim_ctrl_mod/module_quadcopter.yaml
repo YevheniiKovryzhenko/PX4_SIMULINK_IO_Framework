@@ -209,6 +209,54 @@ parameters:
             min: 0.0
             default: [0.00000131042, 0.0000048923, 0.01454923117]
 
+        SM_K_1_${i}:
+            description:
+                short: SIMULINK SM_K_1_${i} entry of K-control gain matrix
+                long: |
+                    SIMULINK SM_K_1_${i} entry of K-control gain matrix
+
+            type: float
+            decimal: 12
+            num_instances: 12
+            instance_start: 1
+            default: [-0.440787948519277,-0.119391705191202,-1.45144745105388,-0.618408612844560,-0.123347496696772,-2.08172364075180,0.115470477426844,2.87901596184222,6.13602244662145,-0.0411746565715893,0.342211677919201,7.23405407457360]
+
+        SM_K_2_${i}:
+            description:
+                short: SIMULINK SM_K_2_${i} entry of K-control gain matrix
+                long: |
+                    SIMULINK SM_K_2_${i} entry of K-control gain matrix
+
+            type: float
+            decimal: 12
+            num_instances: 12
+            instance_start: 1
+            default: [0.0109820684240965,0.219899941235129,-0.0228258809895282,0.0156858321477119,0.264467189758429,-0.0721954577811857,1.25517895582622,-0.0872779351620212,0.0899156772141027,0.274330220739323,-0.0128168908902375,-0.652544541566612]
+
+        SM_K_3_${i}:
+            description:
+                short: SIMULINK SM_K_3_${i} entry of K-control gain matrix
+                long: |
+                    SIMULINK SM_K_3_${i} entry of K-control gain matrix
+
+            type: float
+            decimal: 12
+            num_instances: 12
+            instance_start: 1
+            default: [-0.192910691108998,-0.0143016822348020,0.0354407951093521,-0.234329763249317,-0.0196912201601104,0.0195011084558385,-0.0903351404602408,1.15946066120665,-0.0708972580729257,0.000555823479069249,0.298068285448022,-1.20407457791599]
+
+        SM_K_4_${i}:
+            description:
+                short: SIMULINK SM_K_4_${i} entry of K-control gain matrix
+                long: |
+                    SIMULINK SM_K_4_${i} entry of K-control gain matrix
+
+            type: float
+            decimal: 12
+            num_instances: 12
+            instance_start: 1
+            default: [0.00150076033646409,-0.00155448984709277,0.0102980246345205,-0.00397297825275222,0.00146007421021059,0.0337415541415048,0.00902073281538412,0.0532020740523595,0.0579299213932434,0.00148331989177015,0.0113375315969048,0.339541886286155]
+
         SM_POS_P${i}:
             description:
                 short: SIMULINK proportional gain for position feedback
