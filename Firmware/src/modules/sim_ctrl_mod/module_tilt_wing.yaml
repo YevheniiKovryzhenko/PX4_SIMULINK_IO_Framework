@@ -1265,197 +1265,243 @@ parameters:
 
         SM_TCS_VM${i}:
             description:
-                short: SIMULINK SM_TCS_VM${i} very useful discription
+                short: SIMULINK SM_TCS_VM${i} HFM mode blend speed
                 long: |
-                    SIMULINK SM_TCS_VM${i} very useful discription
+                    SIMULINK SM_TCS_VM${i} HFM mode blend speed
+                    [lower, upper limit]
 
             type: float
             decimal: 4
             num_instances: 2
             instance_start: 1
-            default: 0.0
+            default: [5.0, 10.0]
 
         SM_TCS_VH${i}:
             description:
-                short: SIMULINK SM_TCS_VH${i} very useful discription
+                short: SIMULINK SM_TCS_VH${i} TFM mode blend speed
                 long: |
-                    SIMULINK SM_TCS_VH${i} very useful discription
+                    SIMULINK SM_TCS_VH${i} TFM mode blend speed
+                    [lower, upper limit]
 
             type: float
             decimal: 4
             num_instances: 2
             instance_start: 1
-            default: 0.0
+            default: [45.0, 50.0]
 
         SM_TCS_DL_M12:
             description:
-                short: SIMULINK very useful discription
+                short: SIMULINK deck level value for Mode 1 to 2 transition
                 long: |
-                    SIMULINK very useful discription
+                    SIMULINK deck level value for Mode 1 to 2 transition
 
             type: float
             decimal: 4
-            default: 0.0
+            default: 0.3
 
         SM_TCS_DL_M23:
             description:
-                short: SIMULINK very useful discription
+                short: SIMULINK deck level value for Mode 2 to 3 transition
                 long: |
-                    SIMULINK very useful discription
+                    SIMULINK deck level value for Mode 2 to 3 transition
 
             type: float
             decimal: 4
-            default: 0.0
+            default: 1.8
 
         SM_TCS_W_M34:
             description:
-                short: SIMULINK very useful discription
+                short: SIMULINK wing angle for Mode 3 to 4 transition
                 long: |
-                    SIMULINK very useful discription
+                    SIMULINK wing angle for Mode 3 to 4 transition
 
             type: float
             decimal: 4
-            default: 0.0
+            unit: deg
+            default: 0.1
 
         SM_TCS_QMAX_M34:
             description:
-                short: SIMULINK very useful discription
+                short: SIMULINK max pitch rate during Mode 3 to 4 transition
                 long: |
-                    SIMULINK very useful discription
+                    SIMULINK max pitch rate during Mode 3 to 4 transition
 
             type: float
+            unit: deg/s
             decimal: 4
-            default: 0.0
+            default: 2.0
 
         SM_TCS_DL_M43:
             description:
-                short: SIMULINK very useful discription
+                short: SIMULINK deck level value for Mode 4 to 3 transition
                 long: |
-                    SIMULINK very useful discription
+                    SIMULINK deck level value for Mode 4 to 3 transition
 
             type: float
             decimal: 4
-            default: 0.0
+            default: 2.0
 
         SM_TCS_W_M32:
             description:
-                short: SIMULINK very useful discription
+                short: SIMULINK wing angle for Mode 3 to Mode 2 transition
                 long: |
-                    SIMULINK very useful discription
+                    SIMULINK wing angle for Mode 3 to Mode 2 transition
 
             type: float
             decimal: 4
-            default: 0.0
+            unit: deg
+            default: 40.0
 
         SM_TCS_DL_M21:
             description:
-                short: SIMULINK very useful discription
+                short: SIMULINK deck level value for Mode 2 to Mode 1 transition
                 long: |
-                    SIMULINK very useful discription
+                    SIMULINK deck level value for Mode 2 to Mode 1 transition
 
             type: float
             decimal: 4
-            default: 0.0
+            default: 0.1
 
         SM_TCS_TH_HFM:
             description:
-                short: SIMULINK very useful discription
+                short: SIMULINK pitch attitude during acceleration through HFM
                 long: |
-                    SIMULINK very useful discription
+                    SIMULINK pitch attitude during acceleration through HFM
 
             type: float
             decimal: 4
-            default: 0.0
+            default: 5.0
 
         SM_TCS_TAU_W:
             description:
-                short: SIMULINK very useful discription
+                short: SIMULINK time constant for wing first-order dynamics
                 long: |
-                    SIMULINK very useful discription
+                    SIMULINK time constant for wing first-order dynamics
 
             type: float
             decimal: 4
-            default: 0.0
+            unit: s
+            default: 0.05
 
         SM_TCS_TW_IDLE:
             description:
-                short: SIMULINK very useful discription
+                short: SIMULINK T/W when in ground contact (idling)
                 long: |
-                    SIMULINK very useful discription
+                    SIMULINK T/W when in ground contact (idling)
 
             type: float
             decimal: 4
-            default: 0.0
+            default: 0.1
 
         SM_TCS_TW_TKO:
             description:
-                short: SIMULINK very useful discription
+                short: SIMULINK T/W when lifting off from ground contact
                 long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_TCS_TAU_VV:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_TCS_TAU_TH:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_TCS_RAPID_INT:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_TCS_ACC_BAND:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_TCS_WR_LIM:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_TCS_KFFA_SC:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
+                    SIMULINK T/W when lifting off from ground contact
 
             type: float
             decimal: 4
             default: 1.0
+
+        SM_TCS_TAU_VV:
+            description:
+                short: SIMULINK for converting VVCmd error to a VVdot error
+                long: |
+                    SIMULINK for converting VVCmd error to a VVdot error
+
+            type: float
+            decimal: 4
+            default: 1.0
+
+        SM_TCS_TAU_TH:
+            description:
+                short: SIMULINK gain controlling discharge of pitch integrator
+                long: |
+                    SIMULINK gain controlling discharge of pitch integrator
+
+            type: float
+            decimal: 4
+            default: 0.5
+
+        SM_TCS_RAPID_INT:
+            description:
+                short: SIMULINK gain for making integrator shadow a variable
+                long: |
+                    SIMULINK gain for making integrator shadow a variable
+
+            type: float
+            decimal: 4
+            default: 100.0
+
+        SM_TCS_ACC_BAND:
+            description:
+                short: SIMULINK accel_sign parameter deadband
+                long: |
+                    SIMULINK [kt] deadband for computing accel_sign parameter
+
+            type: float
+            decimal: 4
+            default: 3.0
+
+        SM_TCS_WR_LIM:
+            description:
+                short: SIMULINK wing rate limit
+                long: |
+                    SIMULINK deg/s, wing rate limit in Mode 1
+
+            type: float
+            decimal: 4
+            unit: deg/s
+            default: 1.0
+
+        SM_TCS_KFFA_SC:
+            description:
+                short: SIMULINK pitch responsiveness scale factor
+                long: |
+                    SIMULINK KFFA scale factor for pitch responsiveness
+
+            type: float
+            decimal: 4
+            default: 1.0
+
+        SM_TCS_TKO_VV:
+            description:
+                short: SIMULINK take off boost
+                long: |
+                    SIMULINK T/W feed-forward for taking off quickly
+            type: float
+            decimal: 4
+            default: 0.5
+
+        SM_TCS_TAU_TKO:
+            description:
+                short: SIMULINK main rotors spool up rate
+                long: |
+                    SIMULINK how quickly to spool up the main rotors when taking off
+
+            type: float
+            decimal: 4
+            default: 2.0
+
+        SM_TCS_TH_MAX:
+            description:
+                short: SIMULINK pitch command positive limit
+                long: |
+                    SIMULINK pitch command positive limit
+
+            type: float
+            decimal: 4
+            default: 15.0
+
+        SM_TCS_TH_MIN:
+            description:
+                short: SIMULINK pitch command negative limit
+                long: |
+                    SIMULINK pitch command negative limit
+
+            type: float
+            decimal: 4
+            default: -15.0
 
         SM_BLEND_MODE:
             description:
@@ -1478,4 +1524,82 @@ parameters:
             num_instances: 2
             instance_start: 1
             default: 0.0
+
+        SM_AP_TKO:
+            description:
+                short: SIMULINK very useful discription
+                long: |
+                    SIMULINK very useful discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_AP_DXN:
+            description:
+                short: SIMULINK very useful discription
+                long: |
+                    SIMULINK very useful discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_AP_AXN:
+            description:
+                short: SIMULINK very useful discription
+                long: |
+                    SIMULINK very useful discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_AP_LDG:
+            description:
+                short: SIMULINK very useful discription
+                long: |
+                    SIMULINK very useful discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_AP_NAV:
+            description:
+                short: SIMULINK very useful discription
+                long: |
+                    SIMULINK very useful discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_WING_AUTO:
+            description:
+                short: SIMULINK wing angle logic switch
+                long: |
+                    SIMULINK a logic flag 0/1 for disabling/enabling
+                    automatic wing angle control
+
+            type: enum
+            values:
+                0: DISABLE
+                1: ENABLE
+            min: 0
+            max: 1
+            default: 1
+
+        SM_WING_CMD:
+            description:
+                short: SIMULINK wing angle command
+                long: |
+                    SIMULINK wing angle command
+                    between 0 (wing horizontal) and 90 (wing vertical)
+
+            type: float
+            decimal: 4
+            min: 0.0
+            max: 90.0
+            default: 90.0
 
