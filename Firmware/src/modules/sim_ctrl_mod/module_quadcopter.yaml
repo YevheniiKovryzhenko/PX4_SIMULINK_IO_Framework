@@ -209,6 +209,20 @@ parameters:
             min: 0.0
             default: [0.00000131042, 0.0000048923, 0.01454923117]
 
+        SM_EN_K_CONROL:
+            description:
+                short: SIMULINK enable K-Matrix Controller
+                long: |
+                    SIMULINK parameter for controling if
+                    the K-matrix control system is used instead of
+                    the Quaternion-based cascaded PID.
+
+            type: enum
+            values:
+                0: DISABLE
+                1: ENABLE
+            default: 0
+
         SM_K_1_${i}:
             description:
                 short: SIMULINK SM_K_1_${i} entry of K-control gain matrix
@@ -256,6 +270,36 @@ parameters:
             num_instances: 12
             instance_start: 1
             default: [0.00150076033646409,-0.00155448984709277,0.0102980246345205,-0.00397297825275222,0.00146007421021059,0.0337415541415048,0.00902073281538412,0.0532020740523595,0.0579299213932434,0.00148331989177015,0.0113375315969048,0.339541886286155]
+
+        SM_POS_K_I_${i}:
+            description:
+                short: SIMULINK integral gain for position feedback (K-matrix controller)
+                long: |
+                    SIMULINK integral gain for position feedback
+                    (multiplies ${i}-th element in error vector).
+                    This isa separate gain specifically for K-matrix
+                    controller.
+
+            type: float
+            decimal: 4
+            num_instances: 3
+            instance_start: 1
+            min: 0.0
+            default: [0.6, 0.6, 0.5]
+
+        SM_EN_FF_T_TAU:
+            description:
+                short: SIMULINK enable use of FF T and Tau
+                long: |
+                    SIMULINK parameter for enabling thrust and
+                    torque feed-forward when flying minimum-snap
+                    trajectories.
+
+            type: enum
+            values:
+                0: DISABLE
+                1: ENABLE
+            default: 0
 
         SM_POS_P${i}:
             description:
