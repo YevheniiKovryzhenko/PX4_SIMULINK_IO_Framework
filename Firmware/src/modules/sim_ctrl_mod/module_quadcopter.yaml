@@ -273,19 +273,19 @@ parameters:
 
         SM_POS_K_I_${i}:
             description:
-                short: SIMULINK integral gain for position feedback (K-matrix controller)
+                short: SIMULINK integral gain for position and attitude feedback (K-matrix controller)
                 long: |
-                    SIMULINK integral gain for position feedback
+                    SIMULINK integral gain for position and attitude feedback
                     (multiplies ${i}-th element in error vector).
-                    This isa separate gain specifically for K-matrix
+                    This is a separate gain specifically for K-matrix
                     controller.
 
             type: float
             decimal: 4
-            num_instances: 3
+            num_instances: 6
             instance_start: 1
             min: 0.0
-            default: [0.6, 0.6, 0.5]
+            default: [0.3, 0.3, 0.5, 0.0, 0.0, 0.2]
 
         SM_EN_FF_T_TAU:
             description:
