@@ -93,7 +93,7 @@ int SIM_GUIDANCE::custom_command(int argc, char *argv[])
 		}
 		else if(!strcmp(argv[i], "ls"))
 		{
-			if (argc < i+1)
+			if (argc < i+2)
 			{
 				const char* directory_ = get_instance()->traj.file_loader.get_dir();
 				//PX4_WARN("Please specify a directory");

@@ -1988,7 +1988,8 @@ Commander::run()
 		int32_t sm_input_src = 0;
 		param_get(param_find("SM_OVERWRITE"), &sm_arm_overwrite);
 		param_get(param_find("SM_CMD_OPT"), &sm_input_src);
-		if (_armed.armed && sm_arm_overwrite == 0 && sm_input_src == 0) //only if not controlled by SIM_CONTROL_MOD
+		bool use_px4_armed_flag = (sm_arm_overwrite == 6) || (sm_arm_overwrite == 0 && sm_input_src == 0);
+		if (_armed.armed && use_px4_armed_flag) //only if not controlled by SIM_CONTROL_MOD
 		{
 
 			// Check for auto-disarm on landing or pre-flight
@@ -2642,7 +2643,7 @@ Commander::run()
 
 			_armed.timestamp = hrt_absolute_time();
 
-			if (sm_arm_overwrite == 0 && sm_input_src == 0) _armed_pub.publish(_armed);
+			if (use_px4_armed_flag) _armed_pub.publish(_armed);
 			else
 			{
 				bool armed_old = _armed.armed;

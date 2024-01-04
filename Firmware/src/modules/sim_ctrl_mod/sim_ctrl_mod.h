@@ -194,6 +194,7 @@ private:
 	//battery_status_s batt;
 	distance_sensor_s dist{};
 	actuator_armed_s act_armed{};
+	actuator_armed_s act_armed_px4{};
 	vehicle_odometry_s odom{};
 	adc_report_s adc{};
 	vehicle_angular_velocity_s v_angular_velocity{};
