@@ -38,6 +38,7 @@
 
 #include <math.h>
 #include <uORB/topics/parameter_update.h>
+//#include "waypoints.hpp"
 
 int SIM_GUIDANCE::print_status()
 {
@@ -127,6 +128,30 @@ int SIM_GUIDANCE::custom_command(int argc, char *argv[])
 			}
 
 		}
+		else if(!strcmp(argv[i], "test"))
+		{
+			if (argc - 1 > i)
+			{
+				if (!strcmp(argv[i+1], "solver"))
+				{
+					//test_solver_codegen();
+					return 0;
+				}
+				else
+				{
+					PX4_WARN("Uknown test routine. \n\
+						Please specify test routine from the list:\n\
+						solver");
+					return 0;
+				}
+			}
+			else
+			{
+				PX4_WARN("Please specify test routine from the list:\n\
+				solver");
+				return 0;
+			}
+		}
 		else continue;
 	}
 
@@ -139,7 +164,7 @@ int SIM_GUIDANCE::task_spawn(int argc, char *argv[])
 {
 	_task_id = px4_task_spawn_cmd("SIM_GUIDANCE",
 				      SCHED_DEFAULT,
-				      SCHED_PRIORITY_DEFAULT,
+				      SCHED_PRIORITY_DEFAULT - 5,
 				      1800,
 				      (px4_main_t)&run_trampoline,
 				      (char *const *)argv);

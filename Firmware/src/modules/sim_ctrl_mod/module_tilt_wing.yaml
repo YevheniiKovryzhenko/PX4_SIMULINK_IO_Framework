@@ -14,6 +14,67 @@ parameters:
             instance_start: 1
             default: [-0.5, 0.5, 0.5, -0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5]
 
+
+        SM_DENSITY:
+            description:
+                short: SIMULINK very useful discription
+                long: |
+                    SIMULINK very useful discription
+
+            type: float
+            decimal: 4
+            default: 1.225
+
+        SM_TURNCOMP:
+            description:
+                short: SIMULINK very useful discription
+                long: |
+                    SIMULINK very useful discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_RPM_OFFSET:
+            description:
+                short: SIMULINK very useful discription
+                long: |
+                    SIMULINK very useful discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_NAV_VAGGR:
+            description:
+                short: SIMULINK very useful discription
+                long: |
+                    SIMULINK very useful discription
+
+            type: float
+            decimal: 4
+            default: 50.0
+
+        SM_NAV_ALT0:
+            description:
+                short: SIMULINK very useful discription
+                long: |
+                    SIMULINK very useful discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_NAV_LAF:
+            description:
+                short: SIMULINK very useful discription
+                long: |
+                    SIMULINK very useful discription
+
+            type: float
+            decimal: 4
+            default: 4.0
+
         SM_WING_MAX:
             description:
                 short: SIMULINK very useful discription
@@ -1072,7 +1133,17 @@ parameters:
             decimal: 4
             default: 0.0
 
-        SM_EMF_DIR_TAUCM:
+        SM_EMF_DIR_WNCM:
+            description:
+                short: SIMULINK very useful discription
+                long: |
+                    SIMULINK very useful discription
+
+            type: float
+            decimal: 4
+            default: 0.0
+
+        SM_EMF_DIR_ZCM:
             description:
                 short: SIMULINK very useful discription
                 long: |
@@ -1112,7 +1183,7 @@ parameters:
             decimal: 4
             default: 0.0
 
-        SM_EMF_DIR_WNSP:
+        SM_EMF_DIR_WNDR:
             description:
                 short: SIMULINK very useful discription
                 long: |
@@ -1502,6 +1573,36 @@ parameters:
             type: float
             decimal: 4
             default: -15.0
+
+        SM_TCS_KPOG:
+            description:
+                short: SIMULINK pitch command negative limit
+                long: |
+                    SIMULINK pitch command negative limit
+
+            type: float
+            decimal: 4
+            default: 0.1
+
+        SM_TCS_W23:
+            description:
+                short: SIMULINK pitch command negative limit
+                long: |
+                    SIMULINK pitch command negative limit
+
+            type: float
+            decimal: 4
+            default: 20.0
+
+        SM_TCS_WR43:
+            description:
+                short: SIMULINK pitch command negative limit
+                long: |
+                    SIMULINK pitch command negative limit
+
+            type: float
+            decimal: 4
+            default: 10.0
 
         SM_BLEND_MODE:
             description:

@@ -507,6 +507,7 @@ transition_result_t Commander::arm(arm_disarm_reason_t calling_reason, bool run_
 	}
 
 	if (run_preflight_checks) {
+		/*
 		if (_vehicle_control_mode.flag_control_manual_enabled) {
 			if (_vehicle_control_mode.flag_control_climb_rate_enabled && _manual_control.isThrottleAboveCenter()) {
 				mavlink_log_critical(&_mavlink_log_pub, "Arming denied: throttle above center");
@@ -521,6 +522,7 @@ transition_result_t Commander::arm(arm_disarm_reason_t calling_reason, bool run_
 				return TRANSITION_DENIED;
 			}
 		}
+		*/
 
 		if ((_param_geofence_action.get() == geofence_result_s::GF_ACTION_RTL)
 		    && !_status_flags.condition_home_position_valid) {
@@ -851,8 +853,8 @@ Commander::handle_command(const vehicle_command_s &cmd)
 				const bool forced = (static_cast<int>(roundf(cmd.param2)) == 21196);
 
 				if (!forced) {
-					if (!(_land_detector.landed || _land_detector.maybe_landed) && !is_ground_rover(_status)) {
-						if (cmd_arms) {
+					if (cmd_arms && (!(_land_detector.landed || _land_detector.maybe_landed) && !is_ground_rover(_status))) {
+						//if (cmd_arms) {
 							if (_armed.armed) {
 								mavlink_log_warning(&_mavlink_log_pub, "Arming denied! Already armed");
 
@@ -860,9 +862,9 @@ Commander::handle_command(const vehicle_command_s &cmd)
 								mavlink_log_critical(&_mavlink_log_pub, "Arming denied! Not landed");
 							}
 
-						} else {
-							mavlink_log_critical(&_mavlink_log_pub, "Disarming denied! Not landed");
-						}
+						//} else {
+						//	mavlink_log_critical(&_mavlink_log_pub, "Disarming denied! Not landed");
+						//}
 
 						cmd_result = vehicle_command_s::VEHICLE_CMD_RESULT_DENIED;
 						break;
