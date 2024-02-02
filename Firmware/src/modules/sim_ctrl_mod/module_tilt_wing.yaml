@@ -14,7 +14,6 @@ parameters:
             instance_start: 1
             default: [-0.5, 0.5, 0.5, -0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5]
 
-
         SM_DENSITY:
             description:
                 short: SIMULINK very useful discription
@@ -22,6 +21,7 @@ parameters:
                     SIMULINK very useful discription
 
             type: float
+            unit: kg/m^3
             decimal: 4
             default: 1.225
 
@@ -230,6 +230,15 @@ parameters:
                 short: SIMULINK gain index
                 long: |
                     SIMULINK gain index
+
+            type: int32
+            default: -1
+
+        SM_PARAM_INDEX:
+            description:
+                short: SIMULINK parameter index
+                long: |
+                    SIMULINK parameter index
 
             type: int32
             default: -1
