@@ -1721,7 +1721,7 @@ parameters:
 
             type: float
             decimal: 4
-            default: 0.0
+            default: 0.08
 
         SM_LATCS_KPSI:
             description:
@@ -1731,7 +1731,7 @@ parameters:
 
             type: float
             decimal: 4
-            default: 0.0
+            default: 0.5
 
 
         SM_LATCS_KBETA:
@@ -1752,4 +1752,4 @@ parameters:
 
             type: float
             decimal: 4
-            default: 0.0
+            default: 2.0
