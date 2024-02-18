@@ -94,7 +94,7 @@ bool ManualControl::wantsOverride(const vehicle_control_mode_s &vehicle_control_
 
 bool ManualControl::wantsDisarm(const vehicle_control_mode_s &vehicle_control_mode,
 				const vehicle_status_s &vehicle_status,
-				manual_control_switches_s &manual_control_switches, const bool landed)
+				manual_control_switches_s &manual_control_switches)
 {
 	bool ret = false;
 
@@ -111,12 +111,12 @@ bool ManualControl::wantsDisarm(const vehicle_control_mode_s &vehicle_control_mo
 	const bool arm_switch_to_disarm_transition = use_switch
 			&& (_last_manual_control_switches_arm_switch == manual_control_switches_s::SWITCH_POS_ON)
 			&& (manual_control_switches.arm_switch == manual_control_switches_s::SWITCH_POS_OFF);
-	const bool mc_manual_thrust_mode = vehicle_status.vehicle_type == vehicle_status_s::VEHICLE_TYPE_ROTARY_WING
-					   && vehicle_control_mode.flag_control_manual_enabled
-					   && !vehicle_control_mode.flag_control_climb_rate_enabled;
+	//const bool mc_manual_thrust_mode = vehicle_status.vehicle_type == vehicle_status_s::VEHICLE_TYPE_ROTARY_WING
+	//				   && vehicle_control_mode.flag_control_manual_enabled
+	//				   && !vehicle_control_mode.flag_control_climb_rate_enabled;
 
 	if (armed
-	    && (landed || mc_manual_thrust_mode)
+	    //&& (landed || mc_manual_thrust_mode)
 	    && (stick_in_lower_left || arm_button_pressed || arm_switch_to_disarm_transition)) {
 
 		const bool last_disarm_hysteresis = _stick_disarm_hysteresis.get_state();

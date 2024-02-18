@@ -2274,7 +2274,7 @@ Commander::run()
 			const bool rc_arming_enabled = (_status.rc_input_mode != vehicle_status_s::RC_IN_MODE_OFF);
 
 			if (rc_arming_enabled) {
-				if (_manual_control.wantsDisarm(_vehicle_control_mode, _status, _manual_control_switches, _land_detector.landed)) {
+				if (_manual_control.wantsDisarm(_vehicle_control_mode, _status, _manual_control_switches)) {
 					disarm(arm_disarm_reason_t::RC_STICK);
 				}
 

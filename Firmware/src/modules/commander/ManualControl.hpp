@@ -67,7 +67,7 @@ public:
 	bool isMavlink() const { return _manual_control_setpoint.data_source > manual_control_setpoint_s::SOURCE_RC; }
 	bool wantsOverride(const vehicle_control_mode_s &vehicle_control_mode, const vehicle_status_s &vehicle_status);
 	bool wantsDisarm(const vehicle_control_mode_s &vehicle_control_mode, const vehicle_status_s &vehicle_status,
-			 manual_control_switches_s &manual_control_switches, const bool landed);
+			 manual_control_switches_s &manual_control_switches);
 	bool wantsArm(const vehicle_control_mode_s &vehicle_control_mode, const vehicle_status_s &vehicle_status,
 		      const manual_control_switches_s &manual_control_switches, const bool landed);
 	bool isThrottleLow() const { return _last_manual_control_setpoint.z < 0.1f; }
