@@ -1,0 +1,15 @@
+module_name: SIMULINK_PX4_BRIDGE
+parameters:
+    - group: SIMULINK_PX4_BRIDGE
+      definitions:
+        SIM_BRIDGE_EN:
+            description:
+                short: Enable simulink bridge main update loop
+                long: |
+                    Enable/Disable simulink bridge main update routine.
+
+            type: enum
+            values:
+                0: DISABLE
+                1: ENABLE
+            default: 1
