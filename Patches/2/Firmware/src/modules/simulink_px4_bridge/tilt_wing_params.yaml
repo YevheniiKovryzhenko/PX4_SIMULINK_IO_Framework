@@ -1,0 +1,15 @@
+module_name: SIMULINK_PX4_BRIDGE
+parameters:
+    - group: TILT_WING
+      definitions:
+        EXAMPLE_FLAG:
+            description:
+                short: test
+                long: |
+                    test
+
+            type: enum
+            values:
+                0: DISABLE
+                1: ENABLE
+            default: 1
