@@ -677,7 +677,7 @@ void SIM_CTRL_MOD::update_mode_autonomous(control_level &current_mode, bool arme
 	param_get(param_find("SMG_EN"), &SMG_EN_);
 
 
-	if (SMG_EN_ == 1) //don't bother otherwise
+	if (SMG_EN_ > 0) //don't bother otherwise
 	{
 		//first, we need to overwrite some of the generic modes:
 		static int32_t SM_MODE1_MAP = 5;
@@ -835,16 +835,42 @@ void SIM_CTRL_MOD::update_mode_autonomous(control_level &current_mode, bool arme
 			break;
 
 		default:
-
-			if (current_mode != AUTONOMOUS && prev_mode == AUTONOMOUS) //double check this
+		{
+			switch (prev_mode)
 			{
-				sim_guidance_request_s smg_request{};
-				smg_request.reset = true;
-				smg_request.set_home = true;
-				smg_request.timestamp = hrt_absolute_time();
-				_sim_guidance_request_pub.publish(smg_request);
+			case AUTONOMOUS:
+				{
+					sim_guidance_request_s smg_request{};
+					smg_request.reset = true;
+					smg_request.set_home = false;
+					smg_request.timestamp = hrt_absolute_time();
+					_sim_guidance_request_pub.publish(smg_request);
+					break;
+				}
+			case POS_CONTROL:
+				{
+					sim_guidance_request_s smg_request{};
+					smg_request.reset = true;
+					smg_request.set_home = false;
+					smg_request.timestamp = hrt_absolute_time();
+					_sim_guidance_request_pub.publish(smg_request);
+					break;
+				}
+			case POS_HOLD:
+				{
+					sim_guidance_request_s smg_request{};
+					smg_request.reset = true;
+					smg_request.set_home = false;
+					smg_request.timestamp = hrt_absolute_time();
+					_sim_guidance_request_pub.publish(smg_request);
+					break;
+				}
+
+			default:
+				break;
 			}
 			break;
+		}
 		}
 
 		prev_mode = current_mode;

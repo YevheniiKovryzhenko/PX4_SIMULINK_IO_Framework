@@ -2729,6 +2729,14 @@ MavlinkReceiver::handle_message_debug_float_array(mavlink_message_t *msg)
 		_simulink_inbound_ctrl_pub.publish(debug_topic);
 		return;
 
+	case debug_array_s::COMPANION_GUIDANCE_INBOUND_ID:
+		_companion_guidance_inbound_pub.publish(debug_topic);
+		return;
+
+	case debug_array_s::COMPANION_GUIDANCE_OUTBOUND_ID:
+		_companion_guidance_outbound_pub.publish(debug_topic);
+		return;
+
 	default:
 		_debug_array_pub.publish(debug_topic);
 		return;

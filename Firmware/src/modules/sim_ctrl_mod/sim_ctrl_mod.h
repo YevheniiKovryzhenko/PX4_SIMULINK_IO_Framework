@@ -209,7 +209,7 @@ private:
 	manual_control_switches_s man_switches{};
 
 	sim_guidance_status_s smg_status{};
-	sim_guidance_trajectory_s smg_traj{};
+	//sim_guidance_trajectory_s smg_traj{};
 
 
 	void publish_inbound_sim_data(void);

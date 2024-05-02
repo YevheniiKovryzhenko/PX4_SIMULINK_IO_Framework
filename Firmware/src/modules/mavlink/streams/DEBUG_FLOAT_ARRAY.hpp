@@ -52,6 +52,10 @@ public:
 			return "SIMULINK_OUTBOUND";
 		case 3:
 			return "SIMULINK_GUIDANCE";
+		case 4:
+			return "COMPANION_GUIDANCE_INBOUND";
+		case 5:
+			return "COMPANION_GUIDANCE_OUTBOUND";
 		default:
 			return "DEBUG_FLOAT_ARRAY";
 		}
@@ -79,6 +83,12 @@ private:
 			break;
 		case 3:
 			_debug_array_sub = new uORB::Subscription{ORB_ID(simulink_guidance)};
+			break;
+		case 4:
+			_debug_array_sub = new uORB::Subscription{ORB_ID(companion_guidance_inbound)};
+			break;
+		case 5:
+			_debug_array_sub = new uORB::Subscription{ORB_ID(companion_guidance_outbound)};
 			break;
 
 		default:
@@ -125,7 +135,20 @@ private:
 				msg.array_id = debug_array_s::SIMULINK_GUIDANCE_ID;
 				break;
 			}
-
+			case 4:
+			{
+				char message_name[10] = "compg_in";
+				memcpy(msg.name, message_name, sizeof(message_name));
+				msg.array_id = debug_array_s::COMPANION_GUIDANCE_INBOUND_ID;
+				break;
+			}
+			case 5:
+			{
+				char message_name[10] = "compg_out";
+				memcpy(msg.name, message_name, sizeof(message_name));
+				msg.array_id = debug_array_s::COMPANION_GUIDANCE_OUTBOUND_ID;
+				break;
+			}
 
 			default:
 				msg.array_id = debug.id;

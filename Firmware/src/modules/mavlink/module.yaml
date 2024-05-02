@@ -60,6 +60,8 @@ parameters:
                 #9: External Vision Minimal # hidden
                 10: Gimbal
                 11: Onboard Low Bandwidth
+                12: Simulink
+                13: Companion
             reboot_required: true
             num_instances: *max_num_config_instances
             default: [0, 2, 0]
@@ -73,7 +75,7 @@ parameters:
                     each stream is automatically decreased.
 
                     If this is set to 0 a value of half of the theoretical maximum bandwidth is used.
-                    This corresponds to baudrate/20 Bytes/s (baudrate/10 = maximum data rate on 
+                    This corresponds to baudrate/20 Bytes/s (baudrate/10 = maximum data rate on
                     8N1-configured links).
 
             type: int32
@@ -116,7 +118,7 @@ parameters:
             description:
                 short: MAVLink Network Port for instance ${i}
                 long: |
-                    If ethernet enabled and selected as configuration for MAVLink instance ${i}, 
+                    If ethernet enabled and selected as configuration for MAVLink instance ${i},
                     selected udp port will be set and used in MAVLink instance ${i}.
 
             type: int32
@@ -129,7 +131,7 @@ parameters:
             description:
                 short: MAVLink Remote Port for instance ${i}
                 long: |
-                    If ethernet enabled and selected as configuration for MAVLink instance ${i}, 
+                    If ethernet enabled and selected as configuration for MAVLink instance ${i},
                     selected remote port will be set and used in MAVLink instance ${i}.
 
             type: int32
@@ -142,14 +144,14 @@ parameters:
             description:
                 short: Broadcast heartbeats on local network for MAVLink instance ${i}
                 long: |
-                    This allows a ground control station to automatically find the drone 
+                    This allows a ground control station to automatically find the drone
                     on the local network.
 
             type: enum
             values:
                 0: Never broadcast
                 1: Always broadcast
-                2: Only multicast        
+                2: Only multicast
             num_instances: *max_num_config_instances
             default: [1, 0, 0]
             requires_ethernet: true

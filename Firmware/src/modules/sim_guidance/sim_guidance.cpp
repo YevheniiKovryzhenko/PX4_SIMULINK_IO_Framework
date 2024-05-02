@@ -260,12 +260,12 @@ void SIM_GUIDANCE::update_guidance(void)
 	int32_t enable_fl = _param_smg_en.get();
 
 
-	if (enable_fl == 1)
+	if (enable_fl > 0)
 	{
 		#ifdef DEBUG
 		PX4_INFO("Updating main loop");
 		#endif
-		traj.update();
+		traj.update(enable_fl == 2);
 
 	}
 

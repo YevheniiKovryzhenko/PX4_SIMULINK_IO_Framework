@@ -78,11 +78,14 @@ private:
 	int load(void);
 	int load_dummy_data(void);
 	int execute(void);
+	int update_from_companion(void);
+	int update_companion(bool request_start = false, bool request_stop = false, bool request_start_executing = false);
 	int set_home(void);
-	int reset_ref2state(void);
+	int reset_ref2state();
 
 	sim_guidance_status_s status{};
-	debug_array_s sm_inbound{};
+	debug_array_s sm_inbound{}, comp_outbound{};
+	debug_array_s sm_guidance_internal{};
 
 
 	// Publications
@@ -90,11 +93,14 @@ private:
 	uORB::Publication<sim_guidance_status_s>	_sim_guidance_status_pub{ORB_ID(sim_guidance_status)};
 	uORB::Publication<sim_guidance_request_s>	_sim_guidance_request_pub{ORB_ID(sim_guidance_request)};
 	uORB::Publication<debug_array_s>		_sim_guidance_pub{ORB_ID(simulink_guidance)};
+	uORB::Publication<debug_array_s>		_companion_guidance_inbound_pub{ORB_ID(companion_guidance_inbound)};
 
 
 	// Subscriptions
 	uORB::Subscription				_sim_guidance_request_sub{ORB_ID(sim_guidance_request)};
 	uORB::Subscription				_sim_inbound_sub{ORB_ID(simulink_inbound)};
+	uORB::Subscription				_companion_guidance_outbound_sub{ORB_ID(companion_guidance_outbound)};
+	uORB::Subscription				_sim_guidance_sub{ORB_ID(companion_guidance_inbound)};
 
 public:
 	trajectory(/* args */);
@@ -105,6 +111,6 @@ public:
 	int set_src(const char* _dir, const char* _file);
 
 	void print_status(void);
-	void update(void); //main update loop
+	void update(bool use_companion = false); //main update loop
 };
 
