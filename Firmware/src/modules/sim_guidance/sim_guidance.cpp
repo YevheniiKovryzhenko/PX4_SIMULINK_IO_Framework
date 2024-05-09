@@ -244,7 +244,7 @@ void SIM_GUIDANCE::run()
 		parameters_update(); // update parameters
 		update_guidance(); //update everything related to simulink
 
-		px4_usleep(1000);// don't update too frequenty
+		px4_usleep(5000);// don't update too frequenty
 	}
 }
 

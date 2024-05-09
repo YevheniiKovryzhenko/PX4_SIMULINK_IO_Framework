@@ -84,8 +84,8 @@ private:
 	int reset_ref2state();
 
 	sim_guidance_status_s status{};
-	debug_array_s sm_inbound{}, comp_outbound{};
-	debug_array_s sm_guidance_internal{};
+	debug_array_s sm_inbound{}, smg{};
+	//debug_array_s _companion_guidance_inbound{};
 
 
 	// Publications
@@ -100,7 +100,7 @@ private:
 	uORB::Subscription				_sim_guidance_request_sub{ORB_ID(sim_guidance_request)};
 	uORB::Subscription				_sim_inbound_sub{ORB_ID(simulink_inbound)};
 	uORB::Subscription				_companion_guidance_outbound_sub{ORB_ID(companion_guidance_outbound)};
-	uORB::Subscription				_sim_guidance_sub{ORB_ID(companion_guidance_inbound)};
+	uORB::Subscription				_companion_guidance_inbound_sub{ORB_ID(companion_guidance_inbound)};
 
 public:
 	trajectory(/* args */);

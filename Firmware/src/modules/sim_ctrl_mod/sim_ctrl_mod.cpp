@@ -765,7 +765,17 @@ void SIM_CTRL_MOD::update_mode_autonomous(control_level &current_mode, bool arme
 			{
 			case AUTONOMOUS: //remaining in AUTONOMOUS
 				if (armed)current_mode = AUTONOMOUS;
-				else current_mode = POS_HOLD;
+				else
+				{
+					if(smg_status.started && !smg_status.finished)
+					{
+						sim_guidance_request_s smg_request{};
+						smg_request.stop = true;
+						smg_request.timestamp = hrt_absolute_time();
+						_sim_guidance_request_pub.publish(smg_request);
+					}
+					current_mode = POS_HOLD;
+				}
 				break;
 
 			case POS_HOLD: //waiting to be cleared to transition into AUTONOMOUS
@@ -821,7 +831,7 @@ void SIM_CTRL_MOD::update_mode_autonomous(control_level &current_mode, bool arme
 			default: //go though position hold first
 				{
 					sim_guidance_request_s smg_request{};
-					smg_request.reset = true;
+					//smg_request.reset = false;
 					smg_request.start = true;
 					smg_request.timestamp = hrt_absolute_time();
 					_sim_guidance_request_pub.publish(smg_request);
@@ -836,39 +846,32 @@ void SIM_CTRL_MOD::update_mode_autonomous(control_level &current_mode, bool arme
 
 		default:
 		{
-			switch (prev_mode)
+			//always make sure to quit guidance if unused
+			if(smg_status.started && !smg_status.finished)
 			{
-			case AUTONOMOUS:
-				{
-					sim_guidance_request_s smg_request{};
-					smg_request.reset = true;
-					smg_request.set_home = false;
-					smg_request.timestamp = hrt_absolute_time();
-					_sim_guidance_request_pub.publish(smg_request);
-					break;
-				}
-			case POS_CONTROL:
-				{
-					sim_guidance_request_s smg_request{};
-					smg_request.reset = true;
-					smg_request.set_home = false;
-					smg_request.timestamp = hrt_absolute_time();
-					_sim_guidance_request_pub.publish(smg_request);
-					break;
-				}
-			case POS_HOLD:
-				{
-					sim_guidance_request_s smg_request{};
-					smg_request.reset = true;
-					smg_request.set_home = false;
-					smg_request.timestamp = hrt_absolute_time();
-					_sim_guidance_request_pub.publish(smg_request);
-					break;
-				}
-
-			default:
-				break;
+				sim_guidance_request_s smg_request{};
+				smg_request.stop = true;
+				smg_request.timestamp = hrt_absolute_time();
+				_sim_guidance_request_pub.publish(smg_request);
 			}
+			// switch (prev_mode)
+			// {
+			// case AUTONOMOUS:
+			// 	{
+			// 		break;
+			// 	}
+			// case POS_CONTROL:
+			// 	{
+			// 		break;
+			// 	}
+			// case POS_HOLD:
+			// 	{
+			// 		break;
+			// 	}
+
+			// default:
+			// 	break;
+			// }
 			break;
 		}
 		}

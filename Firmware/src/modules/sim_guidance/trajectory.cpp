@@ -154,28 +154,36 @@ int trajectory::set_home(void)
 	//_sim_inbound_sub.update(&sm_inbound); //assume this is already done
 
 	initial_point.reset();
-	initial_point.pos(0) = sm_inbound.data[XYZ_OFFSET_START_IND]; 	//x
-	initial_point.pos(1) = sm_inbound.data[XYZ_OFFSET_START_IND+1]; //y
-	initial_point.pos(2) = sm_inbound.data[XYZ_OFFSET_START_IND+2]; //z
+	size_t tmp_ind = 1;
+	for (size_t i = 0; i < n_dofs_max; i++)
+	{
+		initial_point.pos(i) = smg.data[tmp_ind];
+		tmp_ind++;
+	}
 
 
 
-	matrix::Quaternion<float> vehicle_attitude_quat(\
-	sm_inbound.data[QUAT_OFFSET_START_IND],\
-	sm_inbound.data[QUAT_OFFSET_START_IND+1],\
-	sm_inbound.data[QUAT_OFFSET_START_IND+2],\
-	sm_inbound.data[QUAT_OFFSET_START_IND+3]);
+	// initial_point.pos(0) = sm_inbound.data[XYZ_OFFSET_START_IND]; 	//x
+	// initial_point.pos(1) = sm_inbound.data[XYZ_OFFSET_START_IND+1]; //y
+	// initial_point.pos(2) = sm_inbound.data[XYZ_OFFSET_START_IND+2]; //z
 
-	matrix::Euler<float> vehicle_attitude_eul(vehicle_attitude_quat);
-	initial_point.pos(3) = vehicle_attitude_eul.psi();		//yaw
+
+
+	// matrix::Quaternion<float> vehicle_attitude_quat(
+	// sm_inbound.data[QUAT_OFFSET_START_IND],
+	// sm_inbound.data[QUAT_OFFSET_START_IND+1],
+	// sm_inbound.data[QUAT_OFFSET_START_IND+2],
+	// sm_inbound.data[QUAT_OFFSET_START_IND+3]);
+
+	// matrix::Euler<float> vehicle_attitude_eul(vehicle_attitude_quat);
+	// initial_point.pos(3) = vehicle_attitude_eul.psi();		//yaw
 	return 0;
 }
 
 int trajectory::reset_ref2state()
 {
-
 	//need to feed-in current point:
-	_sim_inbound_sub.update(&sm_inbound);
+	//_sim_inbound_sub.update(&sm_inbound);
 
 	matrix::Vector<DATATYPE_TRAJ,n_dofs_max> pos;
 	matrix::Vector<DATATYPE_TRAJ,n_dofs_max> vel;
@@ -225,13 +233,13 @@ int trajectory::reset_ref2state()
 	_sim_guidance_trajecotry_pub.publish(smg_traj);
 
 	//also publish it in array format:
-	debug_array_s smg{};
+	//debug_array_s smg{};
 	smg.timestamp = hrt_absolute_time();
 	size_t tmp_ind = 0;
-	smg.id = debug_array_s::SIMULINK_GUIDANCE_ID;
-	char message_name[10] = "guidance";
-	memcpy(smg.name, message_name, sizeof(message_name));
-	smg.name[sizeof(smg.name) - 1] = '\0'; // enforce null termination
+	// smg.id = debug_array_s::SIMULINK_GUIDANCE_ID;
+	// char message_name[10] = "guidance";
+	// memcpy(smg.name, message_name, sizeof(message_name));
+	// smg.name[sizeof(smg.name) - 1] = '\0'; // enforce null termination
 
 	smg.data[tmp_ind] = static_cast<float>(status.finished);
 	tmp_ind++;
@@ -260,6 +268,8 @@ int trajectory::reset_ref2state()
 		smg.data[tmp_ind] = 0.0f;
 		tmp_ind++;
 	}
+
+	set_home();
 	_sim_guidance_pub.publish(smg);
 	return 0;
 }
@@ -267,8 +277,9 @@ int trajectory::reset_ref2state()
 void trajectory::update(bool use_companion)
 {
 	//if using companion, we need to process it first
+	bool already_sent_request = false;
 	if (use_companion) update_from_companion(); //also updates status flags
-
+	_sim_inbound_sub.update(&sm_inbound); //get most recent state information (process later)
 
 	//check the requests:
 	sim_guidance_request_s smg_request{};
@@ -276,35 +287,6 @@ void trajectory::update(bool use_companion)
 	{
 		if (smg_request.reset || smg_request.start || smg_request.stop || smg_request.start_execution) //ignore if all is false (no real requests)
 		{
-			if (smg_request.reset)
-			{
-				reset(); //check reset flag first
-				if (use_companion)
-				{
-					update_companion(false, true);
-					status.loaded = false;
-				}
-			}
-			if (smg_request.set_home) //process manually-requested set_home (even if disabled)
-			{
-				reset_ref2state(); //make sure we have the most recent state first
-				if (use_companion)
-				{
-					update_companion(false, true);
-					status.loaded = false;
-				}
-				set_home(); //set home to current state
-				//this will only publish once, if trajectory execution is not enabled
-				//won't do much, but is usefull if trying to capture current state
-			}
-			if (smg_request.start) //this is when we have received the first request (assume pos_hold is not yet enabled, but will be as we send back ack)
-			{
-				start(); //start if not started yet
-				reset_ref2state(); //make sure we have the most recent state first
-				if (use_companion) update_companion(true);
-				set_home(); //set home to current state
-				//assume pos_hold will latch on this point, so we won't update the ref untill trajectory is executed or reset
-			}
 			if (smg_request.stop)
 			{
 				status.finished = true; //this this as early termination
@@ -313,7 +295,41 @@ void trajectory::update(bool use_companion)
 					update_companion(false, true);
 					status.loaded = false;
 				}
+				already_sent_request = true;
 			}
+			if (smg_request.reset)
+			{
+				reset(); //check reset flag first
+				if (use_companion)
+				{
+					update_companion(false, true);
+					status.loaded = false;
+				}
+				already_sent_request = true;
+			}
+			if (smg_request.set_home) //process manually-requested set_home (even if disabled)
+			{
+				reset_ref2state(); //make sure we have the most recent state first, also sets home
+				//set_home(); //set home to current state
+				if (use_companion)
+				{
+					update_companion(false, true);
+					status.loaded = false;
+				}
+				//this will only publish once, if trajectory execution is not enabled
+				//won't do much, but is usefull if trying to capture current state
+				already_sent_request = true;
+			}
+			if (smg_request.start) //this is when we have received the first request (assume pos_hold is not yet enabled, but will be as we send back ack)
+			{
+				start(); //start if not started yet
+				reset_ref2state(); //make sure we have the most recent state first, also sets home
+				//set_home(); //set home to current state
+				if (use_companion) update_companion(true);
+				//assume pos_hold will latch on this point, so we won't update the ref untill trajectory is executed or reset
+				already_sent_request = true;
+			}
+
 
 			if (!smg_request.start && !smg_request.reset && !smg_request.stop && smg_request.start_execution \
 				&& status.loaded && status.started && !status.finished)
@@ -322,6 +338,7 @@ void trajectory::update(bool use_companion)
 				status.executing = true; //trajecotry is fully loaded and ready, so start evaluation
 				PX4_INFO("Started trajectory execution");
 				initial_point.start(); //starts the timer for trajectory execuition
+				already_sent_request = true;
 			}
 
 			sim_guidance_request_s smg_request_ack{};
@@ -343,6 +360,7 @@ void trajectory::update(bool use_companion)
 		if (use_companion)
 		{
 			status.trajectory_valid = true; //this should be handled on the other side
+			if (!already_sent_request) update_companion();
 		}
 		else
 		{
@@ -387,6 +405,7 @@ void trajectory::update(bool use_companion)
 	smg_status.timestamp = hrt_absolute_time();
 
 	_sim_guidance_status_pub.publish(smg_status);
+
 
 	return;
 }
@@ -716,13 +735,13 @@ int trajectory::execute(void)
 	_sim_guidance_trajecotry_pub.publish(smg_traj);
 
 	//also publish it in array format:
-	debug_array_s smg{};
+	//debug_array_s smg{};
 	smg.timestamp = hrt_absolute_time();
 	size_t tmp_ind = 0;
-	smg.id = debug_array_s::SIMULINK_GUIDANCE_ID;
-	char message_name[10] = "guidance";
-	memcpy(smg.name, message_name, sizeof(message_name));
-	smg.name[sizeof(smg.name) - 1] = '\0'; // enforce null termination
+	// smg.id = debug_array_s::SIMULINK_GUIDANCE_ID;
+	// char message_name[10] = "guidance";
+	// memcpy(smg.name, message_name, sizeof(message_name));
+	// smg.name[sizeof(smg.name) - 1] = '\0'; // enforce null termination
 
 	smg.data[tmp_ind] = static_cast<float>(status.finished);
 	tmp_ind++;
@@ -758,7 +777,8 @@ int trajectory::execute(void)
 }
 int trajectory::update_from_companion(void)
 {
-	//debug_array_s comp_outbound{};
+
+	debug_array_s comp_outbound{};
 	if (!_companion_guidance_outbound_sub.update(&comp_outbound)) return 0;
 
 	//PX4_INFO("Processing update from companion...");
@@ -790,106 +810,108 @@ int trajectory::update_from_companion(void)
 		status.finished = true;
 	}
 
-	//if (!status.executing) return;
 
-	float time_trajecotry_s = comp_outbound.data[tmp_ind];
-	tmp_ind++;
-	for (int i = 0; i < companion_max_dof; i++)
+	if (status.executing)
 	{
-		pos(i) = comp_outbound.data[tmp_ind];
+		float time_trajecotry_s = comp_outbound.data[tmp_ind];
 		tmp_ind++;
-	}
-	for (int i = 0; i < companion_max_dof; i++)
-	{
-		vel(i) = comp_outbound.data[tmp_ind];
-		tmp_ind++;
-	}
-	for (int i = 0; i < companion_max_dof; i++)
-	{
-		acc(i) = comp_outbound.data[tmp_ind];
-		tmp_ind++;
-	}
-	for (int i = 0; i < companion_max_dof; i++)
-	{
-		jerk(i) = comp_outbound.data[tmp_ind];
-		tmp_ind++;
-	}
-	for (int i = 0; i < companion_max_dof; i++)
-	{
-		snap(i) = comp_outbound.data[tmp_ind];
-		tmp_ind++;
-	}
-
-	//publish new data:
-	sim_guidance_trajectory_s smg_traj{};
-	smg_traj.time_s = static_cast<float>(time_trajecotry_s);
-	smg_traj.n_dofs = static_cast<uint8_t>(n_dofs);
-	for (size_t i = 0; i < n_dofs; i++)
-	{
-		if (i < companion_max_dof)
+		for (int i = 0; i < companion_max_dof; i++)
 		{
-			smg_traj.position[i] = static_cast<float>(pos(i));
-			smg_traj.velocity[i] = static_cast<float>(vel(i));
-			smg_traj.acceleration[i] = static_cast<float>(acc(i));
-			smg_traj.jerk[i] = static_cast<float>(jerk(i));
-			smg_traj.snap[i] = static_cast<float>(snap(i));
+			pos(i) = comp_outbound.data[tmp_ind];
+			tmp_ind++;
 		}
-		else
+		for (int i = 0; i < companion_max_dof; i++)
 		{
-			smg_traj.position[i] = static_cast<float>(initial_point.pos(i));
-			smg_traj.velocity[i] = static_cast<float>(initial_point.acc(i));
-			smg_traj.acceleration[i] = static_cast<float>(initial_point.vel(i));
-			smg_traj.jerk[i] = static_cast<float>(initial_point.jerk(i));
-			smg_traj.snap[i] = static_cast<float>(initial_point.snap(i));
+			vel(i) = comp_outbound.data[tmp_ind];
+			tmp_ind++;
+		}
+		for (int i = 0; i < companion_max_dof; i++)
+		{
+			acc(i) = comp_outbound.data[tmp_ind];
+			tmp_ind++;
+		}
+		for (int i = 0; i < companion_max_dof; i++)
+		{
+			jerk(i) = comp_outbound.data[tmp_ind];
+			tmp_ind++;
+		}
+		for (int i = 0; i < companion_max_dof; i++)
+		{
+			snap(i) = comp_outbound.data[tmp_ind];
+			tmp_ind++;
 		}
 
-	}
+		//publish new data:
+		sim_guidance_trajectory_s smg_traj{};
+		smg_traj.time_s = static_cast<float>(time_trajecotry_s);
+		smg_traj.n_dofs = static_cast<uint8_t>(n_dofs);
+		for (size_t i = 0; i < n_dofs; i++)
+		{
+			if (i < companion_max_dof)
+			{
+				smg_traj.position[i] = static_cast<float>(pos(i));
+				smg_traj.velocity[i] = static_cast<float>(vel(i));
+				smg_traj.acceleration[i] = static_cast<float>(acc(i));
+				smg_traj.jerk[i] = static_cast<float>(jerk(i));
+				smg_traj.snap[i] = static_cast<float>(snap(i));
+			}
+			else
+			{
+				smg_traj.position[i] = static_cast<float>(initial_point.pos(i));
+				smg_traj.velocity[i] = static_cast<float>(initial_point.acc(i));
+				smg_traj.acceleration[i] = static_cast<float>(initial_point.vel(i));
+				smg_traj.jerk[i] = static_cast<float>(initial_point.jerk(i));
+				smg_traj.snap[i] = static_cast<float>(initial_point.snap(i));
+			}
 
-	smg_traj.timestamp = hrt_absolute_time();
-	_sim_guidance_trajecotry_pub.publish(smg_traj);
+		}
 
-	//also publish it in array format:
-	debug_array_s smg{};
-	smg.timestamp = hrt_absolute_time();
-	tmp_ind = 0;
-	smg.id = debug_array_s::SIMULINK_GUIDANCE_ID;
-	char message_name[10] = "guidance";
-	memcpy(smg.name, message_name, sizeof(message_name));
-	smg.name[sizeof(smg.name) - 1] = '\0'; // enforce null termination
+		smg_traj.timestamp = hrt_absolute_time();
+		_sim_guidance_trajecotry_pub.publish(smg_traj);
 
-	smg.data[tmp_ind] = static_cast<float>(status.finished);
-	tmp_ind++;
-	for (size_t i = 0; i < n_dofs_max; i++)
-	{
-		if (i < companion_max_dof) smg.data[tmp_ind] = static_cast<float>(pos(i));
-		else smg.data[tmp_ind] = static_cast<float>(initial_point.pos(i));
+		//also publish it in array format:
+		// debug_array_s smg{};
+		smg.timestamp = hrt_absolute_time();
+		tmp_ind = 0;
+		// smg.id = debug_array_s::SIMULINK_GUIDANCE_ID;
+		// char message_name[10] = "guidance";
+		// memcpy(smg.name, message_name, sizeof(message_name));
+		// smg.name[sizeof(smg.name) - 1] = '\0'; // enforce null termination
+
+		smg.data[tmp_ind] = static_cast<float>(status.finished);
 		tmp_ind++;
+		for (size_t i = 0; i < n_dofs_max; i++)
+		{
+			if (i < companion_max_dof) smg.data[tmp_ind] = static_cast<float>(pos(i));
+			else smg.data[tmp_ind] = static_cast<float>(initial_point.pos(i));
+			tmp_ind++;
+		}
+		for (size_t i = 0; i < n_dofs_max; i++)
+		{
+			if (i < companion_max_dof) smg.data[tmp_ind] = static_cast<float>(vel(i));
+			else smg.data[tmp_ind] = static_cast<float>(initial_point.vel(i));
+			tmp_ind++;
+		}
+		for (size_t i = 0; i < n_dofs_max; i++)
+		{
+			if (i < companion_max_dof) smg.data[tmp_ind] = static_cast<float>(acc(i));
+			else smg.data[tmp_ind] = static_cast<float>(initial_point.acc(i));
+			tmp_ind++;
+		}
+		for (size_t i = 0; i < n_dofs_max; i++)
+		{
+			if (i < companion_max_dof) smg.data[tmp_ind] = static_cast<float>(jerk(i));
+			else smg.data[tmp_ind] = static_cast<float>(initial_point.jerk(i));
+			tmp_ind++;
+		}
+		for (size_t i = 0; i < n_dofs_max; i++)
+		{
+			if (i < companion_max_dof) smg.data[tmp_ind] = static_cast<float>(snap(i));
+			else smg.data[tmp_ind] = static_cast<float>(initial_point.snap(i));
+			tmp_ind++;
+		}
+		_sim_guidance_pub.publish(smg);
 	}
-	for (size_t i = 0; i < n_dofs_max; i++)
-	{
-		if (i < companion_max_dof) smg.data[tmp_ind] = static_cast<float>(vel(i));
-		else smg.data[tmp_ind] = static_cast<float>(initial_point.vel(i));
-		tmp_ind++;
-	}
-	for (size_t i = 0; i < n_dofs_max; i++)
-	{
-		if (i < companion_max_dof) smg.data[tmp_ind] = static_cast<float>(acc(i));
-		else smg.data[tmp_ind] = static_cast<float>(initial_point.acc(i));
-		tmp_ind++;
-	}
-	for (size_t i = 0; i < n_dofs_max; i++)
-	{
-		if (i < companion_max_dof) smg.data[tmp_ind] = static_cast<float>(jerk(i));
-		else smg.data[tmp_ind] = static_cast<float>(initial_point.jerk(i));
-		tmp_ind++;
-	}
-	for (size_t i = 0; i < n_dofs_max; i++)
-	{
-		if (i < companion_max_dof) smg.data[tmp_ind] = static_cast<float>(snap(i));
-		else smg.data[tmp_ind] = static_cast<float>(initial_point.snap(i));
-		tmp_ind++;
-	}
-	_sim_guidance_pub.publish(smg);
 
 	status.loaded = is_alive;
 	return 0;
@@ -899,8 +921,12 @@ int trajectory::update_companion(bool request_start, bool request_stop, bool req
 {
 
 	//need to feed-in current point:
-	_sim_inbound_sub.update(&sm_inbound);
-	_sim_guidance_sub.update(&sm_guidance_internal);
+	//bool need2publish_anything = request_start || request_stop || request_start_executing;
+
+	//if (_sim_inbound_sub.update(&sm_inbound)) need2publish_anything = true;
+	//if (_companion_guidance_inbound_sub.update(&_companion_guidance_inbound)) need2publish_anything = true;
+
+	//if (!need2publish_anything) return 0;
 
 	matrix::Vector<DATATYPE_TRAJ,n_dofs_max> pos;
 	// matrix::Vector<DATATYPE_TRAJ,n_dofs_max> vel;
@@ -934,114 +960,117 @@ int trajectory::update_companion(bool request_start, bool request_stop, bool req
 
 
 
-	size_t tmp_ind = 0;
+	size_t tmp_ind = 1;
 	pointf setpoint_last{};
-	// smg.data[tmp_ind] = static_cast<float>(status.finished);
-	tmp_ind++;
 	for (size_t i = 0; i < n_dofs_max; i++)
 	{
-		setpoint_last.pos(i) = sm_guidance_internal.data[tmp_ind];
+		setpoint_last.pos(i) = smg.data[tmp_ind];
 		tmp_ind++;
 	}
 	for (size_t i = 0; i < n_dofs_max; i++)
 	{
-		setpoint_last.vel(i) = sm_guidance_internal.data[tmp_ind];
+		setpoint_last.vel(i) = smg.data[tmp_ind];
 		tmp_ind++;
 	}
 	for (size_t i = 0; i < n_dofs_max; i++)
 	{
-		setpoint_last.acc(i) = sm_guidance_internal.data[tmp_ind];
+		setpoint_last.acc(i) = smg.data[tmp_ind];
 		tmp_ind++;
 	}
 	for (size_t i = 0; i < n_dofs_max; i++)
 	{
-		setpoint_last.jerk(i) = sm_guidance_internal.data[tmp_ind];
+		setpoint_last.jerk(i) = smg.data[tmp_ind];
 		tmp_ind++;
 	}
 	for (size_t i = 0; i < n_dofs_max; i++)
 	{
-		setpoint_last.snap(i) = sm_guidance_internal.data[tmp_ind];
+		setpoint_last.snap(i) = smg.data[tmp_ind];
 		tmp_ind++;
 	}
 
 
 
 	//publish new data:
-	debug_array_s comp_inbound{};
-	comp_inbound.timestamp = hrt_absolute_time();
-	comp_inbound.id = debug_array_s::COMPANION_GUIDANCE_INBOUND_ID;
+	debug_array_s _companion_guidance_inbound{};
+	_companion_guidance_inbound.timestamp = hrt_absolute_time();
+	_companion_guidance_inbound.id = debug_array_s::COMPANION_GUIDANCE_INBOUND_ID;
 	char message_name[10] = "compg_in";
-	memcpy(comp_inbound.name, message_name, sizeof(message_name));
-	comp_inbound.name[sizeof(comp_inbound.name) - 1] = '\0'; // enforce null termination
+	memcpy(_companion_guidance_inbound.name, message_name, sizeof(message_name));
+	_companion_guidance_inbound.name[sizeof(_companion_guidance_inbound.name) - 1] = '\0'; // enforce null termination
 
 	tmp_ind = 0;
 	static const size_t companion_max_dof = 3;
 
 	if (request_stop) PX4_INFO("Sending stop request to the companion...");
-	if (request_start) PX4_INFO("Sending start request to the companion...");
-	if (request_start_executing) PX4_INFO("Sending start execuition request to the companion...");
+	if (request_start)
+	{
+		PX4_INFO("Sending start request to the companion...");
+		PX4_INFO("Position = [%f, %f, %f, %f], Reference = [%f, %f, %f, %f]",\
+		 (double)pos(0), (double)pos(1), (double)pos(2), (double)pos(3),\
+		 (double)setpoint_last.pos(0), (double)setpoint_last.pos(1), (double)setpoint_last.pos(2), (double)setpoint_last.pos(3));
+	}
+	if (request_start_executing) PX4_INFO("Sending start execution request to the companion...");
 
+	_companion_guidance_inbound.data[tmp_ind] = static_cast<float>(request_start);
+	tmp_ind++;
+	_companion_guidance_inbound.data[tmp_ind] = static_cast<float>(request_start_executing);
+	tmp_ind++;
+	_companion_guidance_inbound.data[tmp_ind] = static_cast<float>(request_stop);
+	tmp_ind++;
 
-	comp_inbound.data[tmp_ind] = static_cast<float>(request_start);
-	tmp_ind++;
-	comp_inbound.data[tmp_ind] = static_cast<float>(request_start_executing);
-	tmp_ind++;
-	comp_inbound.data[tmp_ind] = static_cast<float>(request_stop);
-	tmp_ind++;
-
 	for (size_t i = 0; i < companion_max_dof; i++)
 	{
-		comp_inbound.data[tmp_ind] = setpoint_last.pos(i);
+		_companion_guidance_inbound.data[tmp_ind] = setpoint_last.pos(i);
 		tmp_ind++;
 	}
 	for (size_t i = 0; i < companion_max_dof; i++)
 	{
-		comp_inbound.data[tmp_ind] = setpoint_last.vel(i);
+		_companion_guidance_inbound.data[tmp_ind] = setpoint_last.vel(i);
 		tmp_ind++;
 	}
 	for (size_t i = 0; i < companion_max_dof; i++)
 	{
-		comp_inbound.data[tmp_ind] = setpoint_last.acc(i);
+		_companion_guidance_inbound.data[tmp_ind] = setpoint_last.acc(i);
 		tmp_ind++;
 	}
 	for (size_t i = 0; i < companion_max_dof; i++)
 	{
-		comp_inbound.data[tmp_ind] = setpoint_last.jerk(i);
+		_companion_guidance_inbound.data[tmp_ind] = setpoint_last.jerk(i);
 		tmp_ind++;
 	}
 	for (size_t i = 0; i < companion_max_dof; i++)
 	{
-		comp_inbound.data[tmp_ind] = setpoint_last.snap(i);
+		_companion_guidance_inbound.data[tmp_ind] = setpoint_last.snap(i);
 		tmp_ind++;
 	}
 
 	//parse state:
 	for (size_t i = 0; i < companion_max_dof; i++)
 	{
-		comp_inbound.data[tmp_ind] = static_cast<float>(pos(i));
+		_companion_guidance_inbound.data[tmp_ind] = static_cast<float>(pos(i));
 		tmp_ind++;
 	}
 	// for (size_t i = 0; i < companion_max_dof; i++)
 	// {
-	// 	comp_inbound.data[tmp_ind] = static_cast<float>(vel(i));
+	// 	_companion_guidance_inbound.data[tmp_ind] = static_cast<float>(vel(i));
 	// 	tmp_ind++;
 	// }
 	// for (size_t i = 0; i < companion_max_dof; i++)
 	// {
-	// 	comp_inbound.data[tmp_ind] = static_cast<float>(acc(i));
+	// 	_companion_guidance_inbound.data[tmp_ind] = static_cast<float>(acc(i));
 	// 	tmp_ind++;
 	// }
 	// for (size_t i = 0; i < companion_max_dof; i++)
 	// {
-	// 	comp_inbound.data[tmp_ind] = 0.0f;
+	// 	_companion_guidance_inbound.data[tmp_ind] = 0.0f;
 	// 	tmp_ind++;
 	// }
 	// for (size_t i = 0; i < companion_max_dof; i++)
 	// {
-	// 	comp_inbound.data[tmp_ind] = 0.0f;
+	// 	_companion_guidance_inbound.data[tmp_ind] = 0.0f;
 	// 	tmp_ind++;
 	// }
-	_companion_guidance_inbound_pub.publish(comp_inbound);
+	_companion_guidance_inbound_pub.publish(_companion_guidance_inbound);
 	return 0;
 }
 
@@ -1119,6 +1148,10 @@ void trajectory::print_status(void)
 
 trajectory::trajectory(/* args */)
 {
+	smg.id = debug_array_s::SIMULINK_GUIDANCE_ID;
+	char message_name[10] = "guidance";
+	memcpy(smg.name, message_name, sizeof(message_name));
+	smg.name[sizeof(smg.name) - 1] = '\0'; // enforce null termination
 }
 
 trajectory::~trajectory()
