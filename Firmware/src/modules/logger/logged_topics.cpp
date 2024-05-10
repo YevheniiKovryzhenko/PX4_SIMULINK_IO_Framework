@@ -283,33 +283,33 @@ void LoggedTopics::add_system_identification_topics()
 void LoggedTopics::add_sim_topics()
 {
 	add_topic("actuator_armed");
-	add_topic("actuator_controls_0", 50);
-	add_topic("actuator_controls_1", 100);
-	add_topic("actuator_controls_2", 100);
-	add_topic("actuator_controls_3", 100);
-	add_topic("actuator_controls_4", 100);
-	add_topic("actuator_controls_5", 100);
+	// add_topic("actuator_controls_0", 50);
+	// add_topic("actuator_controls_1", 100);
+	// add_topic("actuator_controls_2", 100);
+	// add_topic("actuator_controls_3", 100);
+	// add_topic("actuator_controls_4", 100);
+	// add_topic("actuator_controls_5", 100);
 	add_topic("airspeed", 1000);
 	add_topic("airspeed_validated", 200);
-	add_topic("cellular_status", 200);
+	// add_topic("cellular_status", 200);
 	add_topic("commander_state");
 	add_topic("cpuload");
-	add_topic("home_position");
-	add_topic("hover_thrust_estimate", 100);
+	// add_topic("home_position");
+	// add_topic("hover_thrust_estimate", 100);
 	add_topic("input_rc", 500);
-	add_topic("mag_worker_data");
+	// add_topic("mag_worker_data");
 	add_topic("manual_control_setpoint", 200);
 	add_topic("manual_control_switches");
-	add_topic("offboard_control_mode", 100);
-	add_topic("onboard_computer_status", 10);
+	// add_topic("offboard_control_mode", 100);
+	// add_topic("onboard_computer_status", 10);
 	add_topic("parameter_update");
-	add_topic("position_controller_status", 500);
-	add_topic("px4io_status");
+	// add_topic("position_controller_status", 500);
+	// add_topic("px4io_status");
 	add_topic("radio_status");
-	add_topic("rtl_flight_time", 1000);
+	// add_topic("rtl_flight_time", 1000);
 	add_topic("safety");
-	add_topic("sensor_combined");
-	add_topic("sensor_correction");
+	add_topic("sensor_combined", 50);
+	add_topic("sensor_correction", 50);
 	add_topic("sensor_gyro_fft", 50);
 	add_topic("sensor_preflight_mag", 500);
 	add_topic("sensor_selection");
@@ -343,21 +343,21 @@ void LoggedTopics::add_sim_topics()
 
 
 	//get all the debug instances used for simulink:
-	add_topic("simulink_inbound");
-	add_topic("simulink_outbound");
-	add_topic("simulink_inbound_ctrl");
-	add_topic("simulink_guidance");
+	add_topic("simulink_inbound", 25);
+	add_topic("simulink_outbound", 25);
+	add_topic("simulink_inbound_ctrl", 25);
+	add_topic("simulink_guidance", 25);
 
 	//CAN topics:
-	add_topic("actuator_outputs_sv");
-	add_topic("actuator_outputs_esc");
+	add_topic("actuator_outputs_sv", 100);
+	add_topic("actuator_outputs_esc", 100);
 
 	//get the guidance topics:
 	add_topic("sim_guidance_request");
-	add_topic("sim_guidance_status");
-	add_topic("sim_guidance_trajectory");
-	add_topic("companion_guidance_inbound");
-	add_topic("companion_guidance_outbound");
+	add_topic("sim_guidance_status", 100);
+	add_topic("sim_guidance_trajectory", 500);
+	add_topic("companion_guidance_inbound", 500);
+	add_topic("companion_guidance_outbound", 100);
 }
 
 int LoggedTopics::add_topics_from_file(const char *fname)

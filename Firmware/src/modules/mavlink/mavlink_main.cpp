@@ -1972,7 +1972,9 @@ Mavlink::configure_streams_to_default(const char *configure_single_stream)
 
 	case MAVLINK_MODE_COMPANION:
 	{
-		configure_stream_local("COMPANION_GUIDANCE_INBOUND", 200);
+		float compg_in_mav_rate = 0.f;
+		param_get(param_find("COMPGIN_MAVRATE"),&compg_in_mav_rate);
+		configure_stream_local("COMPANION_GUIDANCE_INBOUND", compg_in_mav_rate);
 
 		configure_stream_local("PING", 0.1f);
 		configure_stream_local("SYS_STATUS", 5.0f);
