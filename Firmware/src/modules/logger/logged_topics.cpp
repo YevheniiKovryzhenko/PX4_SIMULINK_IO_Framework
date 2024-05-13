@@ -343,21 +343,25 @@ void LoggedTopics::add_sim_topics()
 
 
 	//get all the debug instances used for simulink:
-	add_topic("simulink_inbound", 25);
-	add_topic("simulink_outbound", 25);
-	add_topic("simulink_inbound_ctrl", 25);
-	add_topic("simulink_guidance", 25);
+	int32_t sm_log_delay_ms = 0;
+	param_get(param_find("SM_LOG_DELAY"),&sm_log_delay_ms);
+	add_topic("simulink_inbound", sm_log_delay_ms);
+	add_topic("simulink_outbound", sm_log_delay_ms);
+	add_topic("simulink_inbound_ctrl", sm_log_delay_ms);
+	add_topic("simulink_guidance", sm_log_delay_ms);
 
 	//CAN topics:
-	add_topic("actuator_outputs_sv", 100);
-	add_topic("actuator_outputs_esc", 100);
+	add_topic("actuator_outputs_sv", 20);
+	add_topic("actuator_outputs_esc", 20);
 
 	//get the guidance topics:
+	int32_t compg_log_delay_ms = 0;
+	param_get(param_find("COMPG_LOG_DELAY"),&compg_log_delay_ms);
 	add_topic("sim_guidance_request");
-	add_topic("sim_guidance_status", 100);
-	add_topic("sim_guidance_trajectory", 500);
-	add_topic("companion_guidance_inbound", 500);
-	add_topic("companion_guidance_outbound", 100);
+	add_topic("sim_guidance_status", 20);
+	add_topic("sim_guidance_trajectory", compg_log_delay_ms);
+	add_topic("companion_guidance_inbound", compg_log_delay_ms);
+	add_topic("companion_guidance_outbound", compg_log_delay_ms);
 }
 
 int LoggedTopics::add_topics_from_file(const char *fname)

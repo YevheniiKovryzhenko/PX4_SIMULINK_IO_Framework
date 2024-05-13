@@ -107,3 +107,18 @@ parameters:
             max: 300
             reboot_required: true
             default: 1
+
+        COMPG_LOG_DELAY:
+                description:
+                    short: logging delay
+                    long: |
+                        This parameter control the frequency of the logging for
+                        all inputs/outputs to/from companion. The value is delay
+                        is milliseconds.
+
+                type: int32
+                unit: ms
+                min: 0
+                max: 10000
+                reboot_required: true
+                default: 100

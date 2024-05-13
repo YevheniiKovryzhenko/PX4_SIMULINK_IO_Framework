@@ -338,3 +338,18 @@ parameters:
             num_instances: 6
             instance_start: 1
             default: 0.0
+
+        SM_LOG_DELAY:
+                description:
+                    short: SIMULINK logging delay
+                    long: |
+                        This parameter control the frequency of the logging for
+                        all inputs/outputs to/from simulink. The value is delay
+                        is milliseconds.
+
+                type: int32
+                unit: ms
+                min: 0
+                max: 10000
+                reboot_required: true
+                default: 20
