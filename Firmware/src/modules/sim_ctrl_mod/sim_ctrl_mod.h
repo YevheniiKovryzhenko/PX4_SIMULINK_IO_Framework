@@ -41,7 +41,9 @@
 //#include <uORB/SubscriptionInterval.hpp>
 #include <uORB/topics/parameter_update.h>
 #include <uORB/topics/vehicle_local_position.h>
+#include <uORB/topics/vehicle_acceleration.h>
 #include <uORB/topics/vehicle_global_position.h>
+#include <uORB/topics/vehicle_gps_position.h>
 #include <uORB/topics/vehicle_attitude.h>
 #include <uORB/topics/distance_sensor.h>
 #include <uORB/topics/airspeed.h>
@@ -164,8 +166,10 @@ private:
 
 	// Subscriptions
 	uORB::Subscription		_parameter_update_sub{ORB_ID(parameter_update)};
+	uORB::Subscription 		_vehicle_acceleration_sub{ORB_ID(vehicle_acceleration)};
 	uORB::Subscription 		_vehicle_local_position_sub{ORB_ID(vehicle_local_position)};
 	uORB::Subscription 		_vehicle_global_position_sub{ORB_ID(vehicle_global_position)};
+	uORB::Subscription 		_vehicle_gps_position_sub{ORB_ID(vehicle_gps_position)};
 	uORB::Subscription		_vehicle_attitude_sub{ORB_ID(vehicle_attitude)};
 	uORB::Subscription		_airspeed_sub{ORB_ID(airspeed)};
 	//uORB::Subscription		_battery_status_sub{ORB_ID(battery_status)};
@@ -188,7 +192,9 @@ private:
 	uORB::Subscription		_sim_guidance_trajectory_sub{ORB_ID(sim_guidance_trajectory)};
 
 	vehicle_local_position_s local_pos{};
+	vehicle_acceleration_s veh_acc{};
 	vehicle_global_position_s global_pos{};
+	vehicle_gps_position_s gps_pos{};
 	vehicle_attitude_s att{};
 	airspeed_s airspeed{};
 	//battery_status_s batt;
@@ -261,9 +267,13 @@ private:
 		(ParamInt<px4::params::SM_EN_HIL>) _param_en_hil,
 		(ParamInt<px4::params::SM_MAV_STREAM>) _param_mav_stream,
 		(ParamInt<px4::params::SM_CMD_OPT>) _param_cmd_opt,
-		(ParamInt<px4::params::SM_WING_SRC>) _param_sm_wing_src,
+		// (ParamInt<px4::params::SM_WING_SRC>) _param_sm_wing_src,
+		// (ParamInt<px4::params::SM_WING_OPT>) _param_sm_wing_opt,
+		(ParamInt<px4::params::SM_GOVENOR_OPT>) _param_sm_govenor_opt,
+		(ParamInt<px4::params::SM_THROTTLE>) _param_sm_throttle,
 		(ParamInt<px4::params::SM_ANG_VEL_SRC>) _param_sm_ang_vel_src,
-		(ParamInt<px4::params::SM_ATT_SRC>) _param_sm_att_src
+		(ParamInt<px4::params::SM_ATT_SRC>) _param_sm_att_src,
+		(ParamInt<px4::params::SM_ACC_SRC>) _param_sm_acc_src
 	)//MAKE SURE EVERY PARAMETER IS FOLLOWED BY "," AND LAST ONE DOES NOT HAVE ANYTHING
 };
 

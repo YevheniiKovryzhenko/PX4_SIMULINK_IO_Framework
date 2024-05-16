@@ -41,13 +41,30 @@ parameters:
                 6: PX4
             default: 0
 
+        SM_THROTTLE:
+            description:
+                short: SIMULINK throttle range option
+                long: |
+                    SIMULINK parameter for mapping throttle range.
+                    Note this is only active if SM_CMD_OPT is set to
+                    RC_IN. Options:
+                    0 - (default) Same as PX4: [0 1]
+                    1 - [-1 1]
+
+            type: enum
+            values:
+                0: [0 1]
+                1: [-1 1]
+            default: 0
+
 
         SM_MAV_CONF:
             description:
                 short: SIMULINK configuration option for mavlink streaming
                 long: |
                     SIMULINK this is related to mavlink startup, please see
-                    options.
+                    options. This can be used to disable all other MAVLINK
+                    topics except for the simulink related ones.
 
             type: enum
             values:
@@ -61,15 +78,42 @@ parameters:
                 short: SIMULINK source for wing angle command
                 long: |
                     SIMULINK parameter for manual or automated
-                    wing angle control.
+                    wing angle control. Can be overridden to 0
+                    or 1 using this parameter bypasing the source
+                    set by SM_CMD_OPT. The actuall channel this
+                    is assigned from is set by SM_WING_OPT (if
+                    SM_CMD_OPT is set to use dirrect RC).
 
             type: enum
             values:
                 0: ALWAYS_0
                 1: ALWAYS_1
-                2: MANUAL:SM_CMD_OPT:USE_AUX6
-                3: AUTO
+                2: SM_CMD_OPT
+                3: AUTO (SM_CMD_OPT)
             default: 0
+
+        SM_WING_OPT:
+            description:
+                short: SIMULINK source option for wing angle command
+                long: |
+                    SIMULINK parameter for channel assignment for with angle.
+            type: enum
+            values:
+                6: AUX1
+                7: AUX2
+                8: AUX3
+                9: AUX4
+                10: AUX5
+                11: AUX6
+                12: EXTR1
+                13: EXTR2
+                14: EXTR3
+                15: EXTR4
+                16: EXTR5
+                17: EXTR6
+            min: 6
+            max: 17
+            default: 11
 
         SM_GC_OPT:
             description:
@@ -120,24 +164,25 @@ parameters:
             reboot_required: true
             default: 0
 
-        SM_MAV_OUT_RATE:
+        SM_MAVOUT_${i}_HZ:
             description:
                 short: SIMULINK Outbound mavlink stream rate
                 long: |
                     SIMULINK parameter for setting the streaming rate
-                    of outbound simulink stream (if enabled).
+                    of sm_outbound_${i} simulink stream (if enabled).
                     Note that the real streaming rate is limited
                     by the update rate of the simulink model
                     and will be throttled down based on the
                     lowest of the two.
-
             type: float
             decimal: 1
             unit: Hz
             min: 0
             max: 100
             reboot_required: true
-            default: 1
+            num_instances: 4
+            instance_start: 0
+            default: 5
 
         SM_MAV_IN_RATE:
             description:
@@ -165,9 +210,9 @@ parameters:
                     1 - use rc input message
                     2 - use simulink inbound message
                     3 - use simulink inbound control message
-                    4 - use AUX5 stick to chose between manual control setpoint (AUX5 <= 0.0) and inbound control (AUX5 > 0.0) messages
-                    5 - use AUX5 stick to chose between rc input (AUX5 <= 0.0) and inbound control (AUX5 > 0.0) messages
-                    6 - use AUX5 stick to chose between simulink inbound (AUX5 <= 0.0) and inbound control (AUX5 > 0.0) messages
+                    4 - use SM_GOVENOR_OPT to chose between manual control setpoint (SM_GOVENOR_OPT <= 0.0) and inbound control (SM_GOVENOR_OPT > 0.0) messages
+                    5 - use SM_GOVENOR_OPT to chose between rc input (SM_GOVENOR_OPT <= 0.0) and inbound control (SM_GOVENOR_OPT > 0.0) messages
+                    6 - use SM_GOVENOR_OPT to chose between simulink inbound (SM_GOVENOR_OPT <= 0.0) and inbound control (SM_GOVENOR_OPT > 0.0) messages
 
             type: enum
             values:
@@ -175,10 +220,37 @@ parameters:
                 1: RC_IN
                 2: INBOUND_MSG
                 3: INBOUND_CTRL_MSG
-                4: AUX5 (MANUAL_CONTROL_SETPOINT/SIMULINK_CTRL)
-                5: AUX5 (RC_IN/SIMULINK_CTRL)
-                6: AUX5 (INBOUND_MSG/SIMULINK_CTRL)
+                4: MANUAL_CONTROL_SETPOINT/SIMULINK_CTRL
+                5: RC_IN/SIMULINK_CTRL
+                6: INBOUND_MSG/SIMULINK_CTRL
             default: 0
+
+        SM_GOVENOR_OPT:
+            description:
+                short: SIMULINK pilot input source selector option
+                long: |
+                    SIMULINK parameter for the actual source of switching between
+                    different input sources of control input to simulink
+                    model. This is only active if SM_CMD_OPT is set to 4-6.
+                    Options:
+
+            type: enum
+            values:
+                6: AUX1
+                7: AUX2
+                8: AUX3
+                9: AUX4
+                10: AUX5
+                11: AUX6
+                12: EXTR1
+                13: EXTR2
+                14: EXTR3
+                15: EXTR4
+                16: EXTR5
+                17: EXTR6
+            min: 10
+            max: 17
+            default: 11
 
         SM_ANG_VEL_SRC:
             description:
@@ -213,6 +285,23 @@ parameters:
                 0: vehicle_odometry
                 1: vehicle_attitude
             default: 1
+
+        SM_ACC_SRC:
+            description:
+                short: SIMULINK acceleration source selector
+                long: |
+                    SIMULINK parameter for switching between
+                    different sources of acceleration input to simulink
+                    model. This is only active if not directly using
+                    received INBOUND message. Options:
+                    0 - use vehicle_local_position topic
+                    1 - use vehicle_acceleration topic
+
+            type: enum
+            values:
+                0: vehicle_local_position
+                1: vehicle_acceleration
+            default: 0
 
         SM_EN_DIRECT:
             description:
@@ -303,8 +392,12 @@ parameters:
                 1: Mode_1 / Switch Low (-1)
                 2: Mode_2 / Switch Mid (0)
                 3: Mode_3 / Switch High (1)
+                4: Switch Low raw value of (-1)
+                5: Switch Mid raw value of (0)
+                6: Switch High raw value of (1)
+                7: Pass Raw RC Mode Switch Value [-1 1]
             min: 0
-            max: 3
+            max: 7
             default: 0
 
         SM_MODE${i}_MAP:
@@ -353,3 +446,13 @@ parameters:
                 max: 10000
                 reboot_required: true
                 default: 20
+
+        SM_IDLE_TH:
+            description:
+                short: SIMULINK (idle) throttle value offset
+                long: |
+                    SIMULINK (idle) throttle value offset.
+
+            type: float
+            decimal: 4
+            default: 0.15

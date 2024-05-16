@@ -308,7 +308,17 @@ bool SIM_CTRL_MOD::update_sticks(int input_source_opt, sticks_ind stick, float& 
 				switch (stick)
 				{
 				case THROTTLE: //special case
-					stick_val = stick_val * 2.f - 1.f; // [0 1] -> [-1 1]
+					switch (_param_sm_throttle.get())
+					{
+					case 1: // [0 1] -> [-1 1]
+						stick_val = stick_val * 2.f - 1.f;
+						break;
+
+					default: // keep [0 1]
+						stick_val = stick_val;
+						break;
+					}
+
 					return true;
 
 				default:
@@ -340,7 +350,7 @@ bool SIM_CTRL_MOD::update_sticks(int input_source_opt, sticks_ind stick, float& 
 
 			//check every stick so we are sure rc is valid, otherwise quit
 			static float aux5 = -1.f;
-			sticks_ind2rc_channels(sticks_ind::AUX5, rc_ch, aux5);
+			sticks_ind2rc_channels(static_cast<sticks_ind>(_param_sm_govenor_opt.get()), rc_ch, aux5);
 			if (aux5 > 0.0f) goto CASE_INBOUND_CONTROL_MSG;
 			else goto CASE_MANUAL_CONTROL_SETPOINT;
 		}
@@ -351,7 +361,7 @@ bool SIM_CTRL_MOD::update_sticks(int input_source_opt, sticks_ind stick, float& 
 
 			//check every stick so we are sure rc is valid, otherwise quit
 			static float aux5 = -1.f;
-			sticks_ind2rc_channels(sticks_ind::AUX5, rc_ch, aux5);
+			sticks_ind2rc_channels(static_cast<sticks_ind>(_param_sm_govenor_opt.get()), rc_ch, aux5);
 			if (aux5 > 0.0f) goto CASE_INBOUND_CONTROL_MSG;
 			else goto CASE_RC_IN;
 		}
@@ -362,7 +372,7 @@ bool SIM_CTRL_MOD::update_sticks(int input_source_opt, sticks_ind stick, float& 
 
 			//check every stick so we are sure rc is valid, otherwise quit
 			static float aux5 = -1.f;
-			sticks_ind2rc_channels(sticks_ind::AUX5, rc_ch, aux5);
+			sticks_ind2rc_channels(static_cast<sticks_ind>(_param_sm_govenor_opt.get()), rc_ch, aux5);
 			if (aux5 > 0.0f) goto CASE_INBOUND_CONTROL_MSG;
 			else goto CASE_INBOUND_MSG;
 		}
@@ -376,7 +386,16 @@ bool SIM_CTRL_MOD::update_sticks(int input_source_opt, sticks_ind stick, float& 
 			switch (stick)
 			{
 			case THROTTLE: //special case
-				stick_val = stick_val * 2.f - 1.f; // [0 1] -> [-1 1]
+				switch (_param_sm_throttle.get())
+				{
+				case 1: // [0 1] -> [-1 1]
+					stick_val = stick_val * 2.f - 1.f;
+					break;
+
+				default: // keep [0 1]
+					stick_val = stick_val;
+					break;
+				}
 				return true;
 			case MODE:
 				stick_val = man_switches.mode_slot; //special case
@@ -394,48 +413,49 @@ bool SIM_CTRL_MOD::update_sticks(int input_source_opt, sticks_ind stick, float& 
 	return false;
 }
 
-bool SIM_CTRL_MOD::update_man_wing_angle(int input_source_opt, float& wing_cmd)
-{
-	int32_t wing_opt = _param_sm_wing_src.get();
-	bool need2update = false;
-	static float wing_cmd_old = -1.f;
+// bool SIM_CTRL_MOD::update_man_wing_angle(int input_source_opt, float& wing_cmd)
+// {
+// 	int32_t wing_src = _param_sm_wing_src.get();
+// 	int32_t wing_opt = _param_sm_wing_opt.get();
+// 	bool need2update = false;
+// 	static float wing_cmd_old = -1.f;
 
-	switch (wing_opt)
-	{
-	case 1: //always 1
-		wing_cmd = 1.f;
-		break;
+// 	switch (wing_src)
+// 	{
+// 	case 1: //always 1
+// 		wing_cmd = 1.f;
+// 		break;
 
-	case 2: //MANUAL use CMD_SRC
-		if (update_sticks(input_source_opt, sticks_ind::AUX6, wing_cmd))
-		{
-			wing_cmd_old = wing_cmd;
-			return true;
-		}
-		else
-		{
-			wing_cmd = wing_cmd_old;
-			return false;
-		}
-	case 3: //AUTO
-		if (update_sticks(input_source_opt, sticks_ind::AUX6, wing_cmd))
-		{
-			wing_cmd_old = wing_cmd;
-			return true;
-		}
-		else
-		{
-			wing_cmd = wing_cmd_old;
-			return false;
-		}
-	default: //always -1
-		wing_cmd = -1.f;
-		break;
-	}
-	need2update = (need2update || fabsf(wing_cmd - wing_cmd_old) > 1.f / 1000000.f);
-	wing_cmd_old = wing_cmd; //keep track of the old command
-	return need2update;
-}
+// 	case 2: //MANUAL use CMD_SRC
+// 		if (update_sticks(input_source_opt, static_cast<sticks_ind>(wing_opt), wing_cmd))
+// 		{
+// 			wing_cmd_old = wing_cmd;
+// 			return true;
+// 		}
+// 		else
+// 		{
+// 			wing_cmd = wing_cmd_old;
+// 			return false;
+// 		}
+// 	case 3: //AUTO
+// 		if (update_sticks(input_source_opt, static_cast<sticks_ind>(wing_opt), wing_cmd))
+// 		{
+// 			wing_cmd_old = wing_cmd;
+// 			return true;
+// 		}
+// 		else
+// 		{
+// 			wing_cmd = wing_cmd_old;
+// 			return false;
+// 		}
+// 	default: //always -1
+// 		wing_cmd = -1.f;
+// 		break;
+// 	}
+// 	need2update = (need2update || fabsf(wing_cmd - wing_cmd_old) > 1.f / 1000000.f);
+// 	wing_cmd_old = wing_cmd; //keep track of the old command
+// 	return need2update;
+// }
 
 bool SIM_CTRL_MOD::update_distance_sensor(void)
 {
@@ -893,7 +913,7 @@ bool SIM_CTRL_MOD::update_control_inputs(float in_vec[CONTROL_VEC_SIZE])
 	static float roll = 0.f;		//[-1 1]
 	static float pitch = 0.f; 		//[-1 1]
 	static float yaw = 0.f;			//[-1 1]
-	static float throttle = -1.f;		//[-1 1]
+	static float throttle = -1.f;		//[-1 1] or [0 1] if SM_THROTTLE = 1
 	static float mode_stick = -1.f; 	//[-1 1] actual mode stick position
 	static float aux1 = -1.f;		//[-1 1]
 	static float aux2 = -1.f;		//[-1 1]
@@ -910,7 +930,7 @@ bool SIM_CTRL_MOD::update_control_inputs(float in_vec[CONTROL_VEC_SIZE])
 
 
 	static control_level mode_ch = MODE1;		//[1 4] mode that corresponds to the stick position
-
+	static bool use_raw_mode_switch = false;	//use raw mode switch value
 	int32_t en_calibration = _param_sm_en_cal.get();
 
 	if (update_sticks(input_source_opt, sticks_ind::ROLL, roll)) need_update = true;
@@ -922,7 +942,8 @@ bool SIM_CTRL_MOD::update_control_inputs(float in_vec[CONTROL_VEC_SIZE])
 	if (update_sticks(input_source_opt, sticks_ind::AUX3, aux3)) need_update = true;
 	if (update_sticks(input_source_opt, sticks_ind::AUX4, aux4)) need_update = true;
 	if (update_sticks(input_source_opt, sticks_ind::AUX5, aux5)) need_update = true;
-	if (update_man_wing_angle(input_source_opt, aux6)) need_update = true;
+	if (update_sticks(input_source_opt, sticks_ind::AUX6, aux5)) need_update = true;
+	// if (update_man_wing_angle(input_source_opt, aux6)) need_update = true;
 	if (update_sticks(input_source_opt, sticks_ind::EXTR1, extr1)) need_update = true;
 	if (update_sticks(input_source_opt, sticks_ind::EXTR2, extr2)) need_update = true;
 	if (update_sticks(input_source_opt, sticks_ind::EXTR3, extr3)) need_update = true;
@@ -944,16 +965,29 @@ bool SIM_CTRL_MOD::update_control_inputs(float in_vec[CONTROL_VEC_SIZE])
 		param_get(param_find("SM_3MODE_SW_SRC"), &SM_3MODE_SW_SRC_);
 		switch (SM_3MODE_SW_SRC_)
 		{
-		case 1:
+		case 1: //Mode_1 / Switch Low (-1)
 			mode_ch = MODE1;
 			break;
-		case 2:
+		case 2: //Mode_2 / Switch Mid (0)
 			mode_ch = MODE2;
 			break;
-		case 3:
+		case 3: //Mode_3 / Switch High (1)
 			mode_ch = MODE3;
 			break;
-		default:
+		case 4: //Switch Low raw value of (-1)
+			mode_stick = -1.f;
+			break;
+		case 5: //Switch Mid raw value of (0)
+			mode_stick = 0.f;
+			break;
+		case 6: //Switch High raw value of (1)
+			mode_stick = 1.f;
+			break;
+		case 7: //Pass Raw RC Mode Switch Value [-1 1]
+			if (update_sticks(input_source_opt, sticks_ind::MODE, mode_stick)) need_update = true;
+			use_raw_mode_switch = true;
+			break;
+		default: //SM_CMD_OPT
 			if (update_sticks(input_source_opt, sticks_ind::MODE, mode_stick)) need_update = true;
 			if (mode_stick > 0.7f) mode_ch = MODE3;
 			else if(mode_stick < -0.7f) mode_ch = MODE1;
@@ -961,14 +995,15 @@ bool SIM_CTRL_MOD::update_control_inputs(float in_vec[CONTROL_VEC_SIZE])
 			break;
 		}
 	}
-	update_mode_autonomous(mode_ch, armed_switch); //extra checks for flightmode
+	if (!use_raw_mode_switch) update_mode_autonomous(mode_ch, armed_switch); //extra checks for flightmode
 
 	in_vec[get_input_ind(sticks_ind::ROLL)] = roll;
 	in_vec[get_input_ind(sticks_ind::PITCH)] = pitch;
 	in_vec[get_input_ind(sticks_ind::YAW)] = yaw;
 	in_vec[get_input_ind(sticks_ind::THROTTLE)] = throttle;
 	in_vec[get_input_ind(sticks_ind::ARMED)] = static_cast<float>(armed_switch);
-	in_vec[get_input_ind(sticks_ind::MODE)] = static_cast<float>(mode_ch);
+	if (use_raw_mode_switch) in_vec[get_input_ind(sticks_ind::MODE)] = mode_stick;
+	else in_vec[get_input_ind(sticks_ind::MODE)] = static_cast<float>(mode_ch);
 	in_vec[get_input_ind(sticks_ind::AUX1)] = aux1;
 	in_vec[get_input_ind(sticks_ind::AUX2)] = aux2;
 	in_vec[get_input_ind(sticks_ind::AUX3)] = aux3;
@@ -1063,7 +1098,7 @@ SIM_CTRL_MOD::publish_inbound_sim_data(void)
 	if (_vehicle_local_position_sub.update(&local_pos)) need_2_pub = true;
 	if (_vehicle_odometry_sub.update(&odom)) need_2_pub = true;
 	if (_vehicle_global_position_sub.update(&global_pos)) need_2_pub = true;
-	if (_vehicle_attitude_sub.update(&att)) need_2_pub = true;
+	if (_vehicle_gps_position_sub.update(&gps_pos)) need_2_pub = true;
 	if (update_control_inputs(control_vec)) need_2_pub = true;
 	if (update_distance_sensor()) need_2_pub = true;
 	if (update_airspeed()) need_2_pub = true;
@@ -1094,6 +1129,7 @@ SIM_CTRL_MOD::publish_inbound_sim_data(void)
 		switch (_param_sm_att_src.get())
 		{
 		case 1: //vehicle_attitude
+			if (_vehicle_attitude_sub.update(&att)) need_2_pub = true;
 			simulink_inboud_data.fill_buffer(att.q, 4); //7 8 9 10
 			break;
 
@@ -1109,9 +1145,19 @@ SIM_CTRL_MOD::publish_inbound_sim_data(void)
 		simulink_inboud_data.fill_buffer(global_pos.alt); // 13
 		simulink_inboud_data.fill_buffer(global_pos.terrain_alt); //14
 
-		simulink_inboud_data.fill_buffer(local_pos.ax); //15
-		simulink_inboud_data.fill_buffer(local_pos.ay); //16
-		simulink_inboud_data.fill_buffer(local_pos.az); //17
+		switch (_param_sm_acc_src.get())
+		{
+		case 1: //vehicle_acceleration
+			if (_vehicle_acceleration_sub.update(&veh_acc)) need_2_pub = true;
+			simulink_inboud_data.fill_buffer(veh_acc.xyz, 3); //15 16 17
+			break;
+		default: //vehicle_local_position
+			simulink_inboud_data.fill_buffer(local_pos.ax); //15
+			simulink_inboud_data.fill_buffer(local_pos.ay); //16
+			simulink_inboud_data.fill_buffer(local_pos.az); //17
+			break;
+		}
+
 
 		simulink_inboud_data.fill_buffer(local_pos.x); //18
 		simulink_inboud_data.fill_buffer(local_pos.y); //19
@@ -1124,6 +1170,18 @@ SIM_CTRL_MOD::publish_inbound_sim_data(void)
 		simulink_inboud_data.fill_buffer(airspeed.true_airspeed_m_s); //23
 		simulink_inboud_data.fill_buffer(airspeed.indicated_airspeed_m_s); //24
 		simulink_inboud_data.fill_buffer(dist.current_distance); //25
+
+		simulink_inboud_data.fill_buffer(odom.vz); //26
+
+		simulink_inboud_data.fill_buffer(gps_pos.lat); //27
+		simulink_inboud_data.fill_buffer(gps_pos.lon); //28
+		simulink_inboud_data.fill_buffer(gps_pos.vel_e_m_s); //29
+		simulink_inboud_data.fill_buffer(gps_pos.vel_d_m_s); //30
+		simulink_inboud_data.fill_buffer(gps_pos.vel_n_m_s); //31
+
+		simulink_inboud_data.fill_buffer(local_pos.eph); //32
+
+		simulink_inboud_data.fill_buffer(airspeed.confidence); //33
 
 		//publish new data:
 		debug_topic.timestamp = hrt_absolute_time();

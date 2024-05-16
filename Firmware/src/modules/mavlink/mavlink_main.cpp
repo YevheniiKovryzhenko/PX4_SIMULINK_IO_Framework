@@ -1865,25 +1865,57 @@ Mavlink::configure_streams_to_default(const char *configure_single_stream)
 		int sm_mav_stream = 0;
 		param_get(param_find("SM_MAV_STREAM"),&sm_mav_stream);
 
-		float sm_mav_out_rate = 0.f;
+		float sm_mav_out_rate[4] = {0.f, 0.f, 0.f, 0.f};
 		float sm_mav_in_rate = 0.f;
-		param_get(param_find("SM_MAV_OUT_RATE"),&sm_mav_out_rate);
+
+		for (int i = 0; i < 4; i++)
+		{
+			char str[17];
+			static const char *prefix = "SM_MAVOUT_";
+			static const char *suffix = "_HZ";
+
+			sprintf(str, "%s%u%s", prefix, i, suffix);
+			param_get(param_find(str), &sm_mav_out_rate[i]);
+		}
+		// param_get(param_find("SM_MAVOUT_${i}_HZ"),&sm_mav_out_rate);
 		param_get(param_find("SM_MAV_IN_RATE"),&sm_mav_in_rate);
 
 
 		switch (sm_mav_stream)
 		{
 		case 1:
-			configure_stream_local("SIMULINK_OUTBOUND", sm_mav_out_rate);
+		{
+			char str[20];
+			static const char *prefix = "SIMULINK_OUTBOUND";
+
+			if (sm_mav_out_rate[0] > 0.f) configure_stream_local(prefix, sm_mav_out_rate[0]);
+			for (int i = 1; i < 4; i++)
+			{
+				sprintf(str, "%s_%u", prefix, i);
+				if (sm_mav_out_rate[i] > 0.f) configure_stream_local(str, sm_mav_out_rate[i]);
+			}
+			// configure_stream_local("SIMULINK_OUTBOUND", sm_mav_out_rate);
 			break;
+		}
+
 		case 2:
 			configure_stream_local("SIMULINK_INBOUND", sm_mav_in_rate);
 			break;
 		case 3:
+		{
 			configure_stream_local("SIMULINK_INBOUND", sm_mav_in_rate);
-			configure_stream_local("SIMULINK_OUTBOUND", sm_mav_out_rate);
-			break;
 
+			char str[20];
+			static const char *prefix = "SIMULINK_OUTBOUND";
+
+			if (sm_mav_out_rate[0] > 0.f) configure_stream_local(prefix, sm_mav_out_rate[0]);
+			for (int i = 1; i < 4; i++)
+			{
+				sprintf(str, "%s_%u", prefix, i);
+				if (sm_mav_out_rate[i] > 0.f) configure_stream_local(str, sm_mav_out_rate[i]);
+			}
+			break;
+		}
 		default:
 			break;
 		}

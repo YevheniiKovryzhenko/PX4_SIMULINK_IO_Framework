@@ -296,6 +296,9 @@ private:
 
 	uORB::Publication<debug_array_s>			_simulink_inbound_pub {ORB_ID(simulink_inbound)};
 	uORB::Publication<debug_array_s>			_simulink_outbound_pub {ORB_ID(simulink_outbound)};
+	uORB::Publication<debug_array_s>			_simulink_outbound_1_pub {ORB_ID(simulink_outbound_1)};
+	uORB::Publication<debug_array_s>			_simulink_outbound_2_pub {ORB_ID(simulink_outbound_2)};
+	uORB::Publication<debug_array_s>			_simulink_outbound_3_pub {ORB_ID(simulink_outbound_3)};
 	uORB::Publication<debug_array_s>			_simulink_inbound_ctrl_pub {ORB_ID(simulink_inbound_ctrl)};
 	uORB::Publication<debug_array_s>			_companion_guidance_inbound_pub {ORB_ID(companion_guidance_inbound)};
 	uORB::Publication<debug_array_s>			_companion_guidance_outbound_pub {ORB_ID(companion_guidance_outbound)};

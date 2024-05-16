@@ -14,1742 +14,643 @@ parameters:
             instance_start: 1
             default: [-0.5, 0.5, 0.5, -0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5]
 
-        SM_DENSITY:
+        SM_TCS_K${i}:
             description:
-                short: SIMULINK very useful discription
+                short: TCS gains (KTIH,KTPH,KTIV,KTPV,Kh,KV)
                 long: |
-                    SIMULINK very useful discription
+                    TCS gains (KTIH,KTPH,KTIV,KTPV,Kh,KV)
 
             type: float
-            unit: kg/m^3
-            decimal: 4
-            default: 1.225
+            reboot_required: false
+            num_instances: 6
+            instance_start: 1
+            default: [0.3,0.3,0.2,0.2,0.3,0.4]
 
-        SM_TURNCOMP:
+        SM_EMF_LAT_${i}:
             description:
-                short: SIMULINK very useful discription
+                short: EMF lateral parameters (Lp,Lulat,Kry,Kp,Kph,Kphi)
                 long: |
-                    SIMULINK very useful discription
+                    EMF lateral parameters (Lp,Lulat,Kry,Kp,Kph,Kphi)
 
             type: float
-            decimal: 4
-            default: 0.0
+            reboot_required: false
+            num_instances: 6
+            instance_start: 1
+            default: [-0.5,20,0,0.2,0.35,0.50]
 
-        SM_RPM_OFFSET:
+        SM_EMF_LON_${i}:
             description:
-                short: SIMULINK very useful discription
+                short: EMF longitudinal parameters (Mq,Mulon,Kq,Kth,Kthi)
                 long: |
-                    SIMULINK very useful discription
+                    EMF longitudinal parameters (Mq,Mulon,Kq,Kth,Kthi)
 
             type: float
-            decimal: 4
-            default: 0.0
+            reboot_required: false
+            num_instances: 5
+            instance_start: 1
+            default: [-0.5,20,0.2,0.35,0.50]
 
-        SM_NAV_VAGGR:
+        SM_EMF_DIR_${i}:
             description:
-                short: SIMULINK very useful discription
+                short: EMF directional parameters (Nr,Nudir,Kyr,Kr,Kri)
                 long: |
-                    SIMULINK very useful discription
+                    EMF directional parameters (Nr,Nudir,Kyr,Kr,Kri)
 
             type: float
-            decimal: 4
-            default: 50.0
+            reboot_required: false
+            num_instances: 5
+            instance_start: 1
+            default: [-0.2,3,0,0.6,0.3]
 
-        SM_NAV_ALT0:
+        SM_LATCS_KV:
             description:
-                short: SIMULINK very useful discription
+                short: LATCS KV gain
                 long: |
-                    SIMULINK very useful discription
+                    SIMULINK Lateral Gains
 
             type: float
-            decimal: 4
-            default: 0.0
+            min: 0.0
+            reboot_required: false
+            default: 0.085
 
-        SM_NAV_LAF:
+        SM_LATCS_KPSI:
             description:
-                short: SIMULINK very useful discription
+                short: LATCS KPSI gain
                 long: |
-                    SIMULINK very useful discription
+                    SIMULINK Lateral Gains
 
             type: float
-            decimal: 4
-            default: 4.0
+            min: 0.0
+            reboot_required: false
+            default: 0.5
 
-        SM_WING_MAX:
+        SM_LATCS_KTRK:
             description:
-                short: SIMULINK very useful discription
+                short: LATCS KTRK gain
                 long: |
-                    SIMULINK very useful discription
+                    SIMULINK Lateral Gains
 
             type: float
-            decimal: 4
-            default: 0.0
+            min: 0.0
+            reboot_required: false
+            default: 2
 
-        SM_WING_MIN:
+        SM_PII_LAT_${i}:
             description:
-                short: SIMULINK very useful discription
+                short: Lat parameters for PII
                 long: |
-                    SIMULINK very useful discription
+                    Lateral inceptor parameters for PII
 
             type: float
-            decimal: 4
-            default: 0.0
+            reboot_required: false
+            num_instances: 9
+            instance_start: 1
+            default: [2,0.15,0.02,3,15,30,0.02,6,10]
 
-        SM_WING_RPOS:
+        SM_PII_LON_${i}:
             description:
-                short: SIMULINK very useful discription
+                short: Ver parameters for PII (tau,deadz,VVmax)
                 long: |
-                    SIMULINK very useful discription
+                    Longitudinal inceptor parameters for PII
 
             type: float
-            decimal: 4
-            default: 0.0
+            reboot_required: false
+            num_instances: 3
+            instance_start: 1
+            default: [0.1, 0.02, 300]
 
-        SM_WING_RNEG:
+        SM_PII_DIR_${i}:
             description:
-                short: SIMULINK very useful discription
+                short: Dir parameters for PII (tau,deadz,rmax)
                 long: |
-                    SIMULINK very useful discription
+                    Longitudinal inceptor parameters for PII (tau,deadz,VVmax)
 
             type: float
-            decimal: 4
-            default: 0.0
+            reboot_required: false
+            num_instances: 3
+            instance_start: 1
+            default: [0.1, 0.02, 30]
 
-        SM_WING_POS_TOL:
+        SM_PII_ACC_${i}:
             description:
-                short: SIMULINK very useful discription
+                short: SIMULINK PII acc
                 long: |
-                    SIMULINK very useful discription
+                    SIMULINK control gain for longitudinal LQI controller
 
             type: float
-            decimal: 4
-            default: 0.0
+            reboot_required: false
+            num_instances: 5
+            instance_start: 1
+            default: [0.1, 0.05, 0.15, 2, 10]
 
-        SM_WING_RDEADZ:
+        SM_PII_ALT_${i}:
             description:
-                short: SIMULINK very useful discription
+                short: SIMULINK PII alt
                 long: |
-                    SIMULINK very useful discription
+                    SIMULINK control gain for longitudinal LQI controller
 
             type: float
-            decimal: 4
-            default: 0.0
+            reboot_required: false
+            num_instances: 5
+            instance_start: 1
+            default: [1, 0.1, 1, 100, 200]
 
-        SM_FF_THR:
+        SM_PII_HDG_${i}:
             description:
-                short: SIMULINK very useful discription
+                short: SIMULINK PII hdg
                 long: |
-                    SIMULINK very useful discription
+                    SIMULINK control gain for longitudinal LQI controller
 
             type: float
-            decimal: 4
-            default: 0.0
+            reboot_required: false
+            num_instances: 5
+            instance_start: 1
+            default: [1, 5, 2, 0.1, 5]
 
-        SM_TCS_KT2RPM:
+        SM_PII_TRK_${i}:
             description:
-                short: SIMULINK very useful discription
+                short: SIMULINK PII track
                 long: |
-                    SIMULINK very useful discription
+                    SIMULINK control gain for longitudinal LQI controller
 
             type: float
-            decimal: 4
-            default: 0.0
+            reboot_required: false
+            num_instances: 4
+            instance_start: 1
+            default: [1, 5, 0.05, 10]
 
-        SM_IDLE_TH:
+        SM_PII_PH_${i}:
             description:
-                short: SIMULINK (idle) throttle value offset
+                short: SIMULINK PII position hold
                 long: |
-                    SIMULINK (idle) throttle value offset.
+                    SIMULINK control gain for longitudinal LQI controller
 
             type: float
-            decimal: 4
-            default: 0.15
+            reboot_required: false
+            num_instances: 9
+            instance_start: 1
+            default: [1, 3, 0.25, 4, 1.0, 0.1, 2, 3, 2]
 
-        SM_NAV_VCMD:
+        SM_PII_AP_${i}:
             description:
-                short: SIMULINK very useful discription
+                short: SIMULINK PII autoflight
                 long: |
-                    SIMULINK very useful discription
+                    SIMULINK control gain for longitudinal LQI controller
 
             type: float
-            decimal: 4
-            default: 0.0
+            reboot_required: false
+            num_instances: 6
+            instance_start: 1
+            default: [3, 100, 150, 10, 15, 40]
 
-        SM_NAV_HCMD:
+        SM_TCS_V${i}:
             description:
-                short: SIMULINK very useful discription
+                short: TCS speed group
                 long: |
-                    SIMULINK very useful discription
+                    TCS speed group
 
             type: float
-            decimal: 4
-            default: 0.0
+            reboot_required: false
+            num_instances: 4
+            instance_start: 1
+            default: [3,6,25,35]
 
-        SM_LIDAR_H1:
+        SM_TCS_DL${i}:
             description:
-                short: SIMULINK very useful discription
+                short: TCS DeckLev group
                 long: |
-                    SIMULINK very useful discription
+                    TCS DeckLev group
 
             type: float
-            decimal: 4
-            default: 0.0
+            reboot_required: false
+            num_instances: 6
+            instance_start: 1
+            default: [0.1,1.1,1.9,2.0,1.7,0.9]
 
-        SM_LIDAR_H2:
+        SM_TCS_TKO${i}:
             description:
-                short: SIMULINK very useful discription
+                short: TCS takeoff group (and accdead)
                 long: |
-                    SIMULINK very useful discription
+                    TCS takeoff group (and accdead)
 
             type: float
-            decimal: 4
-            default: 0.0
+            reboot_required: false
+            num_instances: 3
+            instance_start: 1
+            default: [3,0.1,5]
 
-        SM_LIDAR_VVMODE:
+        SM_TCS_PITCH${i}:
             description:
-                short: SIMULINK very useful discription
+                short: TCS pitch limits group
                 long: |
-                    SIMULINK very useful discription
+                    TCS pitch limits group
 
             type: float
-            decimal: 4
-            default: 0.0
+            reboot_required: false
+            num_instances: 3
+            instance_start: 1
+            default: [15,-15,3]
 
-        SM_LIDAR_HMODE:
+        SM_TCS_SAFETY${i}:
             description:
-                short: SIMULINK very useful discription
+                short: TCS propulsor safety limit group
                 long: |
-                    SIMULINK very useful discription
+                    TCS propulsor safety limit group
 
             type: float
-            decimal: 4
-            default: 0.0
+            reboot_required: false
+            num_instances: 2
+            instance_start: 1
+            default: [1.0,0.15]
+
+        SM_TCS_TAI${i}:
+            description:
+                short: TCS TAI mode switch logic group
+                long: |
+                    TCS TAI mode switch logic group
+
+            type: float
+            reboot_required: false
+            num_instances: 4
+            instance_start: 1
+            default: [40,5,10,85]
+
+        SM_TCS_RATE${i}:
+            description:
+                short: TCS rate limiting group
+                long: |
+                    TCS rate limiting group
+
+            type: float
+            reboot_required: false
+            num_instances: 7
+            instance_start: 1
+            default: [5.0,-0.35,0.2,0.1,0.35,4,4]
+
+        SM_NAC_${i}:
+            description:
+                short: SIMULINK nacelle parameters
+                long: |
+                    SIMULINK control gain for longitudinal LQI controller
+
+            type: float
+            reboot_required: false
+            num_instances: 3
+            instance_start: 1
+            default: [0, 30, -30]
+
+        SM_AUX_MIX_${i}:
+            description:
+                short: SIMULINK aux ${i} gain for mixing control outputs
+                long: |
+                    SIMULINK aux gain for mixing control outputs
+
+            type: float
+            reboot_required: false
+            num_instances: 5
+            instance_start: 1
+            default: [-0.5, 0.5, -0.5, 0.5, 0.5]
+
+        SM_AUX_NMIN:
+            description:
+                short: SIMULINK aux Nmin
+                long: |
+                    SIMULINK aux gain for mixing control outputs
+
+            type: float
+            min: 0.0
+            reboot_required: false
+            default: 2000
+
+        SM_AUX_NMAX:
+            description:
+                short: SIMULINK aux Nmax
+                long: |
+                    SIMULINK aux gain for mixing control outputs
+
+            type: float
+            min: 0.0
+            reboot_required: false
+            default: 550
 
         SM_GAIN_INDEX:
             description:
-                short: SIMULINK gain index
+                short: Gain index
                 long: |
                     SIMULINK gain index
 
-            type: int32
+            type: float
+            reboot_required: false
             default: -1
 
         SM_PARAM_INDEX:
             description:
-                short: SIMULINK parameter index
+                short: Parameter index
                 long: |
                     SIMULINK parameter index
 
-            type: int32
-            default: -1
-
-        SM_LATMPTYP:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_TAU_LAT:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_LAT_DEADZ:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_VLAT_MAX:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_PHMAX_VFM:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_PHMAX_FFM:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_PHDOT_MAX:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_DIH_LOW:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_DIH_HIGH:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_KP_VLAT:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_KI_VLAT:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_ZLAT_LOW:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_ZLAT_HIGH:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_LONMAPTYP:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_TAU_LON:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_LON_DEADZ:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-
-        SM_VVCMD_MAX:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_FPA_LIM:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_FPADOTMAX:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-
-            default: 0.0
-
-        SM_N_MIN:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-
-            default: 0.0
-
-        SM_N_MAX:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-
-            default: 0.0
-
-        SM_ZLON_LOW:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-
-            default: 0.0
-
-        SM_ZLON_HIGH:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-
-            default: 0.0
-
-        SM_TAU_DIR:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-
-            default: 0.0
-
-        SM_DIR_DEADZ:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-
-            default: 0.0
-
-        SM_RCMD_MAX:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-
-            default: 0.0
-
-        SM_BCMD_MAX:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-
-            default: 0.0
-
-        SM_KBETA:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-
-            default: 0.0
-
-        SM_KNY:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-
-            default: 0.0
-
-
-        SM_TAU_ACC:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-
-            default: 0.0
-
-        SM_ACC_DEADZ:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-
-            default: 0.0
-
-        SM_ACC_CM_MX:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-
-            default: 0.0
-
-        SM_ZACC_LOW:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-
-            default: 0.0
-
-        SM_ZACC_HIGH:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-
-            default: 0.0
-
-        SM_KV:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-
-            default: 0.0
-
-        SM_ALTHLD_ON:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-
-            default: 0.0
-
-        SM_KH_P:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-
-            default: 0.0
-
-        SM_KH_I:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-
-            default: 0.0
-
-        SM_DTAU_ALT:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-
-            default: 0.0
-
-        SM_VVTHRSHEN:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-
-            default: 0.0
-
-        SM_VVTHRSHSC:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-
-            default: 0.0
-
-        SM_HDGHLD_ON:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-
-            default: 0.0
-
-        SM_RTHRESH:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-
-            default: 0.0
-
-        SM_DTAU_HDG:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-
-            default: 0.0
-
-        SM_KPSI_P:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-
-            default: 0.0
-
-        SM_KPSI_I:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-
-            default: 0.0
-
-        SM_HDG_VMAX:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-
-            default: 0.0
-
-        SM_TRKHLD_ON:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-
-            default: 0.0
-
-        SM_PHITHRESH:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-
-            default: 0.0
-
-        SM_KTRK_P:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-
-            default: 0.0
-
-        SM_KTRK_I:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-
-            default: 0.0
-
-        SM_TRK_VMIN:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-
-            default: 0.0
-
-        SM_POSHLD_ON:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-
-            default: 0.0
-
-        SM_KP_LAT_PH:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-
-            default: 0.0
-
-        SM_KI_LAT_PH:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-
-            default: 0.0
-
-        SM_KD_LAT_PH:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-
-            default: 0.0
-
-        SM_KP_LON_PH:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-
-            default: 0.0
-
-        SM_KI_LON_PH:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-
-            default: 0.0
-
-        SM_KD_LON_PH:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-
-            default: 0.0
-
-        SM_PH_VTHRSH:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-
-            default: 0.0
-
-        SM_DTAU_PH:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-
-            default: 0.0
-
-        SM_AP_VMAX:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-
-            default: 0.0
-
-        SM_AP_VVMAX:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-
-            default: 0.0
-
-        SM_AP_TO_FPM:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-
-            default: 0.0
-
-        SM_AP_TO_AGL:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-
-            default: 0.0
-
-        SM_AP_TO_K:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_EMF_LAT_WNCM:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_EMF_LAT_ZCM:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_EMF_LAT_LP:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_EMF_LAT_LULAT:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_EMF_LAT_KYR:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_EMF_LAT_KP:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_EMF_LAT_KPH:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_EMF_LAT_KIPH:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_EMF_LON_WNCM:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_EMF_LON_ZCM:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_EMF_LON_MQ:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
             type: float
-            decimal: 4
+            reboot_required: false
             default: 0.0
 
-        SM_EMF_LON_MULG:
+        SM_NAV_VCMD:
             description:
-                short: SIMULINK very useful discription
+                short: NAV VCMD gain
                 long: |
-                    SIMULINK very useful discription
+                    SIMULINK NAV Gains
 
             type: float
-            decimal: 4
-            default: 0.0
-
-        SM_EMF_LON_ZSP:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_EMF_LON_WNSP:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_EMF_LON_TTH2:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_EMF_LON_KAPP:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_EMF_LON_KQ:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_EMF_LON_KTH:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_EMF_LON_KITH:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_EMF_DIR_WNCM:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_EMF_DIR_ZCM:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_EMF_DIR_NR:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_EMF_DIR_NUDIR:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
+            min: 0.0
+            reboot_required: false
+            default: 0
 
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_EMF_DIR_ZDR:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_EMF_DIR_WNDR:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_EMF_DIR_TTH2:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_EMF_DIR_KAPP:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_EMF_DIR_KRY:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_EMF_DIR_KR:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_EMF_DIR_KIR:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_TCS_KTIH:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_TCS_KTPH:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_TCS_KTIV:
+        SM_NAV_HCMD:
             description:
-                short: SIMULINK very useful discription
+                short: NAV HCMD gain
                 long: |
-                    SIMULINK very useful discription
+                    SIMULINK NAV Gains
 
             type: float
-            decimal: 4
-            default: 0.0
+            min: 0.0
+            reboot_required: false
+            default: 0
 
-        SM_TCS_KTPV:
+        SM_NAV_VAGGR:
             description:
-                short: SIMULINK very useful discription
+                short: NAV VAGGR gain
                 long: |
-                    SIMULINK very useful discription
+                    SIMULINK NAV Gains
 
             type: float
-            decimal: 4
-            default: 0.0
+            min: 0.0
+            reboot_required: false
+            default: 50
 
-        SM_TCS_KTXN:
+        SM_NAV_ALT0:
             description:
-                short: SIMULINK very useful discription
+                short: NAV ALT0 gain
                 long: |
-                    SIMULINK very useful discription
+                    SIMULINK NAV Gains
 
             type: float
-            decimal: 4
-            default: 0.0
+            min: 0.0
+            reboot_required: false
+            default: 0
 
-        SM_TCS_KTRIM:
+        SM_NAV_LAF:
             description:
-                short: SIMULINK very useful discription
+                short: NAV LAF gain
                 long: |
-                    SIMULINK very useful discription
+                    SIMULINK NAV Gains
 
             type: float
-            decimal: 4
-            default: 0.0
+            min: 0.0
+            reboot_required: false
+            default: 4
 
-        SM_TCS_KPITCH:
+        SM_NAV_SAFETY:
             description:
-                short: SIMULINK very useful discription
+                short: NAV SAFETY gain
                 long: |
-                    SIMULINK very useful discription
+                    SIMULINK NAV Gains
 
             type: float
-            decimal: 4
-            default: 0.0
+            min: 0.0
+            reboot_required: false
+            default: 0
 
-        SM_TCS_KH:
+        SM_LIDAR_H1:
             description:
-                short: SIMULINK very useful discription
+                short: LIDAR H1 gain
                 long: |
-                    SIMULINK very useful discription
+                    SIMULINK sensor parameter values
 
             type: float
-            decimal: 4
-            default: 0.0
+            min: 0.0
+            reboot_required: false
+            default: 5
 
-        SM_TCS_KV:
+        SM_LIDAR_H2:
             description:
-                short: SIMULINK very useful discription
+                short: LIDAR H2 gain
                 long: |
-                    SIMULINK very useful discription
+                    SIMULINK sensor parameter values
 
             type: float
-            decimal: 4
-            default: 0.0
-
+            min: 0.0
+            reboot_required: false
+            default: 20
 
-        SM_TCS_VM${i}:
+        SM_LIDAR_VVMODE:
             description:
-                short: SIMULINK SM_TCS_VM${i} HFM mode blend speed
+                short: LIDAR VVMODE gain
                 long: |
-                    SIMULINK SM_TCS_VM${i} HFM mode blend speed
-                    [lower, upper limit]
+                    SIMULINK sensor parameter values
 
             type: float
-            decimal: 4
-            num_instances: 2
-            instance_start: 1
-            default: [5.0, 10.0]
+            min: 0.0
+            reboot_required: false
+            default: 2
 
-        SM_TCS_VH${i}:
+        SM_LIDAR_HMODE:
             description:
-                short: SIMULINK SM_TCS_VH${i} TFM mode blend speed
+                short: LIDAR HMODE gain
                 long: |
-                    SIMULINK SM_TCS_VH${i} TFM mode blend speed
-                    [lower, upper limit]
+                    SIMULINK sensor parameter values
 
             type: float
-            decimal: 4
-            num_instances: 2
-            instance_start: 1
-            default: [45.0, 50.0]
+            min: 0.0
+            reboot_required: false
+            default: 2
 
-        SM_TCS_DL_M12:
+        SM_LIDAR_TAU:
             description:
-                short: SIMULINK deck level value for Mode 1 to 2 transition
+                short: LIDAR HMODE gain
                 long: |
-                    SIMULINK deck level value for Mode 1 to 2 transition
+                    SIMULINK sensor parameter values
 
             type: float
-            decimal: 4
+            min: 0.0
+            reboot_required: false
             default: 0.3
 
-        SM_TCS_DL_M23:
+        SM_HDG_OFFSET:
             description:
-                short: SIMULINK deck level value for Mode 2 to 3 transition
+                short: HDG OFFSET gain
                 long: |
-                    SIMULINK deck level value for Mode 2 to 3 transition
+                    SIMULINK sensor parameter values
 
             type: float
-            decimal: 4
-            default: 1.8
+            min: 0.0
+            reboot_required: false
+            default: 0
 
-        SM_TCS_W_M34:
+        SM_SPD_MODE:
             description:
-                short: SIMULINK wing angle for Mode 3 to 4 transition
+                short: SPD MODE gain
                 long: |
-                    SIMULINK wing angle for Mode 3 to 4 transition
+                    SIMULINK sensor parameter values
 
             type: float
-            decimal: 4
-            unit: deg
-            default: 0.1
+            min: 0.0
+            reboot_required: false
+            default: 2
 
-        SM_TCS_QMAX_M34:
+        SM_SPD_V1:
             description:
-                short: SIMULINK max pitch rate during Mode 3 to 4 transition
+                short: SPD V1 gain
                 long: |
-                    SIMULINK max pitch rate during Mode 3 to 4 transition
+                    SIMULINK sensor parameter values
 
             type: float
-            unit: deg/s
-            decimal: 4
-            default: 2.0
+            min: 0.0
+            reboot_required: false
+            default: 10
 
-        SM_TCS_DL_M43:
+        SM_SPD_V2:
             description:
-                short: SIMULINK deck level value for Mode 4 to 3 transition
+                short: SPD V2 gain
                 long: |
-                    SIMULINK deck level value for Mode 4 to 3 transition
+                    SIMULINK sensor parameter values
 
             type: float
-            decimal: 4
-            default: 2.0
+            min: 0.0
+            reboot_required: false
+            default: 15
 
-        SM_TCS_W_M32:
+        SM_VV_SOURCE:
             description:
-                short: SIMULINK wing angle for Mode 3 to Mode 2 transition
+                short: VV sensor source selector
                 long: |
-                    SIMULINK wing angle for Mode 3 to Mode 2 transition
+                    SIMULINK sensor parameter values
 
             type: float
-            decimal: 4
-            unit: deg
-            default: 40.0
-
-        SM_TCS_DL_M21:
-            description:
-                short: SIMULINK deck level value for Mode 2 to Mode 1 transition
-                long: |
-                    SIMULINK deck level value for Mode 2 to Mode 1 transition
-
-            type: float
-            decimal: 4
-            default: 0.1
-
-        SM_TCS_TH_HFM:
-            description:
-                short: SIMULINK pitch attitude during acceleration through HFM
-                long: |
-                    SIMULINK pitch attitude during acceleration through HFM
-
-            type: float
-            decimal: 4
-            default: 5.0
-
-        SM_TCS_TAU_W:
-            description:
-                short: SIMULINK time constant for wing first-order dynamics
-                long: |
-                    SIMULINK time constant for wing first-order dynamics
-
-            type: float
-            decimal: 4
-            unit: s
-            default: 0.05
-
-        SM_TCS_TW_IDLE:
-            description:
-                short: SIMULINK T/W when in ground contact (idling)
-                long: |
-                    SIMULINK T/W when in ground contact (idling)
-
-            type: float
-            decimal: 4
-            default: 0.1
-
-        SM_TCS_TW_TKO:
-            description:
-                short: SIMULINK T/W when lifting off from ground contact
-                long: |
-                    SIMULINK T/W when lifting off from ground contact
-
-            type: float
-            decimal: 4
-            default: 1.0
-
-        SM_TCS_TAU_VV:
-            description:
-                short: SIMULINK for converting VVCmd error to a VVdot error
-                long: |
-                    SIMULINK for converting VVCmd error to a VVdot error
-
-            type: float
-            decimal: 4
-            default: 1.0
-
-        SM_TCS_TAU_TH:
-            description:
-                short: SIMULINK gain controlling discharge of pitch integrator
-                long: |
-                    SIMULINK gain controlling discharge of pitch integrator
-
-            type: float
-            decimal: 4
-            default: 0.5
-
-        SM_TCS_RAPID_INT:
-            description:
-                short: SIMULINK gain for making integrator shadow a variable
-                long: |
-                    SIMULINK gain for making integrator shadow a variable
-
-            type: float
-            decimal: 4
-            default: 100.0
-
-        SM_TCS_ACC_BAND:
-            description:
-                short: SIMULINK accel_sign parameter deadband
-                long: |
-                    SIMULINK [kt] deadband for computing accel_sign parameter
-
-            type: float
-            decimal: 4
-            default: 3.0
-
-        SM_TCS_WR_LIM:
-            description:
-                short: SIMULINK wing rate limit
-                long: |
-                    SIMULINK deg/s, wing rate limit in Mode 1
-
-            type: float
-            decimal: 4
-            unit: deg/s
-            default: 1.0
-
-        SM_TCS_KFFA_SC:
-            description:
-                short: SIMULINK pitch responsiveness scale factor
-                long: |
-                    SIMULINK KFFA scale factor for pitch responsiveness
-
-            type: float
-            decimal: 4
-            default: 1.0
-
-        SM_TCS_TKO_VV:
-            description:
-                short: SIMULINK take off boost
-                long: |
-                    SIMULINK T/W feed-forward for taking off quickly
-            type: float
-            decimal: 4
-            default: 0.5
-
-        SM_TCS_TAU_TKO:
-            description:
-                short: SIMULINK main rotors spool up rate
-                long: |
-                    SIMULINK how quickly to spool up the main rotors when taking off
-
-            type: float
-            decimal: 4
-            default: 2.0
-
-        SM_TCS_TH_MAX:
-            description:
-                short: SIMULINK pitch command positive limit
-                long: |
-                    SIMULINK pitch command positive limit
-
-            type: float
-            decimal: 4
-            default: 15.0
-
-        SM_TCS_TH_MIN:
-            description:
-                short: SIMULINK pitch command negative limit
-                long: |
-                    SIMULINK pitch command negative limit
-
-            type: float
-            decimal: 4
-            default: -15.0
-
-        SM_TCS_KPOG:
-            description:
-                short: SIMULINK pitch command negative limit
-                long: |
-                    SIMULINK pitch command negative limit
-
-            type: float
-            decimal: 4
-            default: 0.1
-
-        SM_TCS_W23:
-            description:
-                short: SIMULINK pitch command negative limit
-                long: |
-                    SIMULINK pitch command negative limit
-
-            type: float
-            decimal: 4
-            default: 20.0
-
-        SM_TCS_WR43:
-            description:
-                short: SIMULINK pitch command negative limit
-                long: |
-                    SIMULINK pitch command negative limit
-
-            type: float
-            decimal: 4
-            default: 10.0
-
-        SM_BLEND_MODE:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_BLEND_VX${i}:
-            description:
-                short: SIMULINK SM_BLEND_VX${i} very useful discription
-                long: |
-                    SIMULINK SM_BLEND_VX${i} very useful discription
-
-            type: float
-            decimal: 4
-            num_instances: 2
-            instance_start: 1
-            default: 0.0
-
-        SM_AP_TKO:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_AP_DXN:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_AP_AXN:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_AP_LDG:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_AP_NAV:
-            description:
-                short: SIMULINK very useful discription
-                long: |
-                    SIMULINK very useful discription
-
-            type: float
-            decimal: 4
-            default: 0.0
-
-        SM_WING_AUTO:
-            description:
-                short: SIMULINK wing angle logic switch
-                long: |
-                    SIMULINK a logic flag 0/1 for disabling/enabling
-                    automatic wing angle control
-
-            type: enum
-            values:
-                0: DISABLE
-                1: ENABLE
-            min: 0
-            max: 1
+            min: 0.0
+            reboot_required: false
             default: 1
 
-        SM_WING_CMD:
+        SM_IPPM_RHO:
             description:
-                short: SIMULINK wing angle command
+                short: IPPM RHO parameter value
                 long: |
-                    SIMULINK wing angle command
-                    between 0 (wing horizontal) and 90 (wing vertical)
+                    SIMULINK IPPM parameter values
 
             type: float
-            decimal: 4
             min: 0.0
-            max: 90.0
-            default: 90.0
+            reboot_required: false
+            default: 1.225
 
-        SM_LATCS_KVLAT:
+        SM_IPPM_DMP:
             description:
-                short: SIMULINK very useful discription
+                short: IPPM DMP parameter value
                 long: |
-                    SIMULINK very useful discription
+                    SIMULINK IPPM parameter values
 
             type: float
-            decimal: 4
-            default: 0.08
+            min: 0.0
+            reboot_required: false
+            default: 0
 
-        SM_LATCS_KPSI:
+        SM_IPPM_DLP:
             description:
-                short: SIMULINK very useful discription
+                short: IPPM DLP parameter value
                 long: |
-                    SIMULINK very useful discription
+                    SIMULINK IPPM parameter values
 
             type: float
-            decimal: 4
-            default: 0.5
+            min: 0.0
+            reboot_required: false
+            default: 0
 
-
-        SM_LATCS_KBETA:
+        SM_IPPM_LP0:
             description:
-                short: SIMULINK very useful discription
+                short: IPPM LP0 parameter value
                 long: |
-                    SIMULINK very useful discription
+                    SIMULINK IPPM parameter values
 
             type: float
-            decimal: 4
-            default: 0.0
+            min: 0.0
+            reboot_required: false
+            default: 0
 
-        SM_LATCS_KTRK:
+        SM_IPPM_MP0:
             description:
-                short: SIMULINK very useful discription
+                short: IPPM MP0 parameter value
                 long: |
-                    SIMULINK very useful discription
+                    SIMULINK IPPM parameter values
 
             type: float
-            decimal: 4
-            default: 2.0
+            min: 0.0
+            reboot_required: false
+            default: 0
+
+        SM_IPPM_MASS:
+            description:
+                short: IPPM mass of vehicle in kg
+                long: |
+                    SIMULINK IPPM parameter values
+
+            type: float
+            min: 0.0
+            reboot_required: false
+            default: 7.76
+
+        SM_FCS_DFLAP:
+            description:
+                short: Canard flap setting value
+                long: |
+                    SIMULINK IPPM parameter values
+
+            type: float
+            reboot_required: false
+            default: 0
+
+        SM_FCS_VTXN:
+            description:
+                short: Control allocator transition speed (kts)
+                long: |
+                    SIMULINK IPPM parameter values
+
+            type: float
+            reboot_required: false
+            default: 30
+
+        SM_FCS_NPROP:
+            description:
+                short: Propeller setting for failure testing
+                long: |
+                    SIMULINK IPPM parameter values
+
+            type: float
+            reboot_required: false
+            default: -1
+
+        SM_AP_SOURCE:
+            description:
+                short: AP left switch control selector
+                long: |
+                    SIMULINK IPPM parameter values
+
+            type: float
+            reboot_required: false
+            default: 0
+
+        SM_NAC_AUTO:
+            description:
+                short: nacelle automatic flag pilot input
+                long: |
+                    SIMULINK IPPM parameter values
+
+            type: float
+            reboot_required: false
+            default: 1
+
+        SM_NAC_CMD:
+            description:
+                short: nacelle manual control command
+                long: |
+                    SIMULINK IPPM parameter values
+
+            type: float
+            reboot_required: false
+            default: 90

@@ -147,9 +147,8 @@ uint8_t get_input_ind(sticks_ind stick)
 {
 
 	char str[17];
-	const char *prefix;
+	static const char *prefix = "SM_IN_MAP_";
 
-	prefix = "SM_IN_MAP_";
 	sprintf(str, "%s%u", prefix, stick + 1);
 	int32_t ind = 0;
 	param_get(param_find(str), &ind);
@@ -174,9 +173,9 @@ uint8_t get_output_ind(uint8_t out_ind)
 float get_extr(uint8_t i)
 {
 	char str[17];
-	const char *prefix;
+	static const char *prefix = "SM_EXTR";
 
-	prefix = "SM_EXTR";
+	// prefix = "SM_EXTR";
 	sprintf(str, "%s%u", prefix, i);
 	float val = 0;
 	param_get(param_find(str), &val);
