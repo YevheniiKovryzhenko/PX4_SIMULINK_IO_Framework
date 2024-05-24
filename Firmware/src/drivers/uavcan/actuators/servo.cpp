@@ -100,30 +100,6 @@ UavcanServoController::update(const uavcan::TimerEvent &)
 		armed  = actuator_armed.armed;
 		failsafe = actuator_armed.force_failsafe;
 	}
-
-	/*
-	int32_t param_safety = 2;
-	param_get(param_find("SM_OVERWRITE"), &param_safety);
-
-
-
-	switch (param_safety)
-	{
-	case 1:
-		if (_actuator_outputs_sv_sub.update(&actuator_outputs_sv)) update_outputs(true, false, actuator_outputs_sv.output);
-
-		break;
-
-	default:
-		_actuator_outputs_sv_sub.update(&actuator_outputs_sv);
-		update_outputs(false, false, actuator_outputs_sv.output);
-		break;
-	}
-
-	*/
-
-
-
 	if (_actuator_outputs_sv_sub.update(&actuator_outputs_sv))
 	{
 		update_outputs(armed, failsafe, actuator_outputs_sv.output);

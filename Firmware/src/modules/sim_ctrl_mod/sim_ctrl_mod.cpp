@@ -320,6 +320,18 @@ bool SIM_CTRL_MOD::update_sticks(int input_source_opt, sticks_ind stick, float& 
 					}
 
 					return true;
+				case MODE:
+					{
+						bool use_raw_mode_switch = _param_mode_type.get() == 1;
+						if (!use_raw_mode_switch)
+						{
+							if (stick_val > 0.7f) stick_val = static_cast<float>(MODE3);
+							else if(stick_val < -0.7f) stick_val = static_cast<float>(MODE1);
+							else stick_val = static_cast<float>(MODE2); //must always assign some default
+						}
+					}
+
+					return true;
 
 				default:
 					return true;
@@ -398,8 +410,30 @@ bool SIM_CTRL_MOD::update_sticks(int input_source_opt, sticks_ind stick, float& 
 				}
 				return true;
 			case MODE:
-				stick_val = man_switches.mode_slot; //special case
-				return true;
+				{
+					bool use_raw_mode_switch = _param_mode_type.get() == 1;
+					if(man_switches.mode_switch != manual_control_switches_s::SWITCH_POS_NONE)
+					{
+						switch (man_switches.mode_switch)
+						{
+						case manual_control_switches_s::SWITCH_POS_ON:
+							if(use_raw_mode_switch) stick_val = 1.f;
+							else stick_val = static_cast<float>(MODE3);
+							break;
+						case manual_control_switches_s::SWITCH_POS_MIDDLE:
+							if(use_raw_mode_switch) stick_val = 0.f;
+							else stick_val = static_cast<float>(MODE2);
+							break;
+						default:
+							if(use_raw_mode_switch) stick_val = -1.f;
+							else stick_val = static_cast<float>(MODE1);
+							break;
+						}
+						return true;
+
+					} else return false;
+				}
+
 
 			default:
 				if (sticks_ind2manual_control(stick, man_setpoint, stick_val) == 0)
@@ -549,7 +583,7 @@ bool SIM_CTRL_MOD::check_armed(bool &armed, int input_src_opt)
 
 	//if (commander_updated_armed_state) printf("%4d, %4d, %4d\n", act_armed_px4.armed, act_armed_px4.prearmed, act_armed_px4.ready_to_arm);
 
-	int32_t arm_src_opt = _param_sm_overwrite.get();
+	int32_t arm_src_opt = _param_sm_arm_src.get();
 
 	if ((hrt_elapsed_time(&_boot_timestamp) > 5000000))
 	{
@@ -691,7 +725,7 @@ void SIM_CTRL_MOD::test_fake_atuator_data(void)
 	_actuator_outputs_sv_pub.publish(sv_out);
 }
 
-void SIM_CTRL_MOD::update_mode_autonomous(control_level &current_mode, bool armed)
+bool SIM_CTRL_MOD::update_mode_autonomous(control_level &current_mode, bool armed)
 {
 	static int32_t SMG_EN_ = 0;
 	param_get(param_find("SMG_EN"), &SMG_EN_);
@@ -895,12 +929,70 @@ void SIM_CTRL_MOD::update_mode_autonomous(control_level &current_mode, bool arme
 			break;
 		}
 		}
-
-		prev_mode = current_mode;
+		if (current_mode != prev_mode)
+		{
+			prev_mode = current_mode;
+			return true;
+		}
 
 	}
 
-	return;
+	return false;
+}
+
+
+bool SIM_CTRL_MOD::update_mode(float &current_mode, int input_source_opt, bool &use_raw_mode_switch)
+{
+	bool need_update = false;
+	int32_t en_calibration = _param_sm_en_cal.get();
+	int32_t sm_mode_src_ = _param_mode_src.get();
+
+	if (en_calibration == 1)
+	{
+		if (use_raw_mode_switch) current_mode = -1.f;
+		else current_mode = static_cast<float>(CALIBRATION);
+	}
+	else
+	{
+		switch (sm_mode_src_)
+		{
+		case 0: //MANUAL_CONTROL_SETPOINT
+			if (update_sticks(0, sticks_ind::MODE, current_mode)) need_update = true;
+			break;
+		case 1: // RC_IN
+			if (update_sticks(1, sticks_ind::MODE, current_mode)) need_update = true;
+			break;
+
+		case 2: //INBOUND_MSG
+			if (update_sticks(2, sticks_ind::MODE, current_mode)) need_update = true;
+			break;
+
+		case 3: //INBOUND_CONTROL_MSG
+			if (update_sticks(3, sticks_ind::MODE, current_mode)) need_update = true;
+			break;
+
+		case 4: //Mode_1 / Switch Low (-1)
+			if (use_raw_mode_switch) current_mode = static_cast<float>(MODE1);
+			else current_mode = -1.f;
+			break;
+		case 5: //Mode_2 / Switch Mid (0)
+			if (use_raw_mode_switch) current_mode = static_cast<float>(MODE2);
+			else current_mode = 0.f;
+			break;
+		case 6: //Mode_3 / Switch High (1)
+			if (use_raw_mode_switch) current_mode = static_cast<float>(MODE3);
+			else current_mode = 1.f;
+			break;
+		case 7: //Pass Raw RC Mode Switch Value [-1 1]
+			if (update_sticks(input_source_opt, sticks_ind::MODE, current_mode)) need_update = true;
+			break;
+		default: //SM_CMD_OPT
+			if (update_sticks(input_source_opt, sticks_ind::MODE, current_mode)) need_update = true;
+			break;
+		}
+	}
+
+	return need_update;
 }
 
 
@@ -928,10 +1020,8 @@ bool SIM_CTRL_MOD::update_control_inputs(float in_vec[CONTROL_VEC_SIZE])
 	static float extr5 = 0.f;
 	static float extr6 = 0.f;
 
-
-	static control_level mode_ch = MODE1;		//[1 4] mode that corresponds to the stick position
-	static bool use_raw_mode_switch = false;	//use raw mode switch value
-	int32_t en_calibration = _param_sm_en_cal.get();
+	int32_t sm_mode_type_ = _param_mode_type.get();
+	bool use_raw_mode_switch = sm_mode_type_ == 1;
 
 	if (update_sticks(input_source_opt, sticks_ind::ROLL, roll)) need_update = true;
 	if (update_sticks(input_source_opt, sticks_ind::PITCH, pitch)) need_update = true;
@@ -954,56 +1044,26 @@ bool SIM_CTRL_MOD::update_control_inputs(float in_vec[CONTROL_VEC_SIZE])
 
 	bool armed_switch = false;
 	if (check_armed(armed_switch, input_source_opt)) need_update = true;
+	if (update_mode(mode_stick, input_source_opt, use_raw_mode_switch)) need_update = true;
 
-	if (en_calibration == 1)
+
+	if (!use_raw_mode_switch)
 	{
-		mode_ch = CALIBRATION;
-	}
-	else
-	{
-		int32_t SM_3MODE_SW_SRC_ = 0;
-		param_get(param_find("SM_3MODE_SW_SRC"), &SM_3MODE_SW_SRC_);
-		switch (SM_3MODE_SW_SRC_)
+		static control_level mode_ch = MODE1;		//[1 4] mode that corresponds to the stick position
+		mode_ch = static_cast<control_level>(mode_stick);
+		if (update_mode_autonomous(mode_ch, armed_switch)) //extra checks for flightmode
 		{
-		case 1: //Mode_1 / Switch Low (-1)
-			mode_ch = MODE1;
-			break;
-		case 2: //Mode_2 / Switch Mid (0)
-			mode_ch = MODE2;
-			break;
-		case 3: //Mode_3 / Switch High (1)
-			mode_ch = MODE3;
-			break;
-		case 4: //Switch Low raw value of (-1)
-			mode_stick = -1.f;
-			break;
-		case 5: //Switch Mid raw value of (0)
-			mode_stick = 0.f;
-			break;
-		case 6: //Switch High raw value of (1)
-			mode_stick = 1.f;
-			break;
-		case 7: //Pass Raw RC Mode Switch Value [-1 1]
-			if (update_sticks(input_source_opt, sticks_ind::MODE, mode_stick)) need_update = true;
-			use_raw_mode_switch = true;
-			break;
-		default: //SM_CMD_OPT
-			if (update_sticks(input_source_opt, sticks_ind::MODE, mode_stick)) need_update = true;
-			if (mode_stick > 0.7f) mode_ch = MODE3;
-			else if(mode_stick < -0.7f) mode_ch = MODE1;
-			else mode_ch = MODE2; //must always assign some default
-			break;
+			need_update = true;
+			mode_stick = static_cast<float>(mode_ch);
 		}
 	}
-	if (!use_raw_mode_switch) update_mode_autonomous(mode_ch, armed_switch); //extra checks for flightmode
 
 	in_vec[get_input_ind(sticks_ind::ROLL)] = roll;
 	in_vec[get_input_ind(sticks_ind::PITCH)] = pitch;
 	in_vec[get_input_ind(sticks_ind::YAW)] = yaw;
 	in_vec[get_input_ind(sticks_ind::THROTTLE)] = throttle;
 	in_vec[get_input_ind(sticks_ind::ARMED)] = static_cast<float>(armed_switch);
-	if (use_raw_mode_switch) in_vec[get_input_ind(sticks_ind::MODE)] = mode_stick;
-	else in_vec[get_input_ind(sticks_ind::MODE)] = static_cast<float>(mode_ch);
+	in_vec[get_input_ind(sticks_ind::MODE)] = mode_stick;
 	in_vec[get_input_ind(sticks_ind::AUX1)] = aux1;
 	in_vec[get_input_ind(sticks_ind::AUX2)] = aux2;
 	in_vec[get_input_ind(sticks_ind::AUX3)] = aux3;

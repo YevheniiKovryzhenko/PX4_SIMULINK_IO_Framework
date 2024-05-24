@@ -15,9 +15,9 @@ parameters:
                 1: ENABLE
             default: 0
 
-        SM_OVERWRITE:
+        SM_ARM_SRC:
             description:
-                short: SIMULINK safety overwrite for arm switch
+                short: SIMULINK overwrite for arm switch
                 long: |
                     SIMULINK parameter for overwriting safety logic.
                     By default, actuator armed state source
@@ -39,7 +39,7 @@ parameters:
                 4: INBOUND_MSG
                 5: INBOUND_CTRL_MSG
                 6: PX4
-            default: 0
+            default: 6
 
         SM_THROTTLE:
             description:
@@ -380,25 +380,40 @@ parameters:
             max: 17
             default: 3
 
-        SM_3MODE_SW_SRC:
+        SM_MODE_TYPE:
             description:
-                short: SIMULINK stick manual overwrite
+                short: SIMULINK Mode input type
                 long: |
-                    This flag controls if mode stick is being manually overwritten.
-                    This should only be used for testing (when rc is not available).
+                    This controls mode channel value to be either set to raw [-1, 0, 1]
+                    or to be set to generic mode values [0, 1, 2, 3, ...]. This has to be set
+                    according to the mode switch type even if using remote control without RC.
             type: enum
             values:
-                0: SM_CMD_OPT
-                1: Mode_1 / Switch Low (-1)
-                2: Mode_2 / Switch Mid (0)
-                3: Mode_3 / Switch High (1)
-                4: Switch Low raw value of (-1)
-                5: Switch Mid raw value of (0)
-                6: Switch High raw value of (1)
-                7: Pass Raw RC Mode Switch Value [-1 1]
+                0: Use raw stick values
+                1: Use generic mode values
+            min: 0
+            max: 1
+            default: 0
+
+        SM_MODE_SRC:
+            description:
+                short: SIMULINK overwrite for mode switch
+                long: |
+                    SIMULINK parameter for overwriting mode switch input.
+
+            type: enum
+            values:
+                0: MANUAL_CONTROL_SETPOINT
+                1: RC_IN
+                2: INBOUND_MSG
+                3: INBOUND_CTRL_MSG
+                4: Mode_1 / Switch Low (-1)
+                5: Mode_2 / Switch Mid (0)
+                6: Mode_3 / Switch High (1)
+                7: SM_CMD_OPT
             min: 0
             max: 7
-            default: 0
+            default: 7
 
         SM_MODE${i}_MAP:
             description:

@@ -1988,7 +1988,7 @@ Commander::run()
 
 		int32_t sm_arm_overwrite = 0;
 		int32_t sm_input_src = 0;
-		param_get(param_find("SM_OVERWRITE"), &sm_arm_overwrite);
+		param_get(param_find("SM_ARM_SRC"), &sm_arm_overwrite);
 		param_get(param_find("SM_CMD_OPT"), &sm_input_src);
 		bool use_px4_armed_flag = (sm_arm_overwrite == 6) || (sm_arm_overwrite == 0 && sm_input_src == 0);
 		if (_armed.armed && use_px4_armed_flag) //only if not controlled by SIM_CONTROL_MOD

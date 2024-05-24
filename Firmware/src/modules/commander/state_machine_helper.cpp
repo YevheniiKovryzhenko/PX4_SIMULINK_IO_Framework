@@ -420,7 +420,7 @@ void enable_failsafe(vehicle_status_s &status, bool old_failsafe, orb_advert_t *
 
 	int32_t sm_arm_overwrite = 0;
 	int32_t sm_input_src = 0;
-	param_get(param_find("SM_OVERWRITE"), &sm_arm_overwrite);
+	param_get(param_find("SM_ARM_SRC"), &sm_arm_overwrite);
 	param_get(param_find("SM_CMD_OPT"), &sm_input_src);
 
 	if (sm_arm_overwrite == 0 && sm_input_src == 0) //only if not controlled by SIM_CONTROL_MOD

@@ -225,3 +225,19 @@ PARAM_DEFINE_INT32(UAVCAN_BAT_MON, 0);
  * @group UAVCAN
  */
 PARAM_DEFINE_INT32(UAVCAN_SFTY, 0);
+
+
+// /**
+//  * UAVCAN logging delay
+//  *
+//  *  This parameter control the frequency of the logging for
+//  *  UAVCAN servo and ESC outputs. The value is delay
+//  *  is milliseconds.
+//  *
+//  * @min 0
+//  * @max 10000
+//  * @unit ms
+//  * @reboot_required true
+//  * @group UAVCAN
+//  */
+// PARAM_DEFINE_INT32(UAVCAN_LOG_DELAY, 20);

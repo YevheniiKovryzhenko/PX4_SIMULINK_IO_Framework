@@ -238,6 +238,7 @@ private:
 
 	bool update_control_inputs(float in_vec[CONTROL_VEC_SIZE]);
 	bool check_armed(bool &armed, int input_src_opt);
+	bool update_mode(float &current_mode, int input_src_opt, bool &use_raw_mode_switch);
 	bool update_man_wing_angle(int input_source_opt, float& wing_cmd);
 	bool update_sticks(int input_source_opt, sticks_ind stick, float& stick_val);
 
@@ -245,7 +246,7 @@ private:
 
 	void test_fake_atuator_data(void);
 
-	void update_mode_autonomous(control_level &current_mode, bool armed);
+	bool update_mode_autonomous(control_level &current_mode, bool armed);
 
 	/**
 	 * THIS IS WHERE YOU DEFINE NEW PARAMETRS
@@ -262,11 +263,13 @@ private:
 	 */
 	DEFINE_PARAMETERS(
 		(ParamInt<px4::params::SM_EN_CAL>) _param_sm_en_cal,
-		(ParamInt<px4::params::SM_OVERWRITE>) _param_sm_overwrite,
+		(ParamInt<px4::params::SM_ARM_SRC>) _param_sm_arm_src,
 		(ParamInt<px4::params::SM_GC_OPT>) _param_gc_opt,
 		(ParamInt<px4::params::SM_EN_HIL>) _param_en_hil,
 		(ParamInt<px4::params::SM_MAV_STREAM>) _param_mav_stream,
 		(ParamInt<px4::params::SM_CMD_OPT>) _param_cmd_opt,
+		(ParamInt<px4::params::SM_MODE_TYPE>) _param_mode_type,
+		(ParamInt<px4::params::SM_MODE_SRC>) _param_mode_src,
 		// (ParamInt<px4::params::SM_WING_SRC>) _param_sm_wing_src,
 		// (ParamInt<px4::params::SM_WING_OPT>) _param_sm_wing_opt,
 		(ParamInt<px4::params::SM_GOVENOR_OPT>) _param_sm_govenor_opt,
