@@ -384,13 +384,13 @@ parameters:
             description:
                 short: SIMULINK Mode input type
                 long: |
-                    This controls mode channel value to be either set to raw [-1, 0, 1]
+                    This controls mode channel value to be either set to raw stick [-1, 0, 1]
                     or to be set to generic mode values [0, 1, 2, 3, ...]. This has to be set
                     according to the mode switch type even if using remote control without RC.
             type: enum
             values:
-                0: Use raw stick values
-                1: Use generic mode values
+                0: Use generic mode values
+                1: Use raw stick values
             min: 0
             max: 1
             default: 0
@@ -434,6 +434,28 @@ parameters:
             min: 5
             max: 8
             default: [5, 7, 8]
+
+        SM_AUX_${i}_SRC:
+            description:
+                short: SIMULINK overwrite for AUX_${i} stick
+                long: |
+                    SIMULINK parameter for overwriting AUX_${i} stick input source.
+
+            type: enum
+            values:
+                0: MANUAL_CONTROL_SETPOINT
+                1: RC_IN
+                2: INBOUND_MSG
+                3: INBOUND_CTRL_MSG
+                4: Switch Low (-1)
+                5: Switch Mid (0)
+                6: Switch High (1)
+                7: SM_CMD_OPT
+            min: 0
+            max: 7
+            num_instances: 6
+            instance_start: 1
+            default: 7
 
         SM_EXTR${i}:
             description:

@@ -996,6 +996,80 @@ bool SIM_CTRL_MOD::update_mode(float &current_mode, int input_source_opt, bool &
 }
 
 
+bool SIM_CTRL_MOD::update_aux_stick(int input_source_opt, float &value, uint8_t stick_ind)
+{
+	if (stick_ind < 1 || stick_ind > 6) return false;
+
+
+	char str[17];
+	static const char *prefix = "SM_AUX_";
+	static const char *suffix = "_SRC";
+
+	sprintf(str, "%s%u%s", prefix, stick_ind, suffix);
+	int32_t ind = 0;
+	if (param_get(param_find(str), &ind) == PX4_OK)
+	{
+		sticks_ind stick;
+		switch (stick_ind)
+		{
+		case 1:
+			stick = AUX1;
+			break;
+		case 2:
+			stick = AUX2;
+			break;
+		case 3:
+			stick = AUX3;
+			break;
+		case 4:
+			stick = AUX4;
+			break;
+		case 5:
+			stick = AUX5;
+			break;
+		case 6:
+			stick = AUX6;
+			break;
+		default:
+			return false;
+		}
+
+		switch (ind)
+		{
+		case 0: //MANUAL_CONTROL_SETPOINT
+			if (update_sticks(0, stick, value)) return true;
+			break;
+		case 1: // RC_IN
+			if (update_sticks(1, stick, value)) return true;
+			break;
+
+		case 2: //INBOUND_MSG
+			if (update_sticks(2, stick, value)) return true;
+			break;
+
+		case 3: //INBOUND_CONTROL_MSG
+			if (update_sticks(3, stick, value)) return true;
+			break;
+
+		case 4: //Switch Low (-1)
+			value = -1.f;
+			break;
+		case 5: //Switch Mid (0)
+			value = 0.f;
+			break;
+		case 6: //Switch High (1)
+			value = 1.f;
+			break;
+		default: //SM_CMD_OPT
+			if (update_sticks(input_source_opt, stick, value)) return true;
+			break;
+		}
+
+	}
+
+	return false;
+}
+
 bool SIM_CTRL_MOD::update_control_inputs(float in_vec[CONTROL_VEC_SIZE])
 {
 	bool need_update = false;
@@ -1027,13 +1101,16 @@ bool SIM_CTRL_MOD::update_control_inputs(float in_vec[CONTROL_VEC_SIZE])
 	if (update_sticks(input_source_opt, sticks_ind::PITCH, pitch)) need_update = true;
 	if (update_sticks(input_source_opt, sticks_ind::YAW, yaw)) need_update = true;
 	if (update_sticks(input_source_opt, sticks_ind::THROTTLE, throttle)) need_update = true;
-	if (update_sticks(input_source_opt, sticks_ind::AUX1, aux1)) need_update = true;
-	if (update_sticks(input_source_opt, sticks_ind::AUX2, aux2)) need_update = true;
-	if (update_sticks(input_source_opt, sticks_ind::AUX3, aux3)) need_update = true;
-	if (update_sticks(input_source_opt, sticks_ind::AUX4, aux4)) need_update = true;
-	if (update_sticks(input_source_opt, sticks_ind::AUX5, aux5)) need_update = true;
-	if (update_sticks(input_source_opt, sticks_ind::AUX6, aux5)) need_update = true;
+
+	if (update_aux_stick(input_source_opt, aux1, 1)) need_update = true;
+	if (update_aux_stick(input_source_opt, aux2, 2)) need_update = true;
+	if (update_aux_stick(input_source_opt, aux3, 3)) need_update = true;
+	if (update_aux_stick(input_source_opt, aux4, 4)) need_update = true;
+	if (update_aux_stick(input_source_opt, aux5, 5)) need_update = true;
+	if (update_aux_stick(input_source_opt, aux6, 6)) need_update = true;
+
 	// if (update_man_wing_angle(input_source_opt, aux6)) need_update = true;
+
 	if (update_sticks(input_source_opt, sticks_ind::EXTR1, extr1)) need_update = true;
 	if (update_sticks(input_source_opt, sticks_ind::EXTR2, extr2)) need_update = true;
 	if (update_sticks(input_source_opt, sticks_ind::EXTR3, extr3)) need_update = true;

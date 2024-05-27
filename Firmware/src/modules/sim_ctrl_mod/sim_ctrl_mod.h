@@ -239,6 +239,7 @@ private:
 	bool update_control_inputs(float in_vec[CONTROL_VEC_SIZE]);
 	bool check_armed(bool &armed, int input_src_opt);
 	bool update_mode(float &current_mode, int input_src_opt, bool &use_raw_mode_switch);
+	bool update_aux_stick(int input_source_opt, float &value, uint8_t stick_ind);
 	bool update_man_wing_angle(int input_source_opt, float& wing_cmd);
 	bool update_sticks(int input_source_opt, sticks_ind stick, float& stick_val);
 
