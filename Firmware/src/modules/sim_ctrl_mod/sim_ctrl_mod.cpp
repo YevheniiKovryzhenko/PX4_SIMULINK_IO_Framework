@@ -1240,6 +1240,7 @@ SIM_CTRL_MOD::publish_inbound_sim_data(void)
 	if (update_distance_sensor()) need_2_pub = true;
 	if (update_airspeed()) need_2_pub = true;
 	if (_vehicle_angular_velocity_sub.update(&v_angular_velocity)) need_2_pub = true;
+	if (_vehicle_angular_acceleration_sub.update(&v_angular_acceleration)) need_2_pub = true;
 
 	//publish new data if needed:
 	if (need_2_pub)
@@ -1319,6 +1320,8 @@ SIM_CTRL_MOD::publish_inbound_sim_data(void)
 		simulink_inboud_data.fill_buffer(local_pos.eph); //32
 
 		simulink_inboud_data.fill_buffer(airspeed.confidence); //33
+
+		simulink_inboud_data.fill_buffer(v_angular_acceleration.xyz, 3); //34 35 36
 
 		//publish new data:
 		debug_topic.timestamp = hrt_absolute_time();

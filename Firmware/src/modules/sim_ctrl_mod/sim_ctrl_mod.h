@@ -45,6 +45,7 @@
 #include <uORB/topics/vehicle_global_position.h>
 #include <uORB/topics/vehicle_gps_position.h>
 #include <uORB/topics/vehicle_attitude.h>
+#include <uORB/topics/vehicle_angular_acceleration.h>
 #include <uORB/topics/distance_sensor.h>
 #include <uORB/topics/airspeed.h>
 #include <uORB/topics/battery_status.h>
@@ -186,7 +187,7 @@ private:
 	uORB::Subscription		_simulink_inbound_sub{ORB_ID(simulink_inbound)};
 	uORB::Subscription		_simulink_inbound_ctrl_sub{ORB_ID(simulink_inbound_ctrl)};
 	uORB::Subscription 		_actuator_outputs_sv_sub{ORB_ID(actuator_outputs_sv)};
-	//uORB::Subscription 		_vehicle_angular_acceleration_sub{ORB_ID(vehicle_angular_acceleration)};
+	uORB::Subscription 		_vehicle_angular_acceleration_sub{ORB_ID(vehicle_angular_acceleration)};
 	uORB::Subscription     		_vehicle_angular_velocity_sub{ORB_ID(vehicle_angular_velocity)};
 	uORB::Subscription		_sim_guidance_status_sub{ORB_ID(sim_guidance_status)};
 	uORB::Subscription		_sim_guidance_trajectory_sub{ORB_ID(sim_guidance_trajectory)};
@@ -204,6 +205,7 @@ private:
 	vehicle_odometry_s odom{};
 	adc_report_s adc{};
 	vehicle_angular_velocity_s v_angular_velocity{};
+	vehicle_angular_acceleration_s v_angular_acceleration{};
 
 	hrt_abstime	_boot_timestamp{0};
 
