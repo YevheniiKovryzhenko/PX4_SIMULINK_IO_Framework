@@ -972,16 +972,16 @@ bool SIM_CTRL_MOD::update_mode(float &current_mode, int input_source_opt, bool &
 			break;
 
 		case 4: //Mode_1 / Switch Low (-1)
-			if (use_raw_mode_switch) current_mode = static_cast<float>(MODE1);
-			else current_mode = -1.f;
+			if (use_raw_mode_switch) current_mode = -1.f;
+			else current_mode = static_cast<float>(MODE1);
 			break;
 		case 5: //Mode_2 / Switch Mid (0)
-			if (use_raw_mode_switch) current_mode = static_cast<float>(MODE2);
-			else current_mode = 0.f;
+			if (use_raw_mode_switch) current_mode = 0.f;
+			else current_mode = static_cast<float>(MODE2);
 			break;
 		case 6: //Mode_3 / Switch High (1)
-			if (use_raw_mode_switch) current_mode = static_cast<float>(MODE3);
-			else current_mode = 1.f;
+			if (use_raw_mode_switch) current_mode = 1.f;
+			else current_mode = static_cast<float>(MODE3);
 			break;
 		case 7: //Pass Raw RC Mode Switch Value [-1 1]
 			if (update_sticks(input_source_opt, sticks_ind::MODE, current_mode)) need_update = true;
@@ -1126,13 +1126,13 @@ bool SIM_CTRL_MOD::update_control_inputs(float in_vec[CONTROL_VEC_SIZE])
 
 	if (!use_raw_mode_switch)
 	{
-		static control_level mode_ch = MODE1;		//[1 4] mode that corresponds to the stick position
+		static control_level mode_ch = MODE1;		//[1 8] mode that corresponds to the stick position
 		mode_ch = static_cast<control_level>(mode_stick);
 		if (update_mode_autonomous(mode_ch, armed_switch)) //extra checks for flightmode
 		{
 			need_update = true;
-			mode_stick = static_cast<float>(mode_ch);
 		}
+		mode_stick = static_cast<float>(mode_ch);
 	}
 
 	in_vec[get_input_ind(sticks_ind::ROLL)] = roll;
