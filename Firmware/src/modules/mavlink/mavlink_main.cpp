@@ -2293,7 +2293,7 @@ Mavlink::task_main(int argc, char *argv[])
 	}
 
 	if (_mode == MAVLINK_MODE_COUNT) {
-		_mode = MAVLINK_MODE_NORMAL;
+		_mode = MAVLINK_MODE_SIMULINK;
 	}
 
 	if (_datarate == 0) {
