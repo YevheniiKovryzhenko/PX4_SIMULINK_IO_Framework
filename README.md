@@ -33,8 +33,8 @@ You must clone stock PX4 v1.12.3, and go through all of the default installation
 Follow the documentation and make sure all of the stock functionality of the R2023a Matlab/Simulink has been installed and configured correctly (run examples!). 
 I can't help you if you can't install/configure MATLAB/toolboxes or follow step-by-step MATHWORKS documentation. 
 
-1. Locate the Firmware installation directory - this is where you have already installed PX4 v1.12.3, let's say D:/PX4/v1.13.3/Firmware.
-2. Go to D:/PX4/v1.13.3/Firmware/src/drivers/ and delete these folders:
+1. Locate the Firmware installation directory - this is where you have already installed PX4 v1.12.3, let's say D:/PX4/v1.12.3/Firmware.
+2. Go to D:/PX4/v1.12.3/Firmware/src/drivers/ and delete these folders:
     * uavcan
     * uavcan_v1
     * uavcannode   
