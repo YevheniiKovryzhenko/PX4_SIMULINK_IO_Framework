@@ -60,7 +60,6 @@ px4_add_board(
 		uavcan
 	MODULES
 		sim_ctrl_mod
-		sim_guidance
 		airspeed_selector
 		attitude_estimator_q
 		battery_status
