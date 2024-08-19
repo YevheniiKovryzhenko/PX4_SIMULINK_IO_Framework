@@ -56,4 +56,12 @@ Simulink integration is very application-dependent. This specific package was wr
 You may also find [KGroundControl](https://github.com/YevheniiKovryzhenko/KGroundControl.git) useful for your communication-related tasks. 
 
 # Contact
-If you have any questions, please feel free to reach out to me, Yevhenii (Jack) Kovryzhenko, at yzk0058@auburn.edu.
+If you have any questions, please feel free to contact me, Yevhenii (Jack) Kovryzhenko, at yzk0058@auburn.edu.
+
+# Credit
+This work started during my Ph.D. at [ACELAB](https://etaheri0.wixsite.com/acelabauburnuni) at Auburn University, under the supervision of Dr. Ehsan Taheri.
+Part of this work has been used during my participation in the STTR Phase II project with Transcend Air Co. to support the control system deployment and related activities.
+For more details, check out my [KGroundControl](https://github.com/YevheniiKovryzhenko/KGroundControl.git) and [RRTV TiltWing](https://github.com/YevheniiKovryzhenko/RRTV_TiltWing.git) repositories that
+were all part of this project. 
+
+I am still in the process of publishing journal papers that have directly used this work, so I will keep this section actively updated. Feel free to credit [me](https://scholar.google.com/citations?user=P812qiUAAAAJ&hl=en) by citing any of my relevant works.
