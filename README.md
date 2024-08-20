@@ -4,6 +4,7 @@ The focus here is to provide an integration layer for the SIMULINK-generated con
 tasks. The major focus of this work was to enable PWM servo and ESC control using a CAN protocol for PX4 v1.12.3 and circumvent some of the limitations of the
 R2023a UAV Toolbox Support Package for PX4 Autopilots.
 
+Check out my tutorials on installing and configuring this framework on [YouTube](https://www.youtube.com/playlist?list=PLgxIoIw6ONumELvafBonHBceTzPIK5T5j)!
 
 # Installation: 
 Important notes before you start:
