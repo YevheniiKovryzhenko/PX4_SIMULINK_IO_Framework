@@ -4,6 +4,7 @@ The focus here is to provide an integration layer for the SIMULINK-generated con
 tasks. The major focus of this work was to enable PWM servo and ESC control using a CAN protocol for PX4 v1.12.3 and circumvent some of the limitations of the
 R2023a UAV Toolbox Support Package for PX4 Autopilots.
 
+Check out my tutorials on installing and configuring this framework on [YouTube](https://www.youtube.com/playlist?list=PLgxIoIw6ONumELvafBonHBceTzPIK5T5j)!
 
 # Installation: 
 Important notes before you start:
@@ -26,15 +27,15 @@ documentation for all installation steps, unless stated otherwise. A quick recap
 * Install [UAV Toolbox Support Package for PX4 Autopilots](https://www.mathworks.com/help/releases/R2023a/supportpkg/px4/ug/install-support-for-px4.html):
   * Install [Python 3.8.2](https://www.mathworks.com/help/releases/R2023a/supportpkg/px4/ug/install-python-windows.html).
   * Install [Cygwin toolchain v0.8](https://www.mathworks.com/help/releases/R2023a/supportpkg/px4/ug/setup-cygwin-toolchain.html).
-  * (Optional) I recommend (cloning PX4 into a separate, top-level directory)[https://www.mathworks.com/help/releases/R2023a/supportpkg/px4/ug/setting-px4-toolchain-windows.html], for example, D:/PX4/v1.12.3/Firmware.
+  * (Optional) I recommend [cloning PX4 into a separate, top-level directory](https://www.mathworks.com/help/releases/R2023a/supportpkg/px4/ug/setting-px4-toolchain-windows.html), for example, into D:/PX4/v1.12.3/Firmware.
 
 ## Install PX4-Simulink I/0 Upgrade
 You must clone stock PX4 v1.12.3, and go through all of the default installation steps, before attempting anything further. 
 Follow the documentation and make sure all of the stock functionality of the R2023a Matlab/Simulink has been installed and configured correctly (run examples!). 
 I can't help you if you can't install/configure MATLAB/toolboxes or follow step-by-step MATHWORKS documentation. 
 
-1. Locate the Firmware installation directory - this is where you have already installed PX4 v1.12.3, let's say D:/PX4/v1.13.3/Firmware.
-2. Go to D:/PX4/v1.13.3/Firmware/src/drivers/ and delete these folders:
+1. Locate the Firmware installation directory - this is where you have already installed PX4 v1.12.3, let's say D:/PX4/v1.12.3/Firmware.
+2. Go to D:/PX4/v1.12.3/Firmware/src/drivers/ and delete these folders:
     * uavcan
     * uavcan_v1
     * uavcannode   
@@ -56,4 +57,12 @@ Simulink integration is very application-dependent. This specific package was wr
 You may also find [KGroundControl](https://github.com/YevheniiKovryzhenko/KGroundControl.git) useful for your communication-related tasks. 
 
 # Contact
-If you have any questions, please feel free to reach out to me, Yevhenii (Jack) Kovryzhenko, at yzk0058@auburn.edu.
+If you have any questions, please feel free to contact me, Yevhenii (Jack) Kovryzhenko, at yzk0058@auburn.edu.
+
+# Credit
+This work started during my Ph.D. at [ACELAB](https://etaheri0.wixsite.com/acelabauburnuni) at Auburn University, under the supervision of Dr. Ehsan Taheri.
+Part of this work has been used during my participation in the STTR Phase II project with Transcend Air Co. to support the control system deployment and related activities.
+For more details, check out my [KGroundControl](https://github.com/YevheniiKovryzhenko/KGroundControl.git) and [RRTV TiltWing](https://github.com/YevheniiKovryzhenko/RRTV_TiltWing.git) repositories that
+were all part of this project. 
+
+I am still in the process of publishing journal papers that have directly used this work, so I will keep this section actively updated. Feel free to credit [me](https://scholar.google.com/citations?user=P812qiUAAAAJ&hl=en) by citing any of my relevant works.
