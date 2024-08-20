@@ -27,7 +27,7 @@ documentation for all installation steps, unless stated otherwise. A quick recap
 * Install [UAV Toolbox Support Package for PX4 Autopilots](https://www.mathworks.com/help/releases/R2023a/supportpkg/px4/ug/install-support-for-px4.html):
   * Install [Python 3.8.2](https://www.mathworks.com/help/releases/R2023a/supportpkg/px4/ug/install-python-windows.html).
   * Install [Cygwin toolchain v0.8](https://www.mathworks.com/help/releases/R2023a/supportpkg/px4/ug/setup-cygwin-toolchain.html).
-  * (Optional) I recommend (cloning PX4 into a separate, top-level directory)[https://www.mathworks.com/help/releases/R2023a/supportpkg/px4/ug/setting-px4-toolchain-windows.html], for example, D:/PX4/v1.12.3/Firmware.
+  * (Optional) I recommend [cloning PX4 into a separate, top-level directory](https://www.mathworks.com/help/releases/R2023a/supportpkg/px4/ug/setting-px4-toolchain-windows.html), for example, into D:/PX4/v1.12.3/Firmware.
 
 ## Install PX4-Simulink I/0 Upgrade
 You must clone stock PX4 v1.12.3, and go through all of the default installation steps, before attempting anything further. 
