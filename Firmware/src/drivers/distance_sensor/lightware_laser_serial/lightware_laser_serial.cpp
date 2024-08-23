@@ -1,6 +1,6 @@
 /****************************************************************************
  *
- *   Copyright (c) 2014-2019, 2021 PX4 Development Team. All rights reserved.
+ *   Copyright (c) 2014-2021 PX4 Development Team. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -106,7 +106,7 @@ LightwareLaserSerial::init()
 
 	case 5:
 		/* SF11/c (120m 20Hz) */
-		_px4_rangefinder.set_min_distance(0.01f);
+		_px4_rangefinder.set_min_distance(0.2f);
 		_px4_rangefinder.set_max_distance(120.0f);
 		_interval = 50000;
 		break;
@@ -128,6 +128,13 @@ LightwareLaserSerial::init()
 		break;
 
 	case 8:
+		/* LW20/c (100M 20Hz) */
+		_px4_rangefinder.set_min_distance(0.2f);
+		_px4_rangefinder.set_max_distance(100.0f);
+		_interval = 50000;
+		break;
+
+	case 9:
 		/* SF30/d (200m 156Hz) */
 		_px4_rangefinder.set_min_distance(0.2f);
 		_px4_rangefinder.set_max_distance(200.0f);
@@ -304,6 +311,12 @@ void LightwareLaserSerial::Run()
 
 		if ((termios_state = tcsetattr(_fd, TCSANOW, &uart_config)) < 0) {
 			PX4_ERR("baud %d ATTR", termios_state);
+		}
+
+		// LW20: Enable serial mode by sending some characters
+		if (hw_model == 8) {
+			const char *data = "www\r\n";
+			(void)!::write(_fd, &data, strlen(data));
 		}
 	}
 
