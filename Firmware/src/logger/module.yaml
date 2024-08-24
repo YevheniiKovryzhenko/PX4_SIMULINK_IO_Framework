@@ -1,0 +1,37 @@
+__max_num_config_instances: &max_num_config_instances 3
+
+module_name: Logger
+parameters:
+    - group: SIM_CTRL_MOD
+      definitions:
+        SM_LOG_DELAY:
+                description:
+                    short: SIMULINK INBOUND/OUTBOUND topics logging delay
+                    long: |
+                        This parameter control the frequency of the logging for
+                        all inputs/outputs to/from simulink. The value is delay
+                        is milliseconds.
+
+                type: int32
+                unit: ms
+                min: 0
+                max: 10000
+                reboot_required: true
+                default: 20
+
+    - group: SIM_GUIDANCE
+      definitions:
+        COMPG_LOG_DELAY:
+                description:
+                    short: SIMULINK Guidance topics logging delay
+                    long: |
+                        This parameter control the frequency of the logging for
+                        all inputs/outputs to/from companion. The value is delay
+                        is milliseconds.
+
+                type: int32
+                unit: ms
+                min: 0
+                max: 10000
+                reboot_required: true
+                default: 100
