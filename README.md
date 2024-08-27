@@ -1,4 +1,7 @@
 # PX4 SIMULINK I/0 Framework
+
+## Hello there 👋
+
 This is an "upgrade" package for PX4 Firmware that defines a certain I/O structure for control system development and integration through SIMULINK.
 The focus here is to provide an integration layer for the SIMULINK-generated control system, re-enable stock PX4 features, and simplify communication-related
 tasks. The major focus of this work was to enable PWM servo and ESC control using a CAN protocol for PX4 v1.12.3 and circumvent some of the limitations of the
@@ -15,7 +18,7 @@ Important notes before you start:
   * cubepilot_cubeorange_default as your "Build Target" (should be the default).
   * Keep the default startup script (I recommend completely erasing the SD card if you have it).
 * Prepare your hardware now:
-  * Remove the SD card, and format it (FAT32). You can keep it unplugged until you have completed all the installation steps below (SD card is not needed until you start configuring the firmware through QGC).
+  * Remove the SD card, and format it (FAT32). You can keep it unplugged until you have completed all the installation steps below (an SD card is not needed until you start configuring the firmware through QGC).
   * Do a factory reset for your Pixhawk Cube Orange and flush it with the default PX4 firmware (you should use the most recent stable release, which is the default in QGC).
 
 
