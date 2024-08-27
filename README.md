@@ -52,7 +52,8 @@ At this point, you should be able to compile the Simulink model and upload firmw
 through Simulink to check the status of everything without the control system deployed. You should also be able to check the status of the sm_ctrl_mod through 
 the MAVLINK shell in QGC. There should be no further action required on the firmware side, besides configuration.
 
-Simulink integration is very application-dependent. This specific package was written to be used with the [RRTV Tilt-Wing configuration](https://github.com/YevheniiKovryzhenko/RRTV_TiltWing.git), which is also the only example/walkthrough for this work.
+Simulink integration is very application-dependent. This specific package was written to be used with the [RRTV Tilt-Wing configuration](https://github.com/YevheniiKovryzhenko/RRTV_TiltWing.git) 
+and [Quadrotor_with_FF_Control](https://github.com/YevheniiKovryzhenko/Quadrotor_with_FF_Control.git).
 
 You may also find [KGroundControl](https://github.com/YevheniiKovryzhenko/KGroundControl.git) useful for your communication-related tasks. 
 
