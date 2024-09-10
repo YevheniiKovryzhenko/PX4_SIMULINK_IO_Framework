@@ -1,4 +1,7 @@
 # PX4 SIMULINK I/0 Framework
+
+## Hello there 👋
+
 This is an "upgrade" package for PX4 Firmware that defines a certain I/O structure for control system development and integration through SIMULINK.
 The focus here is to provide an integration layer for the SIMULINK-generated control system, re-enable stock PX4 features, and simplify communication-related
 tasks. The major focus of this work was to enable PWM servo and ESC control using a CAN protocol for PX4 v1.12.3 and circumvent some of the limitations of the
@@ -15,7 +18,7 @@ Important notes before you start:
   * cubepilot_cubeorange_default as your "Build Target" (should be the default).
   * Keep the default startup script (I recommend completely erasing the SD card if you have it).
 * Prepare your hardware now:
-  * Remove the SD card, and format it (FAT32). You can keep it unplugged until you have completed all the installation steps below (SD card is not needed until you start configuring the firmware through QGC).
+  * Remove the SD card, and format it (FAT32). You can keep it unplugged until you have completed all the installation steps below (an SD card is not needed until you start configuring the firmware through QGC).
   * Do a factory reset for your Pixhawk Cube Orange and flush it with the default PX4 firmware (you should use the most recent stable release, which is the default in QGC).
 
 
@@ -52,7 +55,8 @@ At this point, you should be able to compile the Simulink model and upload firmw
 through Simulink to check the status of everything without the control system deployed. You should also be able to check the status of the sm_ctrl_mod through 
 the MAVLINK shell in QGC. There should be no further action required on the firmware side, besides configuration.
 
-Simulink integration is very application-dependent. This specific package was written to be used with the [RRTV Tilt-Wing configuration](https://github.com/YevheniiKovryzhenko/RRTV_TiltWing.git), which is also the only example/walkthrough for this work.
+Simulink integration is very application-dependent. This specific package was written to be used with the [RRTV Tilt-Wing configuration](https://github.com/YevheniiKovryzhenko/RRTV_TiltWing.git) 
+and [Quadrotor_with_FF_Control](https://github.com/YevheniiKovryzhenko/Quadrotor_with_FF_Control.git).
 
 You may also find [KGroundControl](https://github.com/YevheniiKovryzhenko/KGroundControl.git) useful for your communication-related tasks. 
 
@@ -66,3 +70,38 @@ For more details, check out my [KGroundControl](https://github.com/YevheniiKovry
 were all part of this project. 
 
 I am still in the process of publishing journal papers that have directly used this work, so I will keep this section actively updated. Feel free to credit [me](https://scholar.google.com/citations?user=P812qiUAAAAJ&hl=en) by citing any of my relevant works.
+Some of the articles that directly used this work:
+* Kovryzhenko, Y., Li, N., and Taheri, E., “A Control System Design and Implementation for Autonomous Quadrotors with Real-Time Re-Planning Capability,” Robotics, Vol. 13, No. 9, 2024, p. 136. https://doi.org/10.3390/robotics13090136
+    ```
+  	@article{kovryzhenko_control_2024,
+    	title = {A Control System Design and Implementation for Autonomous Quadrotors with Real-Time Re-Planning Capability},
+    	volume = {13},
+    	copyright = {http://creativecommons.org/licenses/by/3.0/},
+    	issn = {2218-6581},
+    	url = {https://www.mdpi.com/2218-6581/13/9/136},
+    	doi = {10.3390/robotics13090136},
+    	language = {en},
+    	number = {9},
+    	urldate = {2024-09-09},
+    	journal = {Robotics},
+    	author = {Kovryzhenko, Yevhenii and Li, Nan and Taheri, Ehsan},
+    	month = sep,
+    	year = {2024},
+    	keywords = {autopilot development, embedded computing, hardware pipeline, online re-planning, PX4, real-time control, UAS},
+    	pages = {136},
+    }
+  	```
+* Comer, A., Chakraborty, I., Kovryzhenko, Y., Taheri, E., Bhandari, R., Kunwar, B., and Putra, S., “Flight Testing of Explicit Model-Following Trajectory Control System for Lift-Plus-Cruise and Tilt-Wing Configurations,” presented at the VFS 80 Forum, Montreal, Canada, 2024. https://doi.org/10.4050/F-0080-2024-1306
+    ```
+  	@inproceedings{comer_flight_2024,
+    	address = {Montreal, Canada},
+    	title = {Flight Testing of Explicit Model-Following Trajectory Control System for Lift-Plus-Cruise and Tilt-Wing Configurations},
+    	copyright = {All rights reserved},
+    	url = {https://doi.org/10.4050/F-0080-2024-1306},
+    	doi = {10.4050/F-0080-2024-1306},
+    	booktitle = {VFS 80 Forum},
+    	author = {Comer, Anthony and Chakraborty, Imon and Kovryzhenko, Yevhenii and Taheri, Ehsan and Bhandari, Rajan and Kunwar, Bikash and Putra, Stefanus},
+    	month = may,
+    	year = {2024},
+    }
+  	```
